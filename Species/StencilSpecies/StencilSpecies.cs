@@ -42,18 +42,14 @@ namespace DataFieldLayoutSimulation
             return new StencilSpecies(this);
         }
 
-        #region Mutate
-
         public void Mutate(Random random)
         {
             int choice = random.Next(0, Mutators.Length);
-            int mutations = random.Next(1, (Creator.FieldW + Creator.FieldH) / 2);
+            int mutations = 1;// random.Next(1, (Creator.FieldW + Creator.FieldH) / 2);
             Mutators[choice].Mutate(random, this.Field, Creator.FieldW, Creator.FieldH, mutations);
 
             // ROTATE STUFF!!
         }
-
-        #endregion Mutate
 
         #region Crossover
 

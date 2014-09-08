@@ -38,8 +38,8 @@ namespace DataFieldLayoutSimulation
         void work()
         {
             Random random = new Random();
-            evolution = new Evolution(new StencilSpeciesCreator(new Random(), 20, 20, new double[] { 0.25, 0.25, 0.25, 0.25 }), 5, 100) { };
-            //evolution = new Evolution(new StencilSpeciesCreator(new Random(), 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 }), 5, 100) { };
+            //evolution = new Evolution(new StencilSpeciesCreator(new Random(), 20, 20, new double[] { 0.25, 0.25, 0.25, 0.25 }), 5, 100) { };
+            evolution = new Evolution(new StencilSpeciesCreator(new Random(), 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 }), 5, 100) { };
             //evolution = new Evolution(new StencilSpeciesCreator(new Random(), 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 }), 7, 25) { };
             //evolution = new Evolution(new TestSpeciesCreator(), 7, 25) { };
 

@@ -1,0 +1,80 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:valueconverters="clr-namespace:EvolutionWpfControls.ValueConverters"
+             x:Class="EvolutionWpfControls.BreedingPoolControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="800" Background="White">
+    <Grid>
+        <Grid.Resources>
+            <Style x:Key="VisibleStyle" TargetType="GroupBox">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding ShowPopulation}" Value="False">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding ShowPopulation}" Value="True">
+                        <Setter Property="Visibility" Value="Visible" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Resources>
+        <Label Content="Breeding Pool" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
+        <StackPanel Orientation="Horizontal">
+            <GroupBox Header="Stats" HorizontalAlignment="Left" Margin="10,25,10,0" VerticalAlignment="Top" Height="80">
+                <StackPanel Orientation="Horizontal" >
+                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                        <Grid>
+                            <Label Content="Fitness:" VerticalAlignment="Top" Margin="0,0,0,0" HorizontalAlignment="Left" />
+                            <Label Content="Generation:" VerticalAlignment="Top" Margin="0,16,0,0" HorizontalAlignment="Left" />
+                            <Label Content="Population:" VerticalAlignment="Top" Margin="0,32,0,0" HorizontalAlignment="Left" />
+                        </Grid>
+                        <Grid>
+                            <Label Content="{Binding Pool.Fitness}" VerticalAlignment="Top" Margin="0,0,0,0" HorizontalAlignment="Right" />
+                            <Label Content="{Binding Pool.Generation}" VerticalAlignment="Top" Margin="0,16,0,0" HorizontalAlignment="Right" />
+                            <Label Content="{Binding Pool.PopulationSize}" VerticalAlignment="Top" Margin="0,32,0,0" HorizontalAlignment="Right" />
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                        <Grid>
+                            <Label Content="Mutation Rate:" VerticalAlignment="Top" Margin="0,0,0,0" HorizontalAlignment="Left" />
+                            <Label Content="Elite Clone %:" VerticalAlignment="Top" Margin="0,16,0,0" HorizontalAlignment="Left" />
+                            <Label Content="Selection %:" VerticalAlignment="Top" Margin="0,32,0,0" HorizontalAlignment="Left" />
+                        </Grid>
+                        <Grid>
+                            <Label Content="{Binding Pool.MutationRate, Converter={valueconverters:DoubleToPercentageConverter}}" VerticalAlignment="Top" Margin="0,0,0,0" HorizontalAlignment="Right" />
+                            <Label Content="{Binding Pool.EliteClonePercentage, Converter={valueconverters:DoubleToPercentageConverter}}" VerticalAlignment="Top" Margin="0,16,0,0" HorizontalAlignment="Right" />
+                            <Label Content="{Binding Pool.SelectedPercentage, Converter={valueconverters:DoubleToPercentageConverter}}" VerticalAlignment="Top" Margin="0,32,0,0" HorizontalAlignment="Right" />
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                        <Grid>
+                            <Label Content="Resources:" VerticalAlignment="Top" Margin="0,0,0,0" HorizontalAlignment="Left" />
+                            <Label Content="Breedings:" VerticalAlignment="Top" Margin="0,16,0,0" HorizontalAlignment="Left" />
+                            <Label Content=".. for Breeding:" VerticalAlignment="Top" Margin="0,32,0,0" HorizontalAlignment="Left" />
+                        </Grid>
+                        <Grid>
+                            <Label Content="{Binding Pool.ResourcesFedSoFar}" VerticalAlignment="Top" Margin="0,0,0,0" HorizontalAlignment="Right" />
+                            <Label Content="{Binding Pool.BreedingsSoFar}" VerticalAlignment="Top" Margin="0,16,0,0" HorizontalAlignment="Right" />
+                            <Label Content="{Binding Pool.EnoughFeedingsForBreeding}" VerticalAlignment="Top" Margin="0,32,0,0" HorizontalAlignment="Right" />
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Creator" Margin="0,25,10,0" VerticalAlignment="Top" Height="80" HorizontalAlignment="Left" Width="130"/>
+            <GroupBox Header="History" Margin="0,25,10,0" VerticalAlignment="Top" Height="80" HorizontalAlignment="Left" Width="220">
+                <Grid x:Name="historyGrid"/>
+            </GroupBox>
+        </StackPanel>
+        <GroupBox Header="Population" Margin="10,105,10,5" Style="{StaticResource VisibleStyle}">
+            <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="populationList">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+            </ListView>
+        </GroupBox>
+    </Grid>
+</UserControl>

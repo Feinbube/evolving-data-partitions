@@ -1,0 +1,10 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:my1="clr-namespace:DataFieldLayoutSimulation"
+        xmlns:EvolutionWpfControls="clr-namespace:EvolutionWpfControls;assembly=EvolutionWpfControls" x:Class="DataFieldLayoutSimulation.MainWindow"
+        Title="Data Access Layout Simulator" Width="1280" Height="768" Closing="Window_Closing">
+    <Grid>
+        <EvolutionWpfControls:EvolutionControl x:Name="evolutionControl" Margin="0,0,0,0"/>
+    </Grid>
+</Window>

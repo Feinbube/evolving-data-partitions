@@ -32,8 +32,8 @@ namespace Algorithms.CudaByExample
 {
     public class DotProduct : Algorithm // Based on CUDA By Example by Jason Sanders and Edward Kandrot
     {
-        Array<float> a;
-        Array<float> b;
+        Arr<float> a;
+        Arr<float> b;
         float result;
 
         protected override void setup()
@@ -45,8 +45,8 @@ namespace Algorithms.CudaByExample
                 sizeX = maximumSize / 1024;
                 sizeY = 1024;
             }
-            a = new Array<float>(sizeX * sizeY);
-            b = new Array<float>(sizeX * sizeY);
+            a = new Arr<float>(sizeX * sizeY);
+            b = new Arr<float>(sizeX * sizeY);
 
             for (int i = 0; i < sizeX * sizeY; i++)
             {
@@ -64,7 +64,7 @@ namespace Algorithms.CudaByExample
 
         protected override void algorithm()
         {
-            Array<float> temp = new Array<float>(sizeX);
+            Arr<float> temp = new Arr<float>(sizeX);
 
             // TODO the book also provides a Multi-GPU version
             // How can we support that also? Explicit? Automatic?

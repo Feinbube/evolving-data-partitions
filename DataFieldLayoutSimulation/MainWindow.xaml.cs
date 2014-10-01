@@ -24,8 +24,11 @@ namespace DataFieldLayoutSimulation
     /// </summary>
     public partial class MainWindow : Window
     {
+        Random random = new Random(2014);
         bool running = true;
+
         Evolution evolution;
+        Evolution evolutionForView;
 
         public MainWindow()
         {
@@ -37,15 +40,18 @@ namespace DataFieldLayoutSimulation
 
         void work()
         {
-            Random random = new Random();
-            //evolution = new Evolution(new StencilSpeciesCreator(new Random(), 20, 20, new double[] { 0.25, 0.25, 0.25, 0.25 }), 5, 100) { };
-            evolution = new Evolution(new StencilSpeciesCreator(new Random(), 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 }), 5, 100) { };
+            ICreator creator = new StencilSpeciesArrCreator(random, 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 });
+            evolution = new Evolution(random, creator, 7, 64) { };
+            //evolution = new Evolution(new StencilSpeciesCreator(new Random(), 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 }), 5, 100) { };
             //evolution = new Evolution(new StencilSpeciesCreator(new Random(), 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 }), 7, 25) { };
             //evolution = new Evolution(new TestSpeciesCreator(), 7, 25) { };
 
+            evolutionForView = (Evolution)evolution.Clone();
+
             while (running)
             {
-                evolution.Feed(random, 12345);
+                evolution.Feed(10000);
+                evolutionForView = (Evolution)evolution.Clone();
                 Thread.Sleep(1000);
             }
         }
@@ -53,7 +59,7 @@ namespace DataFieldLayoutSimulation
         void updateView(object sender, EventArgs e)
         {
             this.evolutionControl.Evolution = null;
-            this.evolutionControl.Evolution = evolution;
+            this.evolutionControl.Evolution = evolutionForView;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

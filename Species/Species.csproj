@@ -47,29 +47,23 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="StencilSpecies\StencilSpeciesControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="StencilSpecies\Mutators\BorderMoveMutator.cs" />
-    <Compile Include="StencilSpecies\Mutators\BorderSwapMutator.cs" />
-    <Compile Include="StencilSpecies\Mutators\CellSwapMutator.cs" />
-    <Compile Include="StencilSpecies\Mutators\ClusterSwapMutator.cs" />
-    <Compile Include="StencilSpecies\Mutators\ColumnSwapMutator.cs" />
-    <Compile Include="StencilSpecies\Mutators\DiagonalNeighborSwapMutator.cs" />
-    <Compile Include="StencilSpecies\Mutators\GhostCellMoveMutator.cs" />
-    <Compile Include="StencilSpecies\Mutators\GhostCellSwapMutator.cs" />
-    <Compile Include="StencilSpecies\Mutators\Mutator.cs" />
-    <Compile Include="StencilSpecies\Mutators\NeighborSwapMutator.cs" />
-    <Compile Include="StencilSpecies\Mutators\RowAndColumnMutator.cs" />
-    <Compile Include="StencilSpecies\Mutators\RowSwapMutator.cs" />
-    <Compile Include="StencilSpecies\StencilSpecies.cs" />
-    <Compile Include="StencilSpecies\StencilSpeciesControl.xaml.cs">
-      <DependentUpon>StencilSpeciesControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="StencilSpecies\StencilSpeciesCreator.cs" />
-    <Compile Include="TestSpecies\TestSpecies.cs" />
-    <Compile Include="TestSpecies\TestSpeciesCreator.cs" />
+    <Compile Include="AccessPatternSpecies\AccessPatternSpecies.cs" />
+    <Compile Include="Mutators\JumpToSameColorX2Mutator.cs" />
+    <Compile Include="StencilSpecies\StencilSpeciesArr.cs" />
+    <Compile Include="Mutators\BorderMoveMutator.cs" />
+    <Compile Include="Mutators\JumpToSameColorMutator.cs" />
+    <Compile Include="Mutators\BorderSwapMutator.cs" />
+    <Compile Include="Mutators\CellSwapMutator.cs" />
+    <Compile Include="Mutators\ClusterSwapMutator.cs" />
+    <Compile Include="Mutators\ColumnSwapMutator.cs" />
+    <Compile Include="Mutators\DiagonalNeighborSwapMutator.cs" />
+    <Compile Include="Mutators\GhostCellMoveMutator.cs" />
+    <Compile Include="Mutators\GhostCellSwapMutator.cs" />
+    <Compile Include="Mutators\Mutator.cs" />
+    <Compile Include="Mutators\NeighborSwapMutator.cs" />
+    <Compile Include="Mutators\RowAndColumnMutator.cs" />
+    <Compile Include="Mutators\RowSwapMutator.cs" />
+    <Compile Include="StencilSpecies\StencilSpeciesArrCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -107,6 +101,10 @@
     <ProjectReference Include="..\EvolutionWpfControls\EvolutionWpfControls.csproj">
       <Project>{544e91bf-d642-4e30-ac42-e3f481cf8947}</Project>
       <Name>EvolutionWpfControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExecutionEnvironment\ExecutionEnvironment.csproj">
+      <Project>{711d1f27-c2cb-49f0-ba5a-f5ee8074802d}</Project>
+      <Name>ExecutionEnvironment</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

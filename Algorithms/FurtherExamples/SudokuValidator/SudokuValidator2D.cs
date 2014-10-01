@@ -34,7 +34,7 @@ namespace Algorithms
     {
         protected override void algorithm()
         {
-            Array<int> invalidFieldIndicator = new Array<int>(4);
+            Arr<int> invalidFieldIndicator = new Arr<int>(4);
 
             // contains invalid number
             Parallel.For(0, n * n, 0, n * n, delegate(int x, int y)

@@ -30,20 +30,45 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Array.cs" />
-    <Compile Include="IMemoryPlotter.cs" />
-    <Compile Include="Memory.cs" />
+    <Compile Include="Arrays\Array3D.cs" />
+    <Compile Include="Arrays\Array2D.cs" />
+    <Compile Include="Arrays\Array1D.cs" />
+    <Compile Include="Arrays\Arr.cs" />
+    <Compile Include="Arrays\Array.cs" />
+    <Compile Include="Arrays\ProfilingArray.cs" />
+    <Compile Include="Arrays\IArray.cs" />
+    <Compile Include="Arrays\IntArray2DControl.xaml.cs">
+      <DependentUpon>IntArray2DControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Memory\IMemoryPlotter.cs" />
+    <Compile Include="Memory\Memory.cs" />
     <Compile Include="Parallel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DrawingSupport\DrawingSupport.csproj">
+      <Project>{43df5d95-55eb-44d3-b6fc-8606c5ee4516}</Project>
+      <Name>DrawingSupport</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Arrays\IntArray2DControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

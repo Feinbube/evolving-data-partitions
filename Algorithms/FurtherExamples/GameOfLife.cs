@@ -32,22 +32,22 @@ namespace Algorithms
 {
     public class GameOfLife: Algorithm
     {
-        Array<byte> state1;
-        Array<byte> state2;
+        Arr<byte> state1;
+        Arr<byte> state2;
 
         protected override void setup()
         {
             this.sizeZ = 10;
 
-            state1 = new Array<byte>(sizeX, sizeY);
-            state2 = new Array<byte>(sizeX, sizeY);
+            state1 = new Arr<byte>(sizeX, sizeY);
+            state2 = new Arr<byte>(sizeX, sizeY);
             
             for (int x = 1; x < sizeX-1; x++)
                 for (int y = 1; y < sizeY-1; y++)
                     state1[x, y] = (byte)Random.Next(2);
         }
 
-        private void printField(Array<byte> fields)
+        private void printField(Arr<byte> fields)
         {
             printField(fields, sizeX, sizeY, delegate(int x, int y)
             {

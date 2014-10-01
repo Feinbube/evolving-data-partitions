@@ -1,0 +1,30 @@
+﻿<Window x:Class="RUHMFrontend.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Optimal Data Partitioning" Height="350" Width="525">
+    <Grid>
+        <TabControl>
+            <TabItem Header="Data Access">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" >
+                        <GroupBox Header="Algorithm"/>
+                        <GroupBox Header="Processors"/>
+                        <GroupBox Header="Partitioning">
+                            <Button Content="Get"/>
+                        </GroupBox>
+                    </StackPanel>
+                    <GroupBox Header="Data Access Patterns">
+                        <StackPanel Orientation="Horizontal" >
+                            <GroupBox Header="Statistics" />
+                            <GroupBox Header="Processor 1"/>
+                            <GroupBox Header="Processor 2"/>
+                            <GroupBox Header="Processor 3"/>
+                        </StackPanel>
+                    </GroupBox>
+                </StackPanel>
+            </TabItem>
+            <TabItem Header="Partitioning">
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

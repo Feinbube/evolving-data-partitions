@@ -50,8 +50,8 @@ namespace Algorithms.CudaByExample
             }
         }
 
-        Array<Sphere> sphere;
-        Array<float> bitmap;
+        Arr<Sphere> sphere;
+        Arr<float> bitmap;
 
         protected override void setup()
         {
@@ -60,9 +60,9 @@ namespace Algorithms.CudaByExample
             //this.sizeY = Math.Max(this.sizeY, 80);
             //this.sizeZ = Math.Max(this.sizeZ, 100);
 
-            bitmap = new Array<float>(sizeX, sizeY);
+            bitmap = new Arr<float>(sizeX, sizeY);
 
-            sphere = new Array<Sphere>(sizeZ);
+            sphere = new Arr<Sphere>(sizeZ);
 
             for (int i = 0; i < sizeZ; i++)
             {

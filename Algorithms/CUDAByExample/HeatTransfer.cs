@@ -32,15 +32,15 @@ namespace Algorithms.CudaByExample
 {
     public class HeatTransfer : Algorithm // Based on CUDA By Example by Jason Sanders and Edward Kandrot
     {
-        Array<float> input;
-        Array<float> bitmap;
+        Arr<float> input;
+        Arr<float> bitmap;
 
         protected override void setup()
         {
             this.sizeZ = this.sizeX / 10;
 
-            input = new Array<float>(sizeX, sizeY);
-            bitmap = new Array<float>(sizeX, sizeY);
+            input = new Arr<float>(sizeX, sizeY);
+            bitmap = new Arr<float>(sizeX, sizeY);
 
             float scale = 5.0f;
 
@@ -64,7 +64,7 @@ namespace Algorithms.CudaByExample
         {
             float speed = 0.25f;
 
-            Array<float> temp;
+            Arr<float> temp;
 
             for (int i = 0; i < sizeZ; i++)
             {

@@ -50,6 +50,16 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="EnvironmentTest.cs" />
+    <Compile Include="EvolutionFramework\EvolutionTest.cs" />
+    <Compile Include="EvolutionFramework\HierarchicalPopulationTest.cs" />
+    <Compile Include="EvolutionFramework\SelectMutateCrossoverPopulationTest.cs" />
+    <Compile Include="EvolutionFramework\IndividualMutateAndCrossoverPopulationTest.cs" />
+    <Compile Include="EvolutionFramework\PopulationTest.cs" />
+    <Compile Include="EvolutionFramework\TestEvolvable.cs" />
+    <Compile Include="EvolutionFramework\TestCreator.cs" />
+    <Compile Include="MutatorTest.cs" />
+    <Compile Include="AlgorithmTest.cs" />
     <Compile Include="StencilSpeciesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -61,10 +71,6 @@
     <ProjectReference Include="..\Algorithms\Algorithms.csproj">
       <Project>{44e31d34-637f-4727-a889-dcf5cdfdcd6f}</Project>
       <Name>Algorithms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Benchmark\Benchmark.csproj">
-      <Project>{1ff81265-7410-4ef4-a456-12cde71f36e3}</Project>
-      <Name>Benchmark</Name>
     </ProjectReference>
     <ProjectReference Include="..\DataFieldLayoutSimulation\DataFieldLayoutSimulation.csproj">
       <Project>{6ca5ca74-0920-4f15-8c73-0ac44844e698}</Project>
@@ -93,6 +99,10 @@
     <ProjectReference Include="..\Species\Species.csproj">
       <Project>{e5599f42-b83b-45b3-a7a2-93f0e148c46a}</Project>
       <Name>Species</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UnitTestHelpers\UnitTestHelpers.csproj">
+      <Project>{fde73fdd-11e9-4be6-91a1-91a0ef581cfc}</Project>
+      <Name>UnitTestHelpers</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

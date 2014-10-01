@@ -32,13 +32,13 @@ namespace Algorithms
 {
     public class MinimumSpanningTree : Algorithm // http://myssa.upcrc.illinois.edu/files/Lab_OpenMP_Assignments/
     {
-        Array<float> W;
-        Array<int> MSTree;
+        Arr<float> W;
+        Arr<int> MSTree;
 
         protected override void setup()
         {
-            W = new Array<float>(sizeX, sizeX);
-            MSTree = new Array<int>(sizeX, 2);
+            W = new Arr<float>(sizeX, sizeX);
+            MSTree = new Arr<int>(sizeX, 2);
 
             // create random, undirected weight matrix
             int i, j, k;
@@ -78,8 +78,8 @@ namespace Algorithms
 
         protected override void algorithm()
         {
-            Array<int> nearNode = new Array<int>(sizeX);
-            Array<float> minDist = new Array<float>(sizeX);
+            Arr<int> nearNode = new Arr<int>(sizeX);
+            Arr<float> minDist = new Arr<float>(sizeX);
 
             // initialize the minDist array with nodes's distance to first node in tree, node 0
             Parallel.For(1, sizeX, delegate(int i)

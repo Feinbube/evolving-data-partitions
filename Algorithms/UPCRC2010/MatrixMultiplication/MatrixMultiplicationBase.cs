@@ -32,26 +32,26 @@ namespace Algorithms.Upcrc2010.MatrixMultiplication
 {
     public abstract class MatrixMultiplicationBase : Algorithm
     {
-        protected Array<double> a;
-        protected Array<double> b;
+        protected Arr<double> a;
+        protected Arr<double> b;
 
-        protected Array<double> c;
+        protected Arr<double> c;
 
         protected override void setup()
         {
-            a = new Array<double>(sizeX, sizeZ);
+            a = new Arr<double>(sizeX, sizeZ);
             
             for (int i = 0; i < sizeX; i++)
                 for (int j = 0; j < sizeZ; j++)
                     a[i, j] = Random.NextDouble();
 
-            b = new Array<double>(sizeZ, sizeY);
+            b = new Arr<double>(sizeZ, sizeY);
 
             for (int i = 0; i < sizeZ; i++)
                 for (int j = 0; j < sizeY; j++)
                     b[i, j] = Random.NextDouble();
 
-            c = new Array<double>(sizeX, sizeY);
+            c = new Arr<double>(sizeX, sizeY);
         }
 
         protected override void printInput()

@@ -21,13 +21,15 @@ namespace EvolutionWpfControls
     /// </summary>
     public partial class BreedingPoolControl : UserControl
     {
-        public BreedingPool Pool { get; set; }
+        public EvolvablePopulation Pool { get; set; }
+
+        public string PoolType { get { return Pool == null ? "null" : Pool.GetType().ToString(); } }
 
         public bool ShowPopulation { get; set; }
 
         static SolidColorBrush blackBrush = (SolidColorBrush)new SolidColorBrush(Colors.Black).GetAsFrozen();
 
-        public BreedingPool BreedingPool
+        public EvolvablePopulation BreedingPool
         {
             get { return Pool; }
             set
@@ -38,7 +40,7 @@ namespace EvolutionWpfControls
                 this.DataContext = this;
 
                 historyGrid.Children.Clear();
-                if (value != null && value is BreedingPool)
+                if (value != null && value is EvolvablePopulation)
                 {
                     var history = Pool.FitnessHistory;
                     int count = Math.Min(history.Count, 100);
@@ -52,13 +54,24 @@ namespace EvolutionWpfControls
                     }
                 }
 
+                if (Pool == null)
+                {
+                    groupBoxBest.Content = null;
+                    groupBoxWorst.Content = null;
+                }
+                else
+                {
+                    groupBoxBest.Content = Pool.Best is IPresentable ? (Pool.Best as IPresentable).AsControl() : new Label() { Content = Pool.Best.Fitness.ToString() };
+                    groupBoxWorst.Content = Pool.Worst is IPresentable ? (Pool.Worst as IPresentable).AsControl() : new Label() { Content = Pool.Worst.Fitness.ToString() };
+                }
+
                 populationList.Items.Clear();
                 if (ShowPopulation && value != null)
-                    for (int i = 0; i < Pool.Population.Length; i++)
+                    for (int i = 0; i < Pool.Individuals.Count; i++)
                     {
-                        IEvolvable evolvable = Pool.Population[i];
-                        if (evolvable is BreedingPool)
-                            populationList.Items.Add(new BreedingPoolControl() { ShowPopulation = true /*i == 0*/, BreedingPool = (BreedingPool)evolvable });
+                        IEvolvable evolvable = Pool.Individuals[i];
+                        if (evolvable is EvolvablePopulation)
+                            populationList.Items.Add(new BreedingPoolControl() { ShowPopulation = true /*i == 0*/, BreedingPool = (EvolvablePopulation)evolvable });
                         else if (evolvable is IPresentable)
                             populationList.Items.Add(((IPresentable)evolvable).AsControl());
                         else
@@ -76,6 +89,6 @@ namespace EvolutionWpfControls
         private double scale(double min, double max, double v)
         {
             return min == max ? 1.0 : Math.Abs((v - min) / (min - max));
-        }        
+        }
     }
 }

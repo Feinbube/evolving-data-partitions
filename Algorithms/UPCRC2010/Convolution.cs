@@ -33,15 +33,15 @@ namespace Algorithms
 {
     public class Convolution : Algorithm // http://myssa.upcrc.illinois.edu/files/Lab_OpenMP_Assignments/
     {
-        Array<double> startImage;
-        Array<double> outImage;
+        Arr<double> startImage;
+        Arr<double> outImage;
 
         protected override void setup()
         {
             double EDGE = 5.0;
 
-            startImage = new Array<double>(sizeX, sizeY);
-            outImage = new Array<double>(sizeX, sizeY);
+            startImage = new Arr<double>(sizeX, sizeY);
+            outImage = new Arr<double>(sizeX, sizeY);
 
             // create random, directed weight matrix
             for (int i = 0; i < sizeX; i++)

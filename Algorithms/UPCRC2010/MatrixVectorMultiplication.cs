@@ -38,19 +38,19 @@ namespace Algorithms
             public int nrow;  //Num of rows;   
             public int ncol;  //Num of columns;   
             public int nnze;  //Num of non-zero elements;   
-            public Array<double> val;   //Stores the non-zero elements;   
-            public Array<int> rc_ind;  //Stores the row (CRS) or column (CCS) indexes of the elements in the val vector;   
-            public Array<int> rc_ptr;  //Stores the locations in the val vector that start a row (CRS) or column (CCS);   
-            public Array<int> rc_len;  //Stores the length of each column (CRS) or row (CCS);   
+            public Arr<double> val;   //Stores the non-zero elements;   
+            public Arr<int> rc_ind;  //Stores the row (CRS) or column (CCS) indexes of the elements in the val vector;   
+            public Arr<int> rc_ptr;  //Stores the locations in the val vector that start a row (CRS) or column (CCS);   
+            public Arr<int> rc_len;  //Stores the length of each column (CRS) or row (CCS);   
         }
 
         SpMat inputMatrix;
-        Array<double> fullInputMatrix;
+        Arr<double> fullInputMatrix;
 
-        Array<double> inputVector;
+        Arr<double> inputVector;
 
-        Array<double> resultVector;
-        Array<double> fullResultVector;
+        Arr<double> resultVector;
+        Arr<double> fullResultVector;
 
         int M;
         int N;
@@ -66,12 +66,12 @@ namespace Algorithms
             M = (int)sizeX;
             N = (int)sizeY;
 
-            fullInputMatrix = new Array<double>(M, N);
+            fullInputMatrix = new Arr<double>(M, N);
 
-            inputVector = new Array<double>(N);
+            inputVector = new Arr<double>(N);
 
-            fullResultVector = new Array<double>(M);
-            resultVector = new Array<double>(M);
+            fullResultVector = new Arr<double>(M);
+            resultVector = new Arr<double>(M);
 
             init_fullMatrix(fullInputMatrix);
             init_vector(inputVector);
@@ -79,7 +79,7 @@ namespace Algorithms
             convert2CSR(ref inputMatrix, fullInputMatrix);
         }
 
-        void init_fullMatrix(Array<double> matrix)
+        void init_fullMatrix(Arr<double> matrix)
         {
             // create random, directed weight matrix
             int i, j, k;
@@ -96,7 +96,7 @@ namespace Algorithms
             }
         }
 
-        void init_vector(Array<double> vector)
+        void init_vector(Arr<double> vector)
         {
             // intialize random vector
             int i;
@@ -106,7 +106,7 @@ namespace Algorithms
             }
         }
 
-        void convert2CSR(ref SpMat spMat, Array<double> A)
+        void convert2CSR(ref SpMat spMat, Arr<double> A)
         {
             int i, j, k;
             int totalNumNZ = 0;
@@ -114,7 +114,7 @@ namespace Algorithms
             spMat.nrow = M;
             spMat.ncol = N;
 
-            spMat.rc_len = new Array<int>(M);
+            spMat.rc_len = new Arr<int>(M);
             for (i = 0; i < M; i++)
             {
                 int colCount = 0;
@@ -130,7 +130,7 @@ namespace Algorithms
             }
             spMat.nnze = totalNumNZ;
 
-            spMat.rc_ptr = new Array<int>(M + 1);
+            spMat.rc_ptr = new Arr<int>(M + 1);
             spMat.rc_ptr[0] = 0;
 
             // exclusive prefix scan to find new row/column index pointers
@@ -139,8 +139,8 @@ namespace Algorithms
                 spMat.rc_ptr[i] = spMat.rc_ptr[i - 1] + spMat.rc_len[i - 1];
             }
 
-            spMat.rc_ind = new Array<int>(totalNumNZ);
-            spMat.val = new Array<double>(totalNumNZ);
+            spMat.rc_ind = new Arr<int>(totalNumNZ);
+            spMat.val = new Arr<double>(totalNumNZ);
 
             k = 0;
             for (i = 0; i < M; i++)

@@ -32,24 +32,24 @@ namespace Algorithms.CudaByExample
 {
     public class Average : Algorithm // Based on CUDA By Example by Jason Sanders and Edward Kandrot
     {
-        Array<float> a;
-        Array<float> b;
-        Array<float> c;
+        Arr<float> a;
+        Arr<float> b;
+        Arr<float> c;
 
         protected override void setup()
         {
             if (sizeX > Int32.MaxValue || sizeX < 0)
                 sizeX = Int32.MaxValue;
           
-            a = new Array<float>(sizeX);
+            a = new Arr<float>(sizeX);
             for (int i = 0; i < sizeX; i++)
                 a[i] = Random.Next(0, 1000);
 
-            b = new Array<float>(sizeX);
+            b = new Arr<float>(sizeX);
             for (int i = 0; i < sizeX; i++)
                 b[i] = Random.Next(0, 1000);
 
-            c = new Array<float>(sizeX);
+            c = new Arr<float>(sizeX);
         }
 
         protected override void printInput()

@@ -32,7 +32,7 @@ namespace Algorithms
 {
     public class SudokuValidator : Algorithm
     {
-        protected Array<int> field;
+        protected Arr<int> field;
         protected int n = 0;
         protected int shift = 0;
         protected bool isValidField = false;
@@ -82,7 +82,7 @@ namespace Algorithms
         {
             n = this.sizeX;
 
-            field = new Array<int>(n * n * n * n);
+            field = new Arr<int>(n * n * n * n);
             generateSolvedField();
         }
 
@@ -93,7 +93,7 @@ namespace Algorithms
 
         protected override void algorithm()
         {
-            Array<int> invalidFieldIndicator = new Array<int>(4);
+            Arr<int> invalidFieldIndicator = new Arr<int>(4);
 
             // contains invalid number
             Parallel.For(0, n * n * n * n, delegate(int id)
@@ -170,7 +170,7 @@ namespace Algorithms
             isValidField = fieldIsValid(invalidFieldIndicator);
         }
 
-        protected virtual bool fieldIsValid(Array<int> invalidFieldIndicator)
+        protected virtual bool fieldIsValid(Arr<int> invalidFieldIndicator)
         {
             return
                 invalidFieldIndicator[0] == 0 &&

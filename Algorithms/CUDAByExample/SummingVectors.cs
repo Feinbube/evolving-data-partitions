@@ -32,18 +32,18 @@ namespace Algorithms.CudaByExample
 {
     public class SummingVectors : Algorithm // Based on CUDA By Example by Jason Sanders and Edward Kandrot
     {
-        Array<int> a;
-        Array<int> b;
-        Array<int> c;
+        Arr<int> a;
+        Arr<int> b;
+        Arr<int> c;
 
         protected override void setup()
         {
             if (sizeX > 16777216 || sizeX < 0)
                 sizeX = 16777216;
 
-            a = new Array<int>(sizeX);
-            b = new Array<int>(sizeX);
-            c = new Array<int>(sizeX);
+            a = new Arr<int>(sizeX);
+            b = new Arr<int>(sizeX);
+            c = new Arr<int>(sizeX);
 
             for (int i = 0; i < sizeX; i++)
             {

@@ -3,20 +3,37 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DataFieldLayoutSimulation;
 using EvolutionFramework;
+using UnitTestHelpers;
+using ExecutionEnvironment;
 
 namespace UnitTests
 {
     [TestClass]
     public class StencilSpeciesTest
     {
+        Random random = new Random(2014);
+
+        private StencilSpeciesArr create()
+        {
+            StencilSpeciesArr result = new StencilSpeciesArr(random, 10, 10, new int[] { 9, 16, 75 });
+            Assert.IsTrue(result.IsValid);
+            Assert.IsTrue(result.IsValid);
+            return result;
+        }
+
+        private StencilSpeciesArr create(int[] cellsPerProcessor, int[] field, int w, int h)
+        {
+            StencilSpeciesArr result = new StencilSpeciesArr(random, new Arr<int>(field, w, h), cellsPerProcessor, new Mutator[] { new JumpToSameColorMutator() });
+            Assert.IsTrue(result.IsValid);
+            Assert.IsTrue(result.IsValid);
+            return result;
+        }
+
         [TestMethod]
         public void CreationTest()
         {
-            Random random = new Random(2014);
-
-            var generator = new StencilSpeciesCreator(random, 10, 10, new double[] { 0.09, 0.16, 0.75 });
-            for (int i = 0; i < 10000; i++)
-                Assert.IsTrue((generator.Create() as StencilSpecies).IsValid);
+            for (int i = 0; i < 1000; i++)
+                create();
         }
 
         [TestMethod]
@@ -24,13 +41,12 @@ namespace UnitTests
         {
             Random random = new Random(2014);
 
-            var generator = new StencilSpeciesCreator(random, 10, 10, new double[] { 0.09, 0.16, 0.75 });
             for (int i = 0; i < 100; i++)
             {
-                var specimen = (StencilSpecies)generator.Create();
+                var specimen = create();
                 for (int i2 = 0; i2 < 100; i2++)
                 {
-                    specimen.Mutate(random);
+                    specimen.Mutate();
                     Assert.IsTrue(specimen.IsValid);
                 }
             }
@@ -41,12 +57,11 @@ namespace UnitTests
         {
             Random random = new Random(2014);
 
-            var generator = new StencilSpeciesCreator(random, 10, 10, new double[] { 0.09, 0.16, 0.75 });
             for (int i = 0; i < 1000; i++)
             {
-                var specimen1 = (StencilSpecies)generator.Create();
-                var specimen2 = (StencilSpecies)generator.Create();
-                var child = (StencilSpecies)specimen1.Crossover(random, specimen2);
+                var specimen1 = create();
+                var specimen2 = create();
+                var child = (StencilSpeciesArr)specimen1.Crossover(specimen2);
                 Assert.IsTrue(child.IsValid);
             }
         }
@@ -54,14 +69,14 @@ namespace UnitTests
         [TestMethod]
         public void CrossoverFillWithEqualGenesTest()
         {
-            int[] field = new int[6];
-            int[] field1 = new int[] { 0, 0, 1, 2, 2, 2 };
-            int[] field2 = new int[] { 0, 2, 2, 1, 0, 2 };
+            Arr<int> field = new Arr<int>(6);
+            Arr<int> field1 = new Arr<int>(new int[] { 0, 0, 1, 2, 2, 2 });
+            Arr<int> field2 = new Arr<int>(new int[] { 0, 2, 2, 1, 0, 2 });
             int[] cellsPerProcessor = new int[] { 2, 1, 3 };
-            int count = StencilSpecies.fillWithEqualGenesOrMinusOne(field, field1, field2, cellsPerProcessor);
+            int count = StencilSpeciesArr.fillWithEqualGenesOrMinusOne(field, field1, field2, cellsPerProcessor);
             Assert.AreEqual(2, count);
-            AssertAreEqual(new int[] { 0, -1, -1, -1, -1, 2 }, field);
-            AssertAreEqual(new int[] { 1, 1, 2 }, cellsPerProcessor);
+            AssertEx.AreEqual(new int[] { 0, -1, -1, -1, -1, 2 }, field);
+            AssertEx.AreEqual(new int[] { 1, 1, 2 }, cellsPerProcessor);
         }
 
         [TestMethod]
@@ -69,86 +84,35 @@ namespace UnitTests
         {
             Random random = new Random(2014);
 
-            int[] field = new int[] { -1, -1, -1, -1, -1, -1 };
+            Arr<int> field = new Arr<int>(new int[] { -1, -1, -1, -1, -1, -1 });
             for (int i = 0; i < 6; i++)
             {
-                AssertIsGreaterThanOrEqualTo(StencilSpecies.freePosition(random, 6 - i, field), i);
+                AssertEx.IsGreaterThanOrEqualTo(field.FreePosition(random.Next(0, 6 - i), -1), i);
                 field[i] = 0;
             }
 
-            field = new int[] { -1, -1, -1, -1, -1, -1 };
+            field = new Arr<int>(new int[] { -1, -1, -1, -1, -1, -1 });
             for (int i = 0; i < 6; i++)
             {
-                int position = StencilSpecies.freePosition(random, 6 - i, field);
+                int position = field.FreePosition(random.Next(0, 6 - i), -1);
                 field[position] = 0;
             }
-            Assert.AreEqual(0, field.Sum());
+            Assert.AreEqual(0, field.Sum);
         }
 
         [TestMethod]
         public void OverheadTest()
         {
-            Assert.AreEqual(8, StencilSpecies.Overhead(new int[] { 1, 2, 1, 2, 2, 2, 1, 2, 1 }, 3, 3));
-            Assert.AreEqual(9, StencilSpecies.Overhead(new int[] { 1, 2, 1, 2, 1, 2, 1, 2, 1 }, 3, 3));
-            Assert.AreEqual(15, StencilSpecies.Overhead(new int[] { 1, 2, 1, 2, 2, 1, 2, 1, 1, 2, 2, 2, 2, 1, 2, 1 }, 4, 4));
+            Assert.AreEqual(8, create(new int[] { 4, 5 }, new int[] { 0, 1, 0, 1, 1, 1, 0, 1, 0 }, 3, 3).Overhead(false));
+            Assert.AreEqual(9, create(new int[] { 5, 4 }, new int[] { 0, 1, 0, 1, 0, 1, 0, 1, 0 }, 3, 3).Overhead(false));
+            Assert.AreEqual(15, create(new int[] { 7, 9 }, new int[] { 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0 }, 4, 4).Overhead(false));
 
-            Assert.AreEqual(13, StencilSpecies.Overhead(new int[] { 1, 2, 1, 2, 3, 2, 1, 2, 1 }, 3, 3));
-            Assert.AreEqual(8, StencilSpecies.Overhead(new int[] { 1, 2, 3, 4 }, 2, 2));
+            Assert.AreEqual(13, create(new int[] { 4, 4, 1 }, new int[] { 0, 1, 0, 1, 2, 1, 0, 1, 0 }, 3, 3).Overhead(false));
+            Assert.AreEqual(8, create(new int[] { 1, 1, 1, 1 }, new int[] { 0, 1, 2, 3 }, 2, 2).Overhead(false));
 
-            Assert.AreEqual(24, StencilSpecies.Overhead(new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9 }, 3, 3));
-            Assert.AreEqual(11, StencilSpecies.Overhead(new int[] { 1, 1, 2, 2, 1, 1, 3, 3, 3, 3, 3, 3 }, 4, 3));
-            Assert.AreEqual(40, StencilSpecies.Overhead(new int[] { 
-                1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
-                1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
-                1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
-                1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
-                1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
-                3, 3, 3, 3, 3, 4, 4, 4, 4, 4,
-                3, 3, 3, 3, 3, 4, 4, 4, 4, 4,
-                3, 3, 3, 3, 3, 4, 4, 4, 4, 4,
-                3, 3, 3, 3, 3, 4, 4, 4, 4, 4,
-                3, 3, 3, 3, 3, 4, 4, 4, 4, 4
-            }, 10, 10));
-            Assert.AreEqual(39, StencilSpecies.Overhead(new int[] { 
-                1, 1, 1, 1, 1, 1, 1, 2, 2, 2,
-                1, 1, 1, 1, 1, 1, 1, 2, 2, 2,
-                1, 1, 1, 1, 1, 1, 2, 2, 2, 2,
-                1, 3, 1, 1, 1, 2, 2, 2, 2, 2,
-                3, 3, 3, 1, 4, 4, 2, 2, 2, 2,
-                3, 3, 3, 4, 4, 4, 4, 2, 2, 2,
-                3, 3, 3, 3, 4, 4, 4, 4, 2, 2,
-                3, 3, 3, 3, 3, 4, 4, 4, 4, 2,
-                3, 3, 3, 3, 3, 4, 4, 4, 4, 4,
-                3, 3, 3, 3, 4, 4, 4, 4, 4, 4
-            }, 10, 10));
-            Assert.AreEqual(80, StencilSpecies.Overhead(new int[] { 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-            }, 20, 20));
-        }
-
-        [TestMethod]
-        public void OverheadNewTest()
-        {
-            Assert.AreEqual(10, StencilSpecies.OverheadNew(new int[] { 25, 25, 25, 25 }, new int[] { 
+            Assert.AreEqual(24, create(new int[] { 1, 1, 1, 1, 1, 1, 1, 1, 1 }, new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, 3, 3).Overhead(false));
+            Assert.AreEqual(11, create(new int[] { 4, 2, 6 }, new int[] { 0, 0, 1, 1, 0, 0, 2, 2, 2, 2, 2, 2 }, 4, 3).Overhead(false));
+            Assert.AreEqual(40, create(new int[] { 25, 25, 25, 25 }, new int[] { 
                 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
                 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
                 1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
@@ -159,8 +123,8 @@ namespace UnitTests
                 3, 3, 3, 3, 3, 0, 0, 0, 0, 0,
                 3, 3, 3, 3, 3, 0, 0, 0, 0, 0,
                 3, 3, 3, 3, 3, 0, 0, 0, 0, 0
-            }, 10, 10));
-            Assert.AreEqual(12, StencilSpecies.OverheadNew(new int[] { 25, 25, 25, 25 }, new int[] { 
+            }, 10, 10).Overhead(false));
+            Assert.AreEqual(39, create(new int[] { 25, 25, 25, 25 }, new int[] { 
                 1, 1, 1, 1, 1, 1, 1, 2, 2, 2,
                 1, 1, 1, 1, 1, 1, 1, 2, 2, 2,
                 1, 1, 1, 1, 1, 1, 2, 2, 2, 2,
@@ -171,8 +135,8 @@ namespace UnitTests
                 3, 3, 3, 3, 3, 0, 0, 0, 0, 2,
                 3, 3, 3, 3, 3, 0, 0, 0, 0, 0,
                 3, 3, 3, 3, 0, 0, 0, 0, 0, 0
-            }, 10, 10));
-            Assert.AreEqual(20, StencilSpecies.OverheadNew(new int[] { 100, 100, 100, 100 }, new int[] { 
+            }, 10, 10).Overhead(false));
+            Assert.AreEqual(80, create(new int[] { 100, 100, 100, 100 }, new int[] { 
                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
@@ -193,39 +157,83 @@ namespace UnitTests
                 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            }, 20, 20));
+            }, 20, 20).Overhead(false));
+        }
+
+        [TestMethod]
+        public void OverheadNewTest()
+        {
+            Assert.AreEqual(120, create(new int[] { 25, 25, 25, 25 }, new int[] { 
+                1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
+                1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
+                1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
+                1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
+                1, 1, 1, 1, 1, 2, 2, 2, 2, 2,
+                3, 3, 3, 3, 3, 0, 0, 0, 0, 0,
+                3, 3, 3, 3, 3, 0, 0, 0, 0, 0,
+                3, 3, 3, 3, 3, 0, 0, 0, 0, 0,
+                3, 3, 3, 3, 3, 0, 0, 0, 0, 0,
+                3, 3, 3, 3, 3, 0, 0, 0, 0, 0
+            }, 10, 10).Overhead(true));
+            Assert.AreEqual(135, create(new int[] { 25, 25, 25, 25 }, new int[] { 
+                1, 1, 1, 1, 1, 1, 1, 2, 2, 2,
+                1, 1, 1, 1, 1, 1, 1, 2, 2, 2,
+                1, 1, 1, 1, 1, 1, 2, 2, 2, 2,
+                1, 3, 1, 1, 1, 2, 2, 2, 2, 2,
+                3, 3, 3, 1, 0, 0, 2, 2, 2, 2,
+                3, 3, 3, 0, 0, 0, 0, 2, 2, 2,
+                3, 3, 3, 3, 0, 0, 0, 0, 2, 2,
+                3, 3, 3, 3, 3, 0, 0, 0, 0, 2,
+                3, 3, 3, 3, 3, 0, 0, 0, 0, 0,
+                3, 3, 3, 3, 0, 0, 0, 0, 0, 0
+            }, 10, 10).Overhead(true));
+            Assert.AreEqual(240, create(new int[] { 100, 100, 100, 100 }, new int[] { 
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            }, 20, 20).Overhead(true));
         }
 
         [TestMethod]
         public void UniqueNeighborCountTest()
         {
-            Assert.AreEqual(0, StencilSpecies.UniqueNeighborCount(new int[] { 1, 2, 1, 2, 2, 2, 1, 2, 1 }, 1, 1, 3, 3));
-            Assert.AreEqual(1, StencilSpecies.UniqueNeighborCount(new int[] { 1, 2, 1, 2, 1, 2, 1, 2, 1 }, 1, 1, 3, 3));
+            Assert.AreEqual(0, StencilSpeciesArr.UniqueNeighborCount(new Arr<int>(new int[] { 1, 2, 1, 2, 2, 2, 1, 2, 1 },3, 3), 1, 1));
+            Assert.AreEqual(1, StencilSpeciesArr.UniqueNeighborCount(new Arr<int>(new int[] { 1, 2, 1, 2, 1, 2, 1, 2, 1 }, 3, 3), 1, 1));
         }
 
         [TestMethod]
         public void NoClonesAroundTest()
         {
             Random random = new Random(2014);
-            BreedingPool pool = new BreedingPool(new StencilSpeciesCreator(random, 10, 10, new double[] { 0.09, 0.16, 0.75 }), 25);
-            pool.Feed(random, 10000);
 
-            for (int i = 0; i < pool.PopulationSize - 1; i++)
-                for (int j = i + 1; j < pool.PopulationSize; j++)
-                    if (pool.Population[i].Equals(pool.Population[j]))
-                        throw new Exception("Clones!! " + i + " and " + j);
-        }
+            SelectMutateCrossoverPopulation pool = new SelectMutateCrossoverPopulation(random, new StencilSpeciesArrCreator(random, 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 }), 64);
 
-        public static void AssertAreEqual(int[] expected, int[] actual)
-        {
-            Assert.AreEqual(expected.Length, actual.Length);
-            for (int i = 0; i < expected.Length; i++)
-                Assert.AreEqual(expected[i], actual[i], "at index " + i);
-        }
+            for (int g = 0; g < 10; g++)
+            {
+                pool.Feed(1000);
 
-        public static void AssertIsGreaterThanOrEqualTo(int actual, int value)
-        {
-            Assert.IsTrue(actual >= value, actual + " is less than " + value);
+                for (int i = 0; i < pool.Individuals.Count - 1; i++)
+                    for (int j = i + 1; j < pool.Individuals.Count; j++)
+                        if (pool.Individuals[i].Equals(pool.Individuals[j]))
+                            throw new Exception("Clones!! " + i + " and " + j);
+            }
         }
     }
 }

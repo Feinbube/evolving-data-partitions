@@ -32,16 +32,16 @@ namespace Algorithms
 {
     public class PrefixScan : Algorithm // http://myssa.upcrc.illinois.edu/files/Lab_OpenMP_Assignments/
     {
-        Array<float> startData;
-        Array<float> IscanData;
+        Arr<float> startData;
+        Arr<float> IscanData;
 
         protected override void setup()
         {
             if (sizeX > Int32.MaxValue || sizeX < 0)
                 sizeX = Int32.MaxValue;
 
-            startData = new Array<float>(sizeX);
-            IscanData = new Array<float>(sizeX);
+            startData = new Arr<float>(sizeX);
+            IscanData = new Arr<float>(sizeX);
 
             for (int i = 0; i < sizeX; i++)
                 startData[i] = (float)(Random.NextDouble() * 10.0);
@@ -57,9 +57,9 @@ namespace Algorithms
         {
             int increment = 1;
 
-            Array<float> p1 = startData;
-            Array<float> p2 = IscanData;
-            Array<float> ptmp;
+            Arr<float> p1 = startData;
+            Arr<float> p2 = IscanData;
+            Arr<float> ptmp;
 
             IscanData[0] = startData[0];
 

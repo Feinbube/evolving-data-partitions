@@ -32,7 +32,7 @@ namespace Algorithms.CudaByExample
 {
     public class Ripple : Algorithm // Based on CUDA By Example by Jason Sanders and Edward Kandrot
     {
-        Array<float> bitmap;
+        Arr<float> bitmap;
 
         protected override void setup()
         {
@@ -42,7 +42,7 @@ namespace Algorithms.CudaByExample
                 sizeX = sizeX / 2;
                 sizeY = sizeY / 2;
             }
-            bitmap = new Array<float>(sizeX, sizeY);
+            bitmap = new Arr<float>(sizeX, sizeY);
         }
 
         protected override void printInput()

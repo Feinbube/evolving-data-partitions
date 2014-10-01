@@ -43,7 +43,7 @@ namespace Algorithms.Upcrc2010.MatrixMultiplication
             matmultrec(sizeX, sizeY, sizeZ, 0, sizeX, 0, sizeY, 0, sizeZ, a, b, c);
         }
 
-        void matmultrec(int m, int n, int p, int mf, int ml, int nf, int nl, int pf, int pl, Array<double> A, Array<double> B, Array<double> C)
+        void matmultrec(int m, int n, int p, int mf, int ml, int nf, int nl, int pf, int pl, Arr<double> A, Arr<double> B, Arr<double> C)
         {
             if ((ml - mf) * (nl - nf) * (pl - pf) < 8 * 32768) /* product size below which matmultleaf is used */
                 matmultleaf(m, n, p, mf, ml, nf, nl, pf, pl, A, B, C);
@@ -60,7 +60,7 @@ namespace Algorithms.Upcrc2010.MatrixMultiplication
             }
         }
 
-        void matmultleaf(int m, int n, int p, int mf, int ml, int nf, int nl, int pf, int pl, Array<double> A, Array<double> B, Array<double> C)
+        void matmultleaf(int m, int n, int p, int mf, int ml, int nf, int nl, int pf, int pl, Arr<double> A, Arr<double> B, Arr<double> C)
         {
             Parallel.For(mf, ml, nf, nl, delegate(int i, int j)
             {

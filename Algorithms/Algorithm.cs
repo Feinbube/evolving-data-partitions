@@ -96,14 +96,14 @@ namespace Algorithms
             return String.Format("{0:0.00}", value).Substring(0, 4);
         }
 
-        protected void swap(ref Array<byte> a, ref Array<byte> b)
+        protected void swap(ref Arr<byte> a, ref Arr<byte> b)
         {
-            Array<byte> tmp = a;
+            Arr<byte> tmp = a;
             a = b;
             b = tmp;
         }
 
-        protected void printField<T>(Array<T> field, int sizeX)
+        protected void printField<T>(Arr<T> field, int sizeX)
         {
             for (int i = 0; i < Math.Min(sizeX, 80); i++)
                 Console.Write(typeToString(field[i]) + " ");
@@ -114,7 +114,7 @@ namespace Algorithms
             Console.WriteLine();
         }
 
-        protected void printField<T>(Array<T> field, int sizeX, int sizeY)
+        protected void printField<T>(Arr<T> field, int sizeX, int sizeY)
         {
             for (int i = -1; i <= sizeX; i++)
             {
@@ -134,7 +134,7 @@ namespace Algorithms
             return value is double || value is float ? String.Format("{0:0.00}", value).Substring(0, 4) : value.ToString();
         }
 
-        protected void printField(Array<byte> fields, int sizeX, int sizeY, Action<int, int> printAction)
+        protected void printField(Arr<byte> fields, int sizeX, int sizeY, Action<int, int> printAction)
         {
             for (int y = 0; y < sizeY; y++)
             {
@@ -144,7 +144,7 @@ namespace Algorithms
             }
         }
 
-        protected void paintField(Array<float> bitmap)
+        protected void paintField(Arr<float> bitmap)
         {
             for (int x = 0; x < sizeX; x++)
                 for (int y = 0; y < sizeY; y++)

@@ -36,11 +36,11 @@ namespace Algorithms
         {
             n = this.sizeX;
 
-            field = new Array<int>(n * n * n * n);
+            field = new Arr<int>(n * n * n * n);
             generateFieldWithInvalidColumn();
         }
 
-        protected override bool  fieldIsValid(Array<int> invalidFieldIndicator)
+        protected override bool  fieldIsValid(Arr<int> invalidFieldIndicator)
         {
             return //invalidFieldIndicator[0] == 0 &&
                //invalidFieldIndicator[1] == 0 &&

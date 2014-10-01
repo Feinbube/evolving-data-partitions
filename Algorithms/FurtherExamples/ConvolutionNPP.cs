@@ -32,15 +32,15 @@ namespace Algorithms
 {
     public class ConvolutionNPP : Algorithm // http://myssa.upcrc.illinois.edu/files/Lab_OpenMP_Assignments/
     {
-        Array<byte> startImage;
-        Array<byte> outImage;
+        Arr<byte> startImage;
+        Arr<byte> outImage;
 
         protected override void setup()
         {
             byte EDGE = 128;
 
-            startImage = new Array<byte>(sizeX, sizeY);
-            outImage = new Array<byte>(sizeX, sizeY);
+            startImage = new Arr<byte>(sizeX, sizeY);
+            outImage = new Arr<byte>(sizeX, sizeY);
 
             // create random, directed weight matrix
             for (int i = 0; i < sizeX; i++)

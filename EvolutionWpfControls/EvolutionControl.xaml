@@ -30,6 +30,7 @@
             </Style>
         </Grid.Resources>
         <Label Content="Evolution" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" FontSize="18" FontWeight="Bold"/>
+        <Label Style="{StaticResource RunningTextStyle}" HorizontalAlignment="Left" Margin="90,6,0,0" VerticalAlignment="Top"/>
         <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
             <StackPanel Orientation="Horizontal" Margin="10,30,0,0" >
                 <GroupBox Header="Simulation Rounds" Margin="0,0,10,0" HorizontalAlignment="Left" VerticalAlignment="Top" Height="65">
@@ -87,15 +88,14 @@
                             <Label Content="Max:" HorizontalAlignment="Left" Margin="0,16,0,0" VerticalAlignment="Top"/>
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding ResourcesFedSoFar}" Margin="0,0,3,0" VerticalAlignment="Top" HorizontalAlignment="Right" />
+                            <Label Content="{Binding FoodConsumedInLifetime}" Margin="0,0,3,0" VerticalAlignment="Top" HorizontalAlignment="Right" />
                             <TextBox IsEnabled="{Binding Stopped}" Text="{Binding MaxFeedings}" Margin="0,20,5,0" VerticalAlignment="Top" HorizontalAlignment="Right" HorizontalContentAlignment="Right"/>
                         </Grid>
                     </StackPanel>
                 </GroupBox>
             </StackPanel>
             <Button Style="{StaticResource RunningButtonStyle}" Height="24" Margin="10,5,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Width="100" Click="Button_Click"/>
-        </Grid>
-        <Label Style="{StaticResource RunningTextStyle}" HorizontalAlignment="Left" Margin="90,6,0,0" VerticalAlignment="Top"/>
+        </Grid>        
         <local:BreedingPoolControl x:Name="breedingPoolControl" Margin="10,100,10,0" ShowPopulation="True"/>
     </Grid>
 </UserControl>

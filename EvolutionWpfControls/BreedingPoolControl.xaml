@@ -20,7 +20,8 @@
                 </Style.Triggers>
             </Style>
         </Grid.Resources>
-        <Label Content="Breeding Pool" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
+        <Label Content="Population" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" FontSize="14" FontWeight="Bold"/>
+        <Label Content="{Binding PoolType}" HorizontalAlignment="Left" Margin="80,2,0,0" VerticalAlignment="Top" />
         <StackPanel Orientation="Horizontal">
             <GroupBox Header="Stats" HorizontalAlignment="Left" Margin="10,25,10,0" VerticalAlignment="Top" Height="80">
                 <StackPanel Orientation="Horizontal" >
@@ -28,12 +29,34 @@
                         <Grid>
                             <Label Content="Fitness:" VerticalAlignment="Top" Margin="0,0,0,0" HorizontalAlignment="Left" />
                             <Label Content="Generation:" VerticalAlignment="Top" Margin="0,16,0,0" HorizontalAlignment="Left" />
-                            <Label Content="Population:" VerticalAlignment="Top" Margin="0,32,0,0" HorizontalAlignment="Left" />
+                            <Label Content="Population Size:" VerticalAlignment="Top" Margin="0,32,0,0" HorizontalAlignment="Left" />
                         </Grid>
                         <Grid>
                             <Label Content="{Binding Pool.Fitness}" VerticalAlignment="Top" Margin="0,0,0,0" HorizontalAlignment="Right" />
-                            <Label Content="{Binding Pool.Generation}" VerticalAlignment="Top" Margin="0,16,0,0" HorizontalAlignment="Right" />
+                            <Label Content="{Binding Pool.Generations}" VerticalAlignment="Top" Margin="0,16,0,0" HorizontalAlignment="Right" />
                             <Label Content="{Binding Pool.PopulationSize}" VerticalAlignment="Top" Margin="0,32,0,0" HorizontalAlignment="Right" />
+                        </Grid>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
+                        <Grid>
+                            <Label Content="Mutations:" VerticalAlignment="Top" Margin="0,0,0,0" HorizontalAlignment="Left" />
+                            <Label Content="Crossovers:" VerticalAlignment="Top" Margin="0,16,0,0" HorizontalAlignment="Left" />
+                            <Label Content="Fitness Evalutations:" VerticalAlignment="Top" Margin="0,32,0,0" HorizontalAlignment="Left" />
+                        </Grid>
+                        <Grid>
+                            <Label Content="{Binding Pool.Mutations}" VerticalAlignment="Top" Margin="0,0,0,0" HorizontalAlignment="Right" />
+                            <Label Content="{Binding Pool.Crossovers}" VerticalAlignment="Top" Margin="0,16,0,0" HorizontalAlignment="Right" />
+                            <Label Content="{Binding Pool.FitnessEvaluations}" VerticalAlignment="Top" Margin="0,32,0,0" HorizontalAlignment="Right" />
+                        </Grid>
+                        <Grid>
+                            <Label Content=" / " VerticalAlignment="Top" Margin="0,0,0,0" HorizontalAlignment="Left" />
+                            <Label Content=" / " VerticalAlignment="Top" Margin="0,16,0,0" HorizontalAlignment="Left" />
+                            <Label Content=" / " VerticalAlignment="Top" Margin="0,32,0,0" HorizontalAlignment="Left" />
+                        </Grid>
+                        <Grid>
+                            <Label Content="{Binding Pool.IndividualMutations}" VerticalAlignment="Top" Margin="0,0,0,0" HorizontalAlignment="Right" />
+                            <Label Content="{Binding Pool.IndividualCrossovers}" VerticalAlignment="Top" Margin="0,16,0,0" HorizontalAlignment="Right" />
+                            <Label Content="{Binding Pool.IndividualFitnessEvaluations}" VerticalAlignment="Top" Margin="0,32,0,0" HorizontalAlignment="Right" />
                         </Grid>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,0,20,0">
@@ -55,15 +78,17 @@
                             <Label Content=".. for Breeding:" VerticalAlignment="Top" Margin="0,32,0,0" HorizontalAlignment="Left" />
                         </Grid>
                         <Grid>
-                            <Label Content="{Binding Pool.ResourcesFedSoFar}" VerticalAlignment="Top" Margin="0,0,0,0" HorizontalAlignment="Right" />
+                            <Label Content="{Binding Pool.FoodConsumedInLifetime}" VerticalAlignment="Top" Margin="0,0,0,0" HorizontalAlignment="Right" />
                             <Label Content="{Binding Pool.BreedingsSoFar}" VerticalAlignment="Top" Margin="0,16,0,0" HorizontalAlignment="Right" />
                             <Label Content="{Binding Pool.EnoughFeedingsForBreeding}" VerticalAlignment="Top" Margin="0,32,0,0" HorizontalAlignment="Right" />
                         </Grid>
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
-            <GroupBox Header="Creator" Margin="0,25,10,0" VerticalAlignment="Top" Height="80" HorizontalAlignment="Left" Width="130"/>
-            <GroupBox Header="History" Margin="0,25,10,0" VerticalAlignment="Top" Height="80" HorizontalAlignment="Left" Width="220">
+            <GroupBox Name="groupBoxBest" Header="Best" Margin="0,25,10,0" VerticalAlignment="Top" Height="80" HorizontalAlignment="Left" />
+            <GroupBox Name="groupBoxWorst" Header="Worst" Margin="0,25,10,0" VerticalAlignment="Top" Height="80" HorizontalAlignment="Left" />
+            <GroupBox Header="Creator" Margin="0,25,10,0" VerticalAlignment="Top" Height="80" HorizontalAlignment="Left"/>
+            <GroupBox Header="History" Margin="0,25,10,0" VerticalAlignment="Top" Height="80" HorizontalAlignment="Left">
                 <Grid x:Name="historyGrid"/>
             </GroupBox>
         </StackPanel>

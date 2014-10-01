@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace EvolutionFramework
 {
-    public class Evolution : BreedingPool
+    public class Evolution : SelectMutateCrossoverPopulation
     {
         public bool Pause { get; set; }
 
-        public int SimulationRound { get { return this.Generation; } }
+        public long SimulationRound { get { return this.Generations; } }
         public int MaxSimulationRounds { get; set; } // Fixed number of generations reached
 
         private double runtimeInMilliseconds = 0;
@@ -35,8 +35,25 @@ namespace EvolutionFramework
             this.EnoughFeedingsForBreeding = 10000;
         }
 
-        public Evolution(ICreator creator, int breedingPools, int populationPerPool) : base(new BreedingPoolCreator(creator, populationPerPool, 1), breedingPools) { Init(); }
-        public Evolution(ICreator creator, int colonies, int breedingPools, int populationPerPool) : base(new BreedingPoolCreator(new BreedingPoolCreator(creator, populationPerPool, 1), breedingPools, 100), colonies) { Init(); this.EnoughFeedingsForBreeding = 1000; }
+        //public Evolution(Random random, ICreator creator, int breedingPools, int populationPerPool) : base(random, new SelectMutateCrossoverPopulationCreator(random, creator, populationPerPool, 1) , breedingPools) { Init(); }
+
+        public Evolution(Random random, ICreator creator, int breedingPools, int populationPerPool) : base(random, new IndividualMutateAndCrossoverPopulationCreator(random, creator, populationPerPool), breedingPools) { Init(); }
+
+        public Evolution(Evolution evolution)
+            : base(evolution)
+        {
+            Pause = evolution.Pause;
+            MaxSimulationRounds = evolution.MaxSimulationRounds;
+            MaxRuntime = evolution.MaxRuntime;
+            MaxFitness = evolution.MaxFitness;
+            MaxRoundsWithoutFitnessChange = evolution.MaxRoundsWithoutFitnessChange;
+            MaxFeedings = evolution.MaxFeedings;
+            EnoughFeedingsForBreeding = evolution.EnoughFeedingsForBreeding;
+            runtimeInMilliseconds = evolution.runtimeInMilliseconds;
+            RoundsWithoutFitnessChange = evolution.RoundsWithoutFitnessChange;
+        }
+
+        // public Evolution(Random random, ICreator creator, int colonies, int breedingPools, int populationPerPool) : base(random, new SelectMutateCrossoverPopulationCreator(random, new SelectMutateCrossoverPopulationCreator(random, creator, populationPerPool, 1), breedingPools, 100), colonies) { Init(); this.EnoughFeedingsForBreeding = 1000; }
 
         public bool Stopped
         {
@@ -47,24 +64,24 @@ namespace EvolutionFramework
                     Runtime > MaxRuntime ||
                     SimulationRound > MaxSimulationRounds ||
                     Fitness > MaxFitness ||
-                    ResourcesFedSoFar > MaxFeedings ||
+                    FoodConsumedInLifetime > MaxFeedings ||
                     RoundsWithoutFitnessChange > MaxRoundsWithoutFitnessChange;
             }
         }
 
-        public override void Feed(Random random, int resources)
+        protected override void feed(double resources)
         {
             if (Stopped)
                 return;
 
             DateTime start = DateTime.Now;
-            base.Feed(random, resources);
+            base.feed(resources);
             runtimeInMilliseconds += (DateTime.Now - start).TotalMilliseconds;
         }
 
-        protected override void breed(Random random)
+        protected override void breed()
         {
-            base.breed(random);
+            base.breed();
 
             if (FitnessHistory.Count > 0 && FitnessHistory[0] == Fitness) RoundsWithoutFitnessChange++;
             else RoundsWithoutFitnessChange = 0;
@@ -74,7 +91,9 @@ namespace EvolutionFramework
 
         public override string ToString()
         {
-            return "[" + Generation + "] Evolution with " + PopulationSize + " breeding pools. Best: " + Best.ToString();
-        }        
+            return "[" + Generations + "] Evolution with " + PopulationSize + " breeding pools. Best: " + Best.ToString();
+        }
+
+        public override IEvolvable Clone() { return new Evolution(this); }
     }
 }

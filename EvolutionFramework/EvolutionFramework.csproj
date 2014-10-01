@@ -39,12 +39,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BreedingPool.cs" />
-    <Compile Include="BreedingPoolGenerator.cs" />
+    <Compile Include="Evolvable\Evolvable.cs" />
+    <Compile Include="Evolver\FedEvolver.cs" />
+    <Compile Include="Evolver\Evolver.cs" />
+    <Compile Include="Evolver\IEvolver.cs" />
+    <Compile Include="Interfaces\INotingEvolvable.cs" />
+    <Compile Include="Interfaces\IPopulation.cs" />
+    <Compile Include="Interfaces\IFeedable.cs" />
+    <Compile Include="Population\EvolvablePopulation.cs" />
+    <Compile Include="Population\SelectMutateCrossoverPopulation.cs" />
+    <Compile Include="Population\IndividualMutateAndCrossoverPopulationCreator.cs" />
+    <Compile Include="Population\SelectMutateCrossoverPopulationCreator.cs" />
     <Compile Include="Evolution.cs" />
-    <Compile Include="ICreator.cs" />
-    <Compile Include="IEvolvable.cs" />
+    <Compile Include="Evolvable\FedEvolvable.cs" />
+    <Compile Include="Evolvable\Feedable.cs" />
+    <Compile Include="Interfaces\ICreator.cs" />
+    <Compile Include="Interfaces\IEvolvable.cs" />
+    <Compile Include="Population\Population.cs" />
+    <Compile Include="Population\IndividualMutateAndCrossoverPopulation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LINQEx\LINQExtensions.csproj">
+      <Project>{59074caa-58fe-497f-b86d-a0a82152414c}</Project>
+      <Name>LINQExtensions</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

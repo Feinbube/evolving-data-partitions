@@ -32,7 +32,7 @@ namespace Algorithms.FurtherExamples
 {
     public class Sum: Algorithm
     {
-        Array<int> a;
+        Arr<int> a;
         int result;
 
         protected override void setup()
@@ -40,7 +40,7 @@ namespace Algorithms.FurtherExamples
             if (sizeX > Int32.MaxValue || sizeX < 0)
                 sizeX = Int32.MaxValue;
 
-            a = new Array<int>(sizeX);
+            a = new Arr<int>(sizeX);
             for (int i = 0; i < sizeX; i++)
             {
                a[i] = i;

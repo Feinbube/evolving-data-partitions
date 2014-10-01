@@ -43,10 +43,10 @@ namespace Algorithms
         const int breedTimeShark = 4;
         const int sharkStarveTime = 8;
 
-        Array<byte> state1;
-        Array<int> age;
-        Array<int> starve;
-        Array<byte> state2;
+        Arr<byte> state1;
+        Arr<int> age;
+        Arr<int> starve;
+        Arr<byte> state2;
 
         System.Random random = new System.Random();
 
@@ -54,10 +54,10 @@ namespace Algorithms
         {
             this.sizeZ = 10000;
 
-            state1 = new Array<byte>(sizeX, sizeY);
-            state2 = new Array<byte>(sizeX, sizeY);
-            age = new Array<int>(sizeX, sizeY);
-            starve = new Array<int>(sizeX, sizeY);
+            state1 = new Arr<byte>(sizeX, sizeY);
+            state2 = new Arr<byte>(sizeX, sizeY);
+            age = new Arr<int>(sizeX, sizeY);
+            starve = new Arr<int>(sizeX, sizeY);
 
             for (int y = 1; y < sizeY - 1; y++)
                 for (int x = 1; x < sizeX - 1; x++)
@@ -69,7 +69,7 @@ namespace Algorithms
                 }
         }
 
-        private void printField(Array<byte> fields)
+        private void printField(Arr<byte> fields)
         {
             printField(fields, sizeX, sizeY, delegate(int x, int y)
             {

@@ -59,11 +59,11 @@ namespace Algorithms.CudaByExample
             }
         }
 
-        Array<int> bitmap;
+        Arr<int> bitmap;
 
         protected override void setup()
         {
-            bitmap = new Array<int>(sizeX, sizeY);
+            bitmap = new Arr<int>(sizeX, sizeY);
         }
 
         protected override void printInput()

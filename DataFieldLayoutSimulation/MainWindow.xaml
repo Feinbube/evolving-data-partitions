@@ -7,7 +7,7 @@
     <Grid>
         <TabControl>
             <TabItem Header="New">
-                <EvolutionWpfControls:PopulationControl x:Name="evolutionControlNew" Margin="0,0,0,0"/>
+                <EvolutionWpfControls:AnyPopulationControl x:Name="evolutionControlNew" Margin="0,0,0,0"/>
             </TabItem>
             <TabItem Header="Traditional">
                 <EvolutionWpfControls:EvolutionControl x:Name="evolutionControl" Margin="0,0,0,0"/>

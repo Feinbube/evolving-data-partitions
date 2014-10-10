@@ -25,9 +25,9 @@ namespace EvolutionFramework
 
         public double Fitness { get { return Best.Fitness; } }
 
-        public long Mutations { get { return individuals.Sum(a => (a as INotingEvolvable).Mutations); } }
-        public long Crossovers { get { return individuals.Sum(a => (a as INotingEvolvable).Crossovers); } }
-        public long FitnessEvaluations { get { return individuals.Sum(a => (a as INotingEvolvable).FitnessEvaluations); } }
+        public long Mutations { get; protected set; }
+        public long Crossovers { get; protected set; }
+        public long FitnessEvaluations { get; protected set; }
 
         protected IEvolvable bestCache = null;
         public virtual IEvolvable Best { get { if (bestCache == null) bestCache = individuals.MaxElement(a => a.Fitness); return bestCache; } }
@@ -35,19 +35,23 @@ namespace EvolutionFramework
         protected IEvolvable worstCache = null;
         public virtual IEvolvable Worst { get { if (worstCache == null) worstCache = individuals.MinElement(a => a.Fitness); return worstCache; } }
 
-        public Population(ICreator creator, Random random, int populationSize) { construct(creator, random, null, populationSize, 0); }
+        public Population(ICreator creator, Random random, int populationSize) { construct(creator, random, null, populationSize, 0, 0, 0, 0); }
 
-        public Population(ICreator creator, Random random, List<IEvolvable> individuals) { construct(creator, random, individuals, individuals.Count, 0); }
+        public Population(ICreator creator, Random random, List<IEvolvable> individuals) { construct(creator, random, individuals, individuals.Count, 0, 0, 0, 0); }
 
-        protected Population(ICreator creator, Random random, List<IEvolvable> individuals, int populationSize, long generations, double foodConsumedInLifetime) : base(foodConsumedInLifetime) { construct(creator, random, individuals, populationSize, generations); }
+        protected Population(ICreator creator, Random random, List<IEvolvable> individuals, int populationSize, long generations, long mutations, long crossovers, long fitnessEvaluations, double foodConsumedInLifetime) : base(foodConsumedInLifetime) { construct(creator, random, individuals, populationSize, generations, mutations, crossovers, fitnessEvaluations); }
 
-        protected Population(Population original) : base(original) { construct(original.Creator, original.random, original.individuals, original.PopulationSize, original.Generations); }
+        protected Population(Population original) : base(original) { construct(original.Creator, original.random, original.individuals, original.PopulationSize, original.Generations, original.Mutations, original.Crossovers, original.FitnessEvaluations); }
 
-        private void construct(ICreator creator, Random random, List<IEvolvable> individuals, int populationSize, long generations)
+        private void construct(ICreator creator, Random random, List<IEvolvable> individuals, int populationSize, long generations, long mutations, long crossovers, long fitnessEvaluations)
         {
             this.Creator = creator;
             this.random = random;
             this.Generations = generations;
+
+            this.Mutations = mutations;
+            this.Crossovers = crossovers;
+            this.FitnessEvaluations = fitnessEvaluations;
 
             if (individuals != null)
             {
@@ -86,5 +90,16 @@ namespace EvolutionFramework
         {
             return "Population: " + individuals.Count + " Generations: " + Generations + " Mutations: " + Mutations + " Crossovers: " + Crossovers + " Evaluations: " + FitnessEvaluations;
         }
+
+        private object mutationsLock = new object();
+        private object crossoversLock = new object();
+        private object fitnessEvaluationsLock = new object();
+
+        public virtual void NoteMutation() { lock (mutationsLock) { Mutations++; } }
+
+        public virtual void NoteCrossovers() { lock (crossoversLock) { Crossovers++; } }
+
+        public virtual void NoteFitnessEvaluations() { lock (fitnessEvaluationsLock) { FitnessEvaluations++; } }
+
     }
 }

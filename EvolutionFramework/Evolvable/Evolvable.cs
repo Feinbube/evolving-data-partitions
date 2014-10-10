@@ -18,6 +18,7 @@ namespace EvolutionFramework
             {
                 if (fitness.Equals(double.NaN))
                 {
+                    population.NoteFitnessEvaluations();
                     FitnessEvaluations++;
                     fitness = assessFitness();
                 }
@@ -43,6 +44,7 @@ namespace EvolutionFramework
 
         public void Mutate()
         {
+            population.NoteMutation();
             Mutations++;
             mutate();
             resetFitness();
@@ -50,6 +52,7 @@ namespace EvolutionFramework
 
         public IEvolvable Crossover(IEvolvable mate)
         {
+            population.NoteCrossovers();
             Crossovers++;
             return crossover(mate);
         }

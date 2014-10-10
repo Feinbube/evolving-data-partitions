@@ -56,7 +56,7 @@ namespace EvolutionWpfControls
                 new Presentable("Population", new Label() { Content = evolvable.ToString() });
 
             if (evolvable is IPresentable)
-                return evolvable as IPresentable;
+                return new Presentable(title, (evolvable as IPresentable).PresentableControl);
 
             return new Presentable(title, new Label() { Content = evolvable.ToString() });
         }
@@ -64,7 +64,7 @@ namespace EvolutionWpfControls
         protected virtual IPresentable AsChildPresentable(string title, object evolvable)
         {
             if (evolvable is IPresentable)
-                return evolvable as IPresentable;
+                return new Presentable(title, (evolvable as IPresentable).PresentableControl);
 
             if (evolvable is IPopulation)
                 return new Presentable(title, new PopulationControl() { Population = evolvable as IPopulation });
@@ -77,7 +77,7 @@ namespace EvolutionWpfControls
             return new Presentable("Stats", new NamedValueGrid(Stats()));
         }
 
-        protected IEnumerable<NamedValue> Stats()
+        protected virtual List<NamedValue> Stats()
         {
             return new List<NamedValue>()
             {

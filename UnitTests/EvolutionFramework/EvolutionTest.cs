@@ -22,5 +22,21 @@ namespace UnitTests
         {
             return 20000;
         }
+
+        [TestMethod]
+        public void FitnessProgressionTest()
+        {
+            Random random = new Random(2014);
+            var population = createTestPopulation(random);
+            double food = reasonableFood() / 2;
+
+            double fitness = population.Fitness;
+            for (int i = 0; i < 20; i++)
+            {
+                population.Feed(food);
+                AssertEx.IsGreaterThanOrEqualTo(population.Fitness, fitness);
+                fitness = population.Fitness;
+            }
+        }
     }
 }

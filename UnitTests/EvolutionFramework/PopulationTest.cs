@@ -63,9 +63,9 @@ namespace UnitTests
         {
             AssertEx.IsGreaterThanOrEqualTo(population.Generations, 1);
 
-            checkMutations(population);
-            checkCrossovers(population);
-            checkFitnessEvaluations(population);
+            AssertEx.IsGreaterThanOrEqualTo(population.Mutations, 1);
+            AssertEx.IsGreaterThanOrEqualTo(population.Crossovers, 1);
+            AssertEx.IsGreaterThanOrEqualTo(population.FitnessEvaluations, 1);
 
             Assert.AreEqual(population.Fitness, population.Best.Fitness);
 
@@ -75,63 +75,6 @@ namespace UnitTests
             foreach (var individual in population.Individuals)
                 if (individual is IPopulation)
                     checkPopulation(individual as IPopulation);
-        }
-
-        private static void checkMutations(IPopulation population)
-        {
-            long all = population.Mutations;
-            AssertEx.IsGreaterThanOrEqualTo(all, 1);
-
-            bool checkAgain = false;
-            foreach (var individual in population.Individuals)
-            {
-                if (individual is INotingEvolvable)
-                {
-                    checkAgain = true;
-                    all -= (individual as INotingEvolvable).Mutations;
-                }
-            }
-
-            if (checkAgain)
-                Assert.AreEqual(0, all);
-        }
-
-        private static void checkCrossovers(IPopulation population)
-        {
-            long all = population.Crossovers;
-            AssertEx.IsGreaterThanOrEqualTo(all, 1);
-
-            bool checkAgain = false;
-            foreach (var individual in population.Individuals)
-            {
-                if (individual is INotingEvolvable)
-                {
-                    checkAgain = true;
-                    all -= (individual as INotingEvolvable).Crossovers;
-                }
-            }
-
-            if (checkAgain)
-                Assert.AreEqual(0, all);
-        }
-
-        private static void checkFitnessEvaluations(IPopulation population)
-        {
-            long all = population.FitnessEvaluations;
-            AssertEx.IsGreaterThanOrEqualTo(all, 1);
-
-            bool checkAgain = false;
-            foreach (var individual in population.Individuals)
-            {
-                if (individual is INotingEvolvable)
-                {
-                    checkAgain = true;
-                    all -= (individual as INotingEvolvable).FitnessEvaluations;
-                }
-            }
-
-            if (checkAgain)
-                Assert.AreEqual(0, all);
         }
 
         [TestMethod]
@@ -160,7 +103,7 @@ namespace UnitTests
         {
             Random random = new Random(2014);
             IPopulation population = createTestPopulation(random);
-            //populationTest(population, reasonableFood());
+            
             population.Feed(reasonableFood());
 
             IEvolvable latest = population.IndividualsSortedByFitness.First();

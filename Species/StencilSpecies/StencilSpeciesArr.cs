@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace DataFieldLayoutSimulation
@@ -251,9 +252,15 @@ namespace DataFieldLayoutSimulation
             get { return "Stencil"; }
         }
 
-        public Control PresentableControl
+        public UIElement PresentableControl
         {
-            get { return new IntArray2DControl() { Array = this.Field }; }
+            get
+            {
+                var stackPanel = new StackPanel();
+                stackPanel.Children.Add(new Label() { Content = this.Fitness.ToString("F") });
+                stackPanel.Children.Add(new IntArray2DControl() { Array = this.Field });
+                return stackPanel;
+            }
         }
     }
 }

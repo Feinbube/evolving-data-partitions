@@ -22,7 +22,11 @@ namespace EvolutionFramework
             get
             {
                 if (bestCache == null)
+                {
+                    if (ParentPopulation != null)
+                        ParentPopulation.NoteFitnessEvaluations();
                     EvolveFitnessEvaluations++;
+                }
                 return (base.Best as IEvolver).Evolvable;
             }
         }
@@ -40,17 +44,17 @@ namespace EvolutionFramework
 
         public EvolvablePopulation(IPopulation population, Random random, ICreator creator, List<IEvolvable> individuals) : base(creator, random, individuals) { construct(population, 0, 0, 0, null); }
 
-        protected EvolvablePopulation(IPopulation parentPopulation, Random random, ICreator creator, int mutations, int crossovers, int fitnessEvaluations, List<double> fitnessHistory, List<IEvolvable> individuals, int populationSize, long generations, double foodConsumedInLifetime) : base(creator, random, individuals, populationSize, generations, foodConsumedInLifetime) { construct(parentPopulation, mutations, crossovers, fitnessEvaluations, fitnessHistory); }
+        protected EvolvablePopulation(IPopulation parentPopulation, Random random, ICreator creator, int evolveMutations, int evolveCrossovers, int evolveFitnessEvaluations, List<double> fitnessHistory, List<IEvolvable> individuals, int populationSize, long generations, long mutations, long crossovers, long fitnessEvaluations, double foodConsumedInLifetime) : base(creator, random, individuals, populationSize, generations, mutations, crossovers, fitnessEvaluations, foodConsumedInLifetime) { construct(parentPopulation, evolveMutations, evolveCrossovers, evolveFitnessEvaluations, fitnessHistory); }
 
         public EvolvablePopulation(EvolvablePopulation original) : base(original) { construct(original.ParentPopulation, original.Mutations, original.Crossovers, original.FitnessEvaluations, original.fitnessHistory); }
 
-        void construct(IPopulation parentPopulation, long mutations, long crossovers, long fitnessEvaluations, List<double> fitnessHistory)
+        void construct(IPopulation parentPopulation, long evolveMutations, long evolveCrossovers, long evolveFitnessEvaluations, List<double> fitnessHistory)
         {
             this.ParentPopulation = parentPopulation;
 
-            this.EvolveMutations = mutations;
-            this.EvolveCrossovers = crossovers;
-            this.EvolveFitnessEvaluations = fitnessEvaluations;
+            this.EvolveMutations = evolveMutations;
+            this.EvolveCrossovers = evolveCrossovers;
+            this.EvolveFitnessEvaluations = evolveFitnessEvaluations;
 
             if (fitnessHistory != null)
                 this.fitnessHistory = fitnessHistory.Select(a => a).ToList();
@@ -84,6 +88,8 @@ namespace EvolutionFramework
 
         public void Mutate()
         {
+            if (ParentPopulation != null)
+                ParentPopulation.NoteMutation();
             EvolveMutations++;
             mutate();
             invalidateCaches();
@@ -91,6 +97,8 @@ namespace EvolutionFramework
 
         public IEvolvable Crossover(IEvolvable mate)
         {
+            if (ParentPopulation != null)
+                ParentPopulation.NoteCrossovers();
             EvolveCrossovers++;
             return crossover(mate);
         }
@@ -112,5 +120,11 @@ namespace EvolutionFramework
 
             return result;
         }
+
+        public override void NoteMutation() { base.NoteMutation(); if (ParentPopulation != null) ParentPopulation.NoteMutation(); }
+
+        public override void NoteCrossovers() { base.NoteCrossovers(); if (ParentPopulation != null) ParentPopulation.NoteCrossovers(); }
+
+        public override void NoteFitnessEvaluations() { base.NoteFitnessEvaluations(); if (ParentPopulation != null) ParentPopulation.NoteFitnessEvaluations(); }
     }
 }

@@ -51,6 +51,8 @@
     <Compile Include="Basic\NamedValueGrid.xaml.cs">
       <DependentUpon>NamedValueGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Evolution\AnyPopulationControl.cs" />
+    <Compile Include="Evolution\EvolvablePopulationControl.cs" />
     <Compile Include="Evolution\PopulationControl.cs" />
     <Compile Include="Basic\IPresentable.cs" />
     <Compile Include="Basic\Presentable.cs" />

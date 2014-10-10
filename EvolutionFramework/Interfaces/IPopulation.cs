@@ -21,5 +21,9 @@ namespace EvolutionFramework
         long Mutations { get; }
         long Crossovers { get; }
         long FitnessEvaluations { get; }
+
+        void NoteMutation();
+        void NoteCrossovers();
+        void NoteFitnessEvaluations();
     }
 }

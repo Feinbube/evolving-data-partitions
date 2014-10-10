@@ -8,8 +8,8 @@ namespace EvolutionFramework
 {
     public interface INotingEvolvable : IEvolvable
     {
-        int Mutations { get; }
-        int Crossovers { get; }
-        int FitnessEvaluations { get; }
+        long Mutations { get; }
+        long Crossovers { get; }
+        long FitnessEvaluations { get; }
     }
 }

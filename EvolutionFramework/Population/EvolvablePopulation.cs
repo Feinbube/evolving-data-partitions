@@ -8,24 +8,21 @@ namespace EvolutionFramework
 {
     public abstract class EvolvablePopulation : Population, IFeedable, INotingEvolvable, ICreator
     {
-        public IPopulation Population { get; set; }
+        public IPopulation ParentPopulation { get; set; }
 
-        public int Mutations { get; protected set; }
-        public int Crossovers { get; protected set; }
-        public int FitnessEvaluations { get; protected set; }
+        public long EvolveMutations { get; protected set; }
+        public long EvolveCrossovers { get; protected set; }
+        public long EvolveFitnessEvaluations { get; protected set; }
 
-        public override List<IEvolvable> Individuals { get { return base.individuals.Select(a => (a as IEvolver).Evolvable).ToList(); } }
+        public override List<IEvolvable> Individuals { get { return base.Individuals.Select(a => (a as IEvolver).Evolvable).ToList(); } }
+        public override List<IEvolvable> IndividualsSortedByFitness { get { return base.IndividualsSortedByFitness.Select(a => (a as IEvolver).Evolvable).ToList(); } }
 
         public override IEvolvable Best
         {
             get
             {
                 if (bestCache == null)
-                {
-                    FitnessEvaluations++;
-                    if (Population != null)
-                        Population.NoteIndividualFitnessEvaluation();
-                }
+                    EvolveFitnessEvaluations++;
                 return (base.Best as IEvolver).Evolvable;
             }
         }
@@ -39,19 +36,21 @@ namespace EvolutionFramework
         private List<double> fitnessHistory = new List<double>();
         public List<double> FitnessHistory { get { lock (fitnessHistory) { return fitnessHistory.Select(a => a).ToList(); } } }
 
-        public EvolvablePopulation(Random random, ICreator creator, int populationSize) : base(creator, random, populationSize) { construct(0, 0, 0, null); }
+        public EvolvablePopulation(IPopulation population, Random random, ICreator creator, int populationSize) : base(creator, random, populationSize) { construct(population, 0, 0, 0, null); }
 
-        public EvolvablePopulation(Random random, ICreator creator, List<IEvolvable> individuals) : base(creator, random, individuals) { construct(0, 0, 0, null); }
+        public EvolvablePopulation(IPopulation population, Random random, ICreator creator, List<IEvolvable> individuals) : base(creator, random, individuals) { construct(population, 0, 0, 0, null); }
 
-        protected EvolvablePopulation(Random random, ICreator creator, int mutations, int crossovers, int fitnessEvaluations, List<double> fitnessHistory, List<IEvolvable> individuals, int populationSize, long generations, long individualMutations, long individualCrossovers, long individualFitnessEvaluations, double foodConsumedInLifetime) : base(creator, random, individuals, populationSize, generations, individualMutations, individualCrossovers, individualFitnessEvaluations, foodConsumedInLifetime) { construct(mutations, crossovers, fitnessEvaluations, fitnessHistory); }
+        protected EvolvablePopulation(IPopulation parentPopulation, Random random, ICreator creator, int mutations, int crossovers, int fitnessEvaluations, List<double> fitnessHistory, List<IEvolvable> individuals, int populationSize, long generations, double foodConsumedInLifetime) : base(creator, random, individuals, populationSize, generations, foodConsumedInLifetime) { construct(parentPopulation, mutations, crossovers, fitnessEvaluations, fitnessHistory); }
 
-        public EvolvablePopulation(EvolvablePopulation original) : base(original) { construct(original.Mutations, original.Crossovers, original.FitnessEvaluations, original.fitnessHistory); }
+        public EvolvablePopulation(EvolvablePopulation original) : base(original) { construct(original.ParentPopulation, original.Mutations, original.Crossovers, original.FitnessEvaluations, original.fitnessHistory); }
 
-        void construct(int mutations, int crossovers, int fitnessEvaluations, List<double> fitnessHistory)
+        void construct(IPopulation parentPopulation, long mutations, long crossovers, long fitnessEvaluations, List<double> fitnessHistory)
         {
-            this.Mutations = mutations;
-            this.Crossovers = crossovers;
-            this.FitnessEvaluations = fitnessEvaluations;
+            this.ParentPopulation = parentPopulation;
+
+            this.EvolveMutations = mutations;
+            this.EvolveCrossovers = crossovers;
+            this.EvolveFitnessEvaluations = fitnessEvaluations;
 
             if (fitnessHistory != null)
                 this.fitnessHistory = fitnessHistory.Select(a => a).ToList();
@@ -85,18 +84,14 @@ namespace EvolutionFramework
 
         public void Mutate()
         {
-            if (Population != null)
-                Population.NoteIndividualMutation();
-            Mutations++;
+            EvolveMutations++;
             mutate();
             invalidateCaches();
         }
 
         public IEvolvable Crossover(IEvolvable mate)
         {
-            if (Population != null)
-                Population.NoteIndividualCrossover();
-            Crossovers++;
+            EvolveCrossovers++;
             return crossover(mate);
         }
 
@@ -113,7 +108,7 @@ namespace EvolutionFramework
             IEvolvable result = base.Create();
 
             if ((result as Evolver).Evolvable is EvolvablePopulation)
-                ((result as Evolver).Evolvable as EvolvablePopulation).Population = this;
+                ((result as Evolver).Evolvable as EvolvablePopulation).ParentPopulation = this;
 
             return result;
         }

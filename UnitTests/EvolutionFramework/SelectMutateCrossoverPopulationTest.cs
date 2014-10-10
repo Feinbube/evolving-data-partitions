@@ -15,7 +15,7 @@ namespace UnitTests
     {
         protected override IPopulation createTestPopulation(Random random)
         {
-            return new SelectMutateCrossoverPopulation(random, new TestCreator(random), 100);
+            return new SelectMutateCrossoverPopulation(null, random, new TestCreator(random), 100);
         }
 
         protected override int reasonableFood()
@@ -28,7 +28,7 @@ namespace UnitTests
         {
             Random random = new Random(2014);
 
-            SelectMutateCrossoverPopulation pool = new SelectMutateCrossoverPopulation(random, new TestCreator(random), 25);
+            SelectMutateCrossoverPopulation pool = new SelectMutateCrossoverPopulation(null, random, new TestCreator(random), 25);
 
             for (int g = 0; g < 10; g++)
             {

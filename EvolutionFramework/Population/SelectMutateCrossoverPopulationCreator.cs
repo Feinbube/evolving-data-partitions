@@ -12,9 +12,10 @@ namespace EvolutionFramework
         ICreator creator = null;
         int populationSize = 0;
         int enoughFeedingsForEvolution = 0;
+        IPopulation population = null;
 
-        public SelectMutateCrossoverPopulationCreator(Random random, ICreator creator, int populationSize, int enoughFeedingsForEvolution) { this.random = random; this.creator = creator; this.populationSize = populationSize; this.enoughFeedingsForEvolution = enoughFeedingsForEvolution; }
+        public SelectMutateCrossoverPopulationCreator(IPopulation population, Random random, ICreator creator, int populationSize, int enoughFeedingsForEvolution) { this.population = population; this.random = random; this.creator = creator; this.populationSize = populationSize; this.enoughFeedingsForEvolution = enoughFeedingsForEvolution; }
 
-        public IEvolvable Create() { return new SelectMutateCrossoverPopulation(random, creator, populationSize) { EnoughFeedingsForBreeding = enoughFeedingsForEvolution }; }
+        public IEvolvable Create() { return new SelectMutateCrossoverPopulation(population, random, creator, populationSize) { EnoughFeedingsForBreeding = enoughFeedingsForEvolution }; }
     }
 }

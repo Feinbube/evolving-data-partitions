@@ -61,8 +61,8 @@ namespace EvolutionWpfControls
                 }
                 else
                 {
-                    groupBoxBest.Content = Pool.Best is IPresentable ? (Pool.Best as IPresentable).AsControl() : new Label() { Content = Pool.Best.Fitness.ToString() };
-                    groupBoxWorst.Content = Pool.Worst is IPresentable ? (Pool.Worst as IPresentable).AsControl() : new Label() { Content = Pool.Worst.Fitness.ToString() };
+                    groupBoxBest.Content = Pool.Best is IPresentable ? (Pool.Best as IPresentable).PresentableControl : new Label() { Content = Pool.Best.Fitness.ToString() };
+                    groupBoxWorst.Content = Pool.Worst is IPresentable ? (Pool.Worst as IPresentable).PresentableControl : new Label() { Content = Pool.Worst.Fitness.ToString() };
                 }
 
                 populationList.Items.Clear();
@@ -73,7 +73,7 @@ namespace EvolutionWpfControls
                         if (evolvable is EvolvablePopulation)
                             populationList.Items.Add(new BreedingPoolControl() { ShowPopulation = true /*i == 0*/, BreedingPool = (EvolvablePopulation)evolvable });
                         else if (evolvable is IPresentable)
-                            populationList.Items.Add(((IPresentable)evolvable).AsControl());
+                            populationList.Items.Add(((IPresentable)evolvable).PresentableControl);
                         else
                             populationList.Items.Add(evolvable.ToString());
                     }

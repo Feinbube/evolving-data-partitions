@@ -9,6 +9,7 @@ namespace EvolutionWpfControls
 {
     public interface IPresentable
     {
-        Control AsControl();
+        string PresentableTitle { get; }
+        Control PresentableControl { get; }
     }
 }

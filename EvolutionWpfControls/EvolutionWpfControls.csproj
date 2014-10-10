@@ -47,9 +47,22 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IPresentable.cs" />
+    <Compile Include="Basic\NameValue.cs" />
+    <Compile Include="Basic\NamedValueGrid.xaml.cs">
+      <DependentUpon>NamedValueGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Evolution\PopulationControl.cs" />
+    <Compile Include="Basic\IPresentable.cs" />
+    <Compile Include="Basic\Presentable.cs" />
+    <Compile Include="Basic\TitleDetailsAndChildrenControl.xaml.cs">
+      <DependentUpon>TitleDetailsAndChildrenControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ValueConverters\BaseConverter.cs" />
     <Compile Include="ValueConverters\DoubleToPercentageConverter.cs" />
+    <Page Include="Basic\NamedValueGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="BreedingPoolControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -65,6 +78,10 @@
       <DependentUpon>EvolutionControl.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Basic\TitleDetailsAndChildrenControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

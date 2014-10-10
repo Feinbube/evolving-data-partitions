@@ -241,14 +241,19 @@ namespace DataFieldLayoutSimulation
             }
         }
 
-        public Control AsControl()
-        {
-            return new IntArray2DControl(){ Array = this.Field };
-        }
-
         public override string ToString()
         {
             return "Fitness: " + Fitness + "\r\n" + Field.ToString();
+        }
+
+        public string PresentableTitle
+        {
+            get { return "Stencil"; }
+        }
+
+        public Control PresentableControl
+        {
+            get { return new IntArray2DControl() { Array = this.Field }; }
         }
     }
 }

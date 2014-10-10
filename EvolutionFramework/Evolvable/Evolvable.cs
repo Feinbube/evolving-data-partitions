@@ -18,17 +18,16 @@ namespace EvolutionFramework
             {
                 if (fitness.Equals(double.NaN))
                 {
-                    fitness = assessFitness();
                     FitnessEvaluations++;
-                    population.NoteIndividualFitnessEvaluation();
+                    fitness = assessFitness();
                 }
                 return fitness;
             }
         }
 
-        public int Mutations { get; protected set; }
-        public int Crossovers { get; protected set; }
-        public int FitnessEvaluations { get; protected set; }
+        public virtual long Mutations { get; protected set; }
+        public virtual long Crossovers { get; protected set; }
+        public virtual long FitnessEvaluations { get; protected set; }
 
         public Evolvable(IPopulation population)
         {
@@ -44,7 +43,6 @@ namespace EvolutionFramework
 
         public void Mutate()
         {
-            population.NoteIndividualMutation();
             Mutations++;
             mutate();
             resetFitness();
@@ -52,7 +50,6 @@ namespace EvolutionFramework
 
         public IEvolvable Crossover(IEvolvable mate)
         {
-            population.NoteIndividualCrossover();
             Crossovers++;
             return crossover(mate);
         }
@@ -75,7 +72,7 @@ namespace EvolutionFramework
 
         public override string ToString()
         {
-            return "Fitness: " + Fitness + " Mutations: " + Mutations;
+            return "Fitness: " + Fitness + " Counts: F" + FitnessEvaluations + " M" + Mutations + " C" + Crossovers;
         }
     }
 }

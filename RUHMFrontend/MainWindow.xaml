@@ -1,6 +1,7 @@
-﻿<Window x:Class="RUHMFrontend.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:EvolutionWpfControls="clr-namespace:EvolutionWpfControls;assembly=EvolutionWpfControls" x:Class="RUHMFrontend.MainWindow"
         Title="Optimal Data Partitioning" Height="350" Width="525">
     <Grid>
         <TabControl>
@@ -23,7 +24,9 @@
                     </GroupBox>
                 </StackPanel>
             </TabItem>
-            <TabItem Header="Partitioning">
+            <TabItem Header="Partitioning"/>
+            <TabItem Header="Test" >
+                <EvolutionWpfControls:TitleDetailsAndChildrenControl Title="Hallo" SubTitle="Echo" ChildrenTitle="Katze" ForceShowChildren="True"/>
             </TabItem>
         </TabControl>
     </Grid>

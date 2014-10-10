@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EvolutionFramework
 {
-    public interface IEvolver
+    public interface IEvolver : INotingEvolvable
     {
         IEvolvable Evolvable { get; set; }
     }

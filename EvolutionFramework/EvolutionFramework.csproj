@@ -47,6 +47,7 @@
     <Compile Include="Interfaces\IPopulation.cs" />
     <Compile Include="Interfaces\IFeedable.cs" />
     <Compile Include="Population\EvolvablePopulation.cs" />
+    <Compile Include="Population\RoundRobinCreator.cs" />
     <Compile Include="Population\SelectMutateCrossoverPopulation.cs" />
     <Compile Include="Population\IndividualMutateAndCrossoverPopulationCreator.cs" />
     <Compile Include="Population\SelectMutateCrossoverPopulationCreator.cs" />

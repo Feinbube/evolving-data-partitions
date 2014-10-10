@@ -10,10 +10,11 @@ namespace EvolutionFramework
     {
         Random random;
         ICreator creator = null;
-        int population = 0;
+        int populationSize = 0;
+        IPopulation population = null;
 
-        public IndividualMutateAndCrossoverPopulationCreator(Random random, ICreator creator, int population) { this.random = random; this.creator = creator; this.population = population; }
+        public IndividualMutateAndCrossoverPopulationCreator(IPopulation population, Random random, ICreator creator, int populationSize) { this.population = population;  this.random = random; this.creator = creator; this.populationSize = populationSize; }
 
-        public IEvolvable Create() { return new IndividualMutateAndCrossoverPopulation(random, creator, population) { }; }
+        public IEvolvable Create() { return new IndividualMutateAndCrossoverPopulation(population, random, creator, populationSize) { }; }
     }
 }

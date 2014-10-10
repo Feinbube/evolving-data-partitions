@@ -49,5 +49,9 @@ namespace EvolutionFramework
             if(Evolvable is IFeedable) 
                 (Evolvable as IFeedable).Feed(resources);
         }
+
+        public override long Mutations { get { return Evolvable is IPopulation ? (Evolvable as IPopulation).Mutations : base.Mutations; } }
+        public override long Crossovers { get { return Evolvable is IPopulation ? (Evolvable as IPopulation).Crossovers : base.Crossovers; } }
+        public override long FitnessEvaluations { get { return Evolvable is IPopulation ? (Evolvable as IPopulation).FitnessEvaluations : base.FitnessEvaluations; } }
     }
 }

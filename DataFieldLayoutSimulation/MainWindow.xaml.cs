@@ -58,8 +58,10 @@ namespace DataFieldLayoutSimulation
 
         void updateView(object sender, EventArgs e)
         {
-            this.evolutionControl.Evolution = null;
-            this.evolutionControl.Evolution = evolutionForView;
+            //this.evolutionControl.Evolution = null;
+            //this.evolutionControl.Evolution = evolutionForView;
+
+            this.evolutionControlNew.Population = evolutionForView;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

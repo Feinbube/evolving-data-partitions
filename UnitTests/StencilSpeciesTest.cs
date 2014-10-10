@@ -223,7 +223,7 @@ namespace UnitTests
         {
             Random random = new Random(2014);
 
-            SelectMutateCrossoverPopulation pool = new SelectMutateCrossoverPopulation(random, new StencilSpeciesArrCreator(random, 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 }), 64);
+            SelectMutateCrossoverPopulation pool = new SelectMutateCrossoverPopulation(null, random, new StencilSpeciesArrCreator(random, 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 }), 64);
 
             for (int g = 0; g < 10; g++)
             {

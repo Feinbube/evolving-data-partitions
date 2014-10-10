@@ -14,7 +14,7 @@ namespace UnitTests
     {
         protected override IPopulation createTestPopulation(Random random)
         {
-            return new IndividualMutateAndCrossoverPopulation(random, new TestCreator(random), 100);
+            return new IndividualMutateAndCrossoverPopulation(null, random, new TestCreator(random), 100);
         }
 
         protected override int reasonableFood()

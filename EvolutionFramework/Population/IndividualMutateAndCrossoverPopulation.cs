@@ -13,11 +13,11 @@ namespace EvolutionFramework
 
         public double FoodForPopulation { get; set; }
 
-        public IndividualMutateAndCrossoverPopulation(Random random, ICreator creator, double maxSize) : base(random, creator, (int)maxSize) { this.maxSize = maxSize; }
+        public IndividualMutateAndCrossoverPopulation(IPopulation population, Random random, ICreator creator, double maxSize) : base(population, random, creator, (int)maxSize) { this.maxSize = maxSize; }
 
-        public IndividualMutateAndCrossoverPopulation(Random random, ICreator creator, List<IEvolvable> population) : base(random, creator, population) { this.maxSize = population.Count; }
+        public IndividualMutateAndCrossoverPopulation(IPopulation population, Random random, ICreator creator, List<IEvolvable> individuals) : base(population, random, creator, individuals) { this.maxSize = individuals.Count; }
 
-        protected IndividualMutateAndCrossoverPopulation(double maxSize, List<IEvolvable> newBorns, double foodForPopulation, Random random, ICreator creator, int mutations, int crossovers, int fitnessEvaluations, List<double> fitnessHistory, List<IEvolvable> individuals, int populationSize, long generations, long individualMutations, long individualCrossovers, long individualFitnessEvaluations, double foodConsumedInLifetime) : base(random, creator, mutations, crossovers, fitnessEvaluations, fitnessHistory, individuals, populationSize, generations, individualMutations, individualCrossovers, individualFitnessEvaluations, foodConsumedInLifetime) { construct(maxSize, newBorns, foodForPopulation); }
+        protected IndividualMutateAndCrossoverPopulation(IPopulation population, double maxSize, List<IEvolvable> newBorns, double foodForPopulation, Random random, ICreator creator, int mutations, int crossovers, int fitnessEvaluations, List<double> fitnessHistory, List<IEvolvable> individuals, int populationSize, long generations, double foodConsumedInLifetime) : base(population, random, creator, mutations, crossovers, fitnessEvaluations, fitnessHistory, individuals, populationSize, generations, foodConsumedInLifetime) { construct(maxSize, newBorns, foodForPopulation); }
 
         protected IndividualMutateAndCrossoverPopulation(IndividualMutateAndCrossoverPopulation original) : base(original) { construct(original.maxSize, original.newBorns, original.FoodForPopulation); }
 
@@ -27,8 +27,6 @@ namespace EvolutionFramework
             this.newBorns = newBorns.Select(a => a.Clone()).ToList();
             this.FoodForPopulation = foodForPopulation;
         }
-
-        public override void NoteIndividualMutation() { base.NoteIndividualMutation(); invalidateCaches(); }
 
         public IEvolvable FindMate(IEvolvable evolvable)
         {
@@ -48,7 +46,7 @@ namespace EvolutionFramework
                 nextGeneration();
             }
 
-            sortIndividualsByFitness();
+            invalidateCaches();
         }
 
         private void nextGeneration()
@@ -96,6 +94,7 @@ namespace EvolutionFramework
         {
             IndividualMutateAndCrossoverPopulation mate = (IndividualMutateAndCrossoverPopulation)other;
             return new IndividualMutateAndCrossoverPopulation(
+                this.ParentPopulation,
                 Evolution.RandomInterpolation(random, this.maxSize, mate.maxSize),
                 new List<IEvolvable>(),
                 (int)Evolution.RandomInterpolation(random, this.FoodForPopulation, mate.FoodForPopulation),
@@ -104,7 +103,7 @@ namespace EvolutionFramework
                 0, 0, 0,
                 null,
                 this.individuals.Union(mate.individuals).OrderByDescending(a => a.Fitness).Take((int)Evolution.RandomInterpolation(random, this.PopulationSize, mate.PopulationSize)).ToList(),
-                0, 0, 0, 0, 0, 0
+                0, 0, 0
                 );
         }
 
@@ -115,7 +114,7 @@ namespace EvolutionFramework
 
         public override double DifferenceTo(IEvolvable other)
         {
-            throw new NotImplementedException();
+            return Math.Abs(maxSize - (other as IndividualMutateAndCrossoverPopulation).maxSize);
         }
     }
 }

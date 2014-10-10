@@ -16,12 +16,10 @@ namespace EvolutionFramework
         IEvolvable Worst { get; }
 
         List<IEvolvable> Individuals { get; }
+        List<IEvolvable> IndividualsSortedByFitness { get; }
 
-        long IndividualMutations { get; }
-        void NoteIndividualMutation();
-        long IndividualCrossovers { get; }
-        void NoteIndividualCrossover();
-        long IndividualFitnessEvaluations { get; }
-        void NoteIndividualFitnessEvaluation();
+        long Mutations { get; }
+        long Crossovers { get; }
+        long FitnessEvaluations { get; }
     }
 }

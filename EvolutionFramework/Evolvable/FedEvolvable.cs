@@ -37,7 +37,6 @@ namespace EvolutionFramework
 
                 FoodNeededForMutation = mutate(random, FoodNeededForMutation, 1, 100, 10);
                 FoodNeededForReproduction = mutate(random, FoodNeededForReproduction, 1, 100, 10);
-                Mutations++;
             }
 
             if (FoodForReproduction >= FoodNeededForReproduction)

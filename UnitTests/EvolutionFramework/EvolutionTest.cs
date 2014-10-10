@@ -11,7 +11,7 @@ using DataFieldLayoutSimulation;
 namespace UnitTests
 {
     [TestClass]
-    public class EvolutionTest : PopulationTest
+    public class EvolutionTest : HierarchicalPopulationTest
     {
         protected override IPopulation createTestPopulation(Random random)
         {
@@ -21,20 +21,6 @@ namespace UnitTests
         protected override int reasonableFood()
         {
             return 20000;
-        }
-
-        [TestMethod]
-        public override void TypeOfIndividualsTest()
-        {
-            Random random = new Random(2014);
-            IPopulation population = createTestPopulation(random);
-            populationTest(population, reasonableFood());
-
-            Assert.IsInstanceOfType(population.Best, typeof(EvolvablePopulation));
-            Assert.IsInstanceOfType(population.Worst, typeof(EvolvablePopulation));
-
-            Assert.IsInstanceOfType((population.Best as EvolvablePopulation).Best, typeof(TestEvolvable));
-            Assert.IsInstanceOfType((population.Worst as EvolvablePopulation).Worst, typeof(TestEvolvable));
         }
     }
 }

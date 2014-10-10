@@ -19,11 +19,11 @@ namespace EvolutionFramework
         public int Feedings { get; private set; }
         public double EnoughFeedingsForBreeding { get; set; }
 
-        public SelectMutateCrossoverPopulation(Random random, ICreator creator, int populationSize) : base(random, creator, populationSize) { construct(0.20, 0.05, 0.30, populationSize, 0, 0, 0, 1); }
+        public SelectMutateCrossoverPopulation(IPopulation population, Random random, ICreator creator, int populationSize) : base(population, random, creator, populationSize) { construct(0.20, 0.05, 0.30, populationSize, 0, 0, 0, 1); }
 
-        public SelectMutateCrossoverPopulation(Random random, ICreator creator, int populationSize, double mutationRate, double eliteClonePercentage, double selectedPercentage, double enoughFeedingsForBreeding) : base(random, creator, populationSize) { construct(mutationRate, eliteClonePercentage, selectedPercentage, populationSize, 0, 0, 0, enoughFeedingsForBreeding); }
+        public SelectMutateCrossoverPopulation(IPopulation population, Random random, ICreator creator, int populationSize, double mutationRate, double eliteClonePercentage, double selectedPercentage, double enoughFeedingsForBreeding) : base(population, random, creator, populationSize) { construct(mutationRate, eliteClonePercentage, selectedPercentage, populationSize, 0, 0, 0, enoughFeedingsForBreeding); }
 
-        protected SelectMutateCrossoverPopulation(double mutationRate, double eliteClonePercentage, double selectedPercentage, double newPopulationSize, int breedingsSoFar, double resources, int feedings, double enoughFeedingsForBreeding, Random random, ICreator creator, int mutations, int crossovers, int fitnessEvaluations, List<double> fitnessHistory, List<IEvolvable> individuals, int populationSize, long generations, long individualMutations, long individualCrossovers, long individualFitnessEvaluations, double foodConsumedInLifetime) : base(random, creator, mutations, crossovers, fitnessEvaluations, fitnessHistory, individuals, populationSize, generations, individualMutations, individualCrossovers, individualFitnessEvaluations, foodConsumedInLifetime) { construct(mutationRate, eliteClonePercentage, selectedPercentage, newPopulationSize, breedingsSoFar, resources, feedings, enoughFeedingsForBreeding); }
+        protected SelectMutateCrossoverPopulation(IPopulation population, double mutationRate, double eliteClonePercentage, double selectedPercentage, double newPopulationSize, int breedingsSoFar, double resources, int feedings, double enoughFeedingsForBreeding, Random random, ICreator creator, int mutations, int crossovers, int fitnessEvaluations, List<double> fitnessHistory, List<IEvolvable> individuals, int populationSize, long generations, double foodConsumedInLifetime) : base(population, random, creator, mutations, crossovers, fitnessEvaluations, fitnessHistory, individuals, populationSize, generations, foodConsumedInLifetime) { construct(mutationRate, eliteClonePercentage, selectedPercentage, newPopulationSize, breedingsSoFar, resources, feedings, enoughFeedingsForBreeding); }
 
         protected SelectMutateCrossoverPopulation(SelectMutateCrossoverPopulation original) : base(original) { construct(original.MutationRate, original.EliteClonePercentage, original.SelectedPercentage, original.NewPopulationSize, original.BreedingsSoFar, original.Resources, original.Feedings, original.EnoughFeedingsForBreeding); }
 
@@ -53,6 +53,7 @@ namespace EvolutionFramework
         {
             SelectMutateCrossoverPopulation mate = (SelectMutateCrossoverPopulation)other;
             return new SelectMutateCrossoverPopulation(
+                    this.ParentPopulation,
                     Evolution.RandomInterpolation(random, this.MutationRate, mate.MutationRate),
                     Evolution.RandomInterpolation(random, this.EliteClonePercentage, mate.EliteClonePercentage),
                     Evolution.RandomInterpolation(random, this.SelectedPercentage, mate.SelectedPercentage),
@@ -66,7 +67,7 @@ namespace EvolutionFramework
                     0, 0, 0,
                     null,
                     this.individuals.Union(mate.individuals).OrderByDescending(a => a.Fitness).Take((int)Evolution.RandomInterpolation(random, this.PopulationSize, mate.PopulationSize)).ToList(),
-                    0, 0, 0, 0, 0, 0
+                    0, 0, 0
                 );
         }
 
@@ -94,7 +95,6 @@ namespace EvolutionFramework
                 }
             }
             
-            sortIndividualsByFitness();
             invalidateCaches();
         }
 
@@ -162,7 +162,7 @@ namespace EvolutionFramework
 
         public override string ToString()
         {
-            return "Breeding pool with " + PopulationSize + " specimen (" + MutationRate.ToString("F") + "/" + EliteClonePercentage.ToString("F") + "/" + SelectedPercentage.ToString("F") + "/" + EnoughFeedingsForBreeding.ToString("F") + "). Best: " + Best.ToString();
+            return "Population with " + PopulationSize + " specimen. \r\nFitness: " + Fitness.ToString("F") + " \r\nM:" + MutationRate.ToString("F") + " E:" + EliteClonePercentage.ToString("F") + " S:" + SelectedPercentage.ToString("F") + " F:" + EnoughFeedingsForBreeding.ToString("F"); // Best: " + Best.ToString();
         }
 
         public override IEvolvable Clone() { return new SelectMutateCrossoverPopulation(this); }

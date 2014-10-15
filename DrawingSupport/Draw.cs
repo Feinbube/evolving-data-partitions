@@ -68,6 +68,14 @@ namespace DrawingSupport
 
         public static void Clear(Panel surface)
         {
+            foreach (var child in surface.Children)
+            {
+                if (child is Shape)
+                {
+                    (child as Shape).Fill = null;
+                    (child as Shape).Stroke = null;
+                }
+            }
             surface.Children.Clear();
         }
     }

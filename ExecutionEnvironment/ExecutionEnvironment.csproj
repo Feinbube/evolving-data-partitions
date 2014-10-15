@@ -41,6 +41,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
+    <Reference Include="WriteableBitmapEx.Wpf">
+      <HintPath>..\ThirdParty\WriteableBitmapEx_v1.0.13.0\WPF\WriteableBitmapEx.Wpf.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arrays\Array3D.cs" />
@@ -48,6 +51,9 @@
     <Compile Include="Arrays\Array1D.cs" />
     <Compile Include="Arrays\Arr.cs" />
     <Compile Include="Arrays\Array.cs" />
+    <Compile Include="Arrays\DoubleArray1DControl.xaml.cs">
+      <DependentUpon>DoubleArray1DControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Arrays\ProfilingArray.cs" />
     <Compile Include="Arrays\IArray.cs" />
     <Compile Include="Arrays\IntArray2DControl.xaml.cs">
@@ -59,16 +65,20 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DrawingSupport\DrawingSupport.csproj">
-      <Project>{43df5d95-55eb-44d3-b6fc-8606c5ee4516}</Project>
-      <Name>DrawingSupport</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
+    <Page Include="Arrays\DoubleArray1DControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Arrays\IntArray2DControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DrawingSupport\DrawingSupport.csproj">
+      <Project>{43df5d95-55eb-44d3-b6fc-8606c5ee4516}</Project>
+      <Name>DrawingSupport</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

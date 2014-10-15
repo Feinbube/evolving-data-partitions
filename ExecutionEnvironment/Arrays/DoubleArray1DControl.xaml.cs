@@ -20,31 +20,30 @@ namespace ExecutionEnvironment
     /// <summary>
     /// Interaction logic for IntArray2DControl.xaml
     /// </summary>
-    public partial class IntArray2DControl : UserControl, IDisposable, INotifyPropertyChanged
+    public partial class DoubleArray1DControl : UserControl, IDisposable, INotifyPropertyChanged
     {
-        Arr<int> array;
+        Arr<double> array;
         WriteableBitmap bitmap;
 
-        public Arr<int> Array
+        public int DisplayHeight { get; set; }
+
+        public Arr<double> Array
         {
             get { return array; }
             set
             {
                 this.array = value;
 
-                int max = array.Max + 1;
+                bitmap = BitmapFactory.New(array.Length + 20, DisplayHeight);
 
-                bitmap = BitmapFactory.New(this.array.W * 4, this.array.H * 4);
-
-                Dictionary<int, Color> colorCache = new Dictionary<int, Color>();
-                for (int x = 0; x < array.W; x++)
-                    for (int y = 0; y < array.H; y++)
-                    {
-                        int v = array.At(x, y);
-                        if (!colorCache.ContainsKey(v))
-                            colorCache.Add(v, ColorHelper.GenerateColor(v, max, 1, 1));
-                        bitmap.FillRectangle(x * 4, y * 4, x * 4 + 4, y * 4 + 4, colorCache[v]);
-                    }
+                if (array.Length > 0)
+                {
+                    double min = array.Min;
+                    double max = array.Max;
+                    
+                    for (int i = 0; i < array.Length; i++)
+                        bitmap.DrawLine(10 + 2* i, DisplayHeight - 10, 10 + 2* i, (int)(DisplayHeight - 10 - (DisplayHeight - 20) * scale(min, max, array[i])), Colors.Black);
+                }
 
                 imageControl.Width = bitmap.Width;
                 imageControl.Height = bitmap.Height;
@@ -52,8 +51,15 @@ namespace ExecutionEnvironment
             }
         }
 
-        public IntArray2DControl()
+        private double scale(double min, double max, double value)
         {
+            return min == max ? 1.0 : Math.Abs((value - min) / (min - max));
+        }
+
+        public DoubleArray1DControl()
+        {
+            DisplayHeight = 90;
+
             InitializeComponent();
         }
 

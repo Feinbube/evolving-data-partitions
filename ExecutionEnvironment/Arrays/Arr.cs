@@ -24,6 +24,6 @@ namespace ExecutionEnvironment
             clone.memory = (T[])this.memory.Clone();
             clone.written = (bool[])this.written.Clone();
             return clone;
-        }
+        }        
     }
 }

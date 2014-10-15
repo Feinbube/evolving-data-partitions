@@ -35,7 +35,7 @@ namespace DataFieldLayoutSimulation
             InitializeComponent();
 
             new Thread(new ThreadStart(work)).Start();
-            DispatcherTimer timer = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 1000), DispatcherPriority.Background, updateView, Dispatcher.CurrentDispatcher);
+            DispatcherTimer timer = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 3000), DispatcherPriority.Background, updateView, Dispatcher.CurrentDispatcher);
         }
 
         void work()
@@ -52,7 +52,7 @@ namespace DataFieldLayoutSimulation
             {
                 evolution.Feed(10000);
                 evolutionForView = (Evolution)evolution.Clone();
-                Thread.Sleep(1000);
+                //Thread.Sleep(1000);
             }
         }
 

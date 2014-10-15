@@ -114,6 +114,10 @@
       <Project>{18b32da1-2366-465b-b6c3-f3d6a517c639}</Project>
       <Name>EvolutionFramework</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ExecutionEnvironment\ExecutionEnvironment.csproj">
+      <Project>{711d1f27-c2cb-49f0-ba5a-f5ee8074802d}</Project>
+      <Name>ExecutionEnvironment</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

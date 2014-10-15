@@ -65,7 +65,11 @@ namespace ExecutionEnvironment
             return result;
         }
 
+        public IEnumerable<T> Take(int count) { lock (memory) { return memory.Take(count); } }
+
         public T Max { get { lock (memory) { return memory.Max(); } } }
+
+        public T Min { get { lock (memory) { return memory.Min(); } } }
 
         public double Sum { get { return memory.Sum(a => (double)Convert.ChangeType(a, typeof(double))); } }
     }

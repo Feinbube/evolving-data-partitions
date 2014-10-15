@@ -19,7 +19,7 @@ namespace UnitTests
 
         protected override int reasonableFood()
         {
-            return 5000;
+            return 30000;
         }
     }
 }

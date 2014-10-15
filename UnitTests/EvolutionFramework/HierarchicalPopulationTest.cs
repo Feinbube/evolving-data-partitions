@@ -27,22 +27,5 @@ namespace UnitTests
         {
             return 2000;
         }
-
-        [TestMethod]
-        public override void TypeOfIndividualsTest()
-        {
-            Random random = new Random(2014);
-            IPopulation population = createTestPopulation(random);
-            population.Feed(reasonableFood()/10);
-
-            Assert.IsInstanceOfType(population.Best, typeof(EvolvablePopulation));
-            Assert.IsInstanceOfType(population.Worst, typeof(EvolvablePopulation));
-
-            Assert.IsInstanceOfType((population.Best as EvolvablePopulation).Best, typeof(EvolvablePopulation));
-            Assert.IsInstanceOfType((population.Worst as EvolvablePopulation).Worst, typeof(EvolvablePopulation));
-
-            Assert.IsInstanceOfType(((population.Best as EvolvablePopulation).Best as EvolvablePopulation).Best, typeof(TestEvolvable));
-            Assert.IsInstanceOfType(((population.Worst as EvolvablePopulation).Worst as EvolvablePopulation).Worst, typeof(TestEvolvable));
-        }
     }
 }

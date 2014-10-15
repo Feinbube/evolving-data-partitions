@@ -75,14 +75,16 @@ namespace DataFieldLayoutSimulation
         public static int UniqueNeighborCount(Arr<int> field, int x, int y)
         {
             int result = 0;
+            int w = field.W;
+            int h = field.H;
 
-            int pos = x + y * field.W;
+            int pos = x + y * w;
             int c = field[pos];
 
             int n1 = x - 1 < 0 ? c : field[pos - 1];
-            int n2 = y - 1 < 0 ? c : field[pos - field.W];
-            int n3 = x + 1 >= field.W ? c : field[pos + 1];
-            int n4 = y + 1 >= field.H ? c : field[pos + field.W];
+            int n2 = y - 1 < 0 ? c : field[pos - w];
+            int n3 = x + 1 >= w ? c : field[pos + 1];
+            int n4 = y + 1 >= h ? c : field[pos + w];
 
             if (n1 != c)
             {
@@ -261,6 +263,16 @@ namespace DataFieldLayoutSimulation
                 stackPanel.Children.Add(new IntArray2DControl() { Array = this.Field });
                 return stackPanel;
             }
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Field.Equals((obj as StencilSpeciesArr).Field);
+        }
+
+        public override int GetHashCode()
+        {
+            return Field.GetHashCode();
         }
     }
 }

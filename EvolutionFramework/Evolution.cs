@@ -35,7 +35,7 @@ namespace EvolutionFramework
             this.EnoughFeedingsForBreeding = 10000;
         }
 
-        //public Evolution(Random random, ICreator creator, int breedingPools, int populationPerPool) : base(null, random, new SelectMutateCrossoverPopulationCreator(null, random, creator, populationPerPool, 1) , breedingPools) { Init(); }
+        // public Evolution(Random random, ICreator creator, int breedingPools, int populationPerPool) : base(null, random, new SelectMutateCrossoverPopulationCreator(null, random, creator, populationPerPool, 1) , breedingPools) { Init(); }
 
         public Evolution(Random random, ICreator creator, int breedingPools, int populationPerPool) : base(null, random, new IndividualMutateAndCrossoverPopulationCreator(null, random, creator, populationPerPool), breedingPools) { Init(); }
 

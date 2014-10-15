@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using LINQExtensions;
 
 namespace EvolutionFramework
 {
@@ -30,8 +31,7 @@ namespace EvolutionFramework
 
         public IEvolvable FindMate(IEvolvable evolvable)
         {
-            var potentialMates = individuals.OrderByDescending(a => a.Fitness).Take(10);
-            return potentialMates.Where(a => evolvable.DifferenceTo(a) == potentialMates.Max(b => evolvable.DifferenceTo(b))).First();
+            return IndividualsSortedByFitness.Take(10).MaxElement(a => evolvable.DifferenceTo(a));
         }
 
         protected override void feed(double resources)
@@ -52,10 +52,15 @@ namespace EvolutionFramework
         private void nextGeneration()
         {
             foreach (IEvolvable child in newBorns)
+            {
+                while(contains(individuals, child))  // individuals.Contains(child))
+                    child.Mutate();
                 individuals.Add(child);
+            }
 
             if (newBorns.Count > 0)
                 invalidateCaches();
+            newBorns.Clear();
 
             while (individuals.Count > MaxSize)
             {
@@ -64,6 +69,14 @@ namespace EvolutionFramework
             }
 
             Generations++;
+        }
+
+        private bool contains(List<IEvolvable> list, IEvolvable value)
+        {
+            for (int i = 0; i < list.Count; i++)
+                if (list[i].Equals(value))
+                    return true;
+            return false;
         }
 
         public void Reproduce(IEvolvable evolvable)

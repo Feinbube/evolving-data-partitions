@@ -38,5 +38,15 @@ namespace EvolutionFramework
         {
             return new FedEvolver((population as IndividualMutateAndCrossoverPopulation), Evolvable.Clone(), random);
         }
+
+        public override bool Equals(object obj)
+        {
+            return Evolvable.Equals((obj as FedEvolver).Evolvable);
+        }
+
+        public override int GetHashCode()
+        {
+            return Evolvable.GetHashCode();
+        }
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ExecutionEnvironment
 {
-    public class Array<T>
+    public class Array<T> 
     {
         protected T[] memory;
         protected bool[] written;
@@ -55,7 +55,7 @@ namespace ExecutionEnvironment
         {
             checkPos(threadId, pos1D);
 
-            if(!written[pos1D])
+            if (!written[pos1D])
                 throw new ArgumentOutOfRangeException("pos1D", "Thread " + threadId + " tried to access pos " + pos1D + " which was never written to. Array size is " + Size + ".");
         }
 
@@ -81,13 +81,22 @@ namespace ExecutionEnvironment
 
         protected virtual void write(int threadId, int pos1D, T value)
         {
+            hashCodeCacheIsInvalid = true;
             memory[pos1D] = value;
             written[pos1D] = true;
         }
 
-        public T this[int index] { get { return this[index, 0, 0]; } set { this[index, 0, 0] = value; } }
+        public T this[int index]
+        {
+            get { return Read(Thread.CurrentThread.ManagedThreadId, index); }
+            set { Write(Thread.CurrentThread.ManagedThreadId, index, value); }
+        }
 
-        public T this[int indexX, int indexY] { get { return this[indexX, indexY, 0]; } set { this[indexX, indexY, 0] = value; } }
+        public T this[int indexX, int indexY]
+        {
+            get { return Read(Thread.CurrentThread.ManagedThreadId, indexX + indexY * SizeX); }
+            set { Write(Thread.CurrentThread.ManagedThreadId, indexX + indexY * SizeX, value); }
+        }
 
         public T this[int indexX, int indexY, int indexZ]
         {
@@ -115,6 +124,12 @@ namespace ExecutionEnvironment
             if (!this.GetType().Equals(obj.GetType()))
                 return false;
 
+            if (base.Equals(obj))
+                return true;
+
+            if (this.GetHashCode() != obj.GetHashCode())
+                return false;
+
             Array<T> other = (Array<T>)obj;
             if (this.Length != other.Length) return false;
             for (int i = 0; i < this.Length; i++)
@@ -124,12 +139,19 @@ namespace ExecutionEnvironment
             return true;
         }
 
+        private bool hashCodeCacheIsInvalid = true;
+        private int hashCodeCache = 0;
+
         public override int GetHashCode()
         {
-            int result = this.Length;
-            for (int i = 0; i < this.Length; i++)
-                result += this[i].GetHashCode();
-            return result;
+            if (hashCodeCacheIsInvalid)
+            {
+                hashCodeCache = this.Length;
+                for (int i = 0; i < this.Length; i++)
+                    hashCodeCache += this[i].GetHashCode();
+                hashCodeCacheIsInvalid = false;
+            }
+            return hashCodeCache;
         }
     }
 }

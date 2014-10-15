@@ -53,5 +53,15 @@ namespace EvolutionFramework
         public override long Mutations { get { return Evolvable is IPopulation ? (Evolvable as IPopulation).Mutations : base.Mutations; } }
         public override long Crossovers { get { return Evolvable is IPopulation ? (Evolvable as IPopulation).Crossovers : base.Crossovers; } }
         public override long FitnessEvaluations { get { return Evolvable is IPopulation ? (Evolvable as IPopulation).FitnessEvaluations : base.FitnessEvaluations; } }
+
+        public override bool Equals(object obj)
+        {
+            return Evolvable.Equals((obj as Evolver).Evolvable);
+        }
+
+        public override int GetHashCode()
+        {
+            return Evolvable.GetHashCode();
+        }
     }
 }

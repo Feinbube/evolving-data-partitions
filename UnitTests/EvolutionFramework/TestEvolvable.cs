@@ -25,7 +25,8 @@ namespace UnitTests
 
         public void Mutate()
         {
-            chromosomes[random.Next(chromosomes.Length)] += random.NextDouble() - 0.5; 
+            chromosomes[random.Next(chromosomes.Length)] += random.NextDouble() - 0.5;
+            hashCodeCacheIsInvalid = true;
         }
 
         public IEvolvable Crossover(IEvolvable other)
@@ -50,6 +51,41 @@ namespace UnitTests
             for (int i = 0; i < chromosomes.Length; i++)
                 result += Math.Abs(this.chromosomes[i] - (other as TestEvolvable).chromosomes[i]);
             return result;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (!this.GetType().Equals(obj.GetType()))
+                return false;
+
+            if (base.Equals(obj))
+                return true;
+
+            if (this.GetHashCode() != obj.GetHashCode())
+                return false;
+
+            TestEvolvable other = (TestEvolvable)obj;
+            if (this.chromosomes.Length != other.chromosomes.Length) return false;
+            for (int i = 0; i < this.chromosomes.Length; i++)
+                if (chromosomes[i] != other.chromosomes[i])
+                    return false;
+
+            return true;
+        }
+
+        private bool hashCodeCacheIsInvalid = true;
+        private int hashCodeCache = 0;
+
+        public override int GetHashCode()
+        {
+            if (hashCodeCacheIsInvalid)
+            {
+                hashCodeCache = this.chromosomes.Length;
+                for (int i = 0; i < this.chromosomes.Length; i++)
+                    hashCodeCache += this.chromosomes[i].GetHashCode();
+                hashCodeCacheIsInvalid = false;
+            }
+            return hashCodeCache;
         }
     }
 }

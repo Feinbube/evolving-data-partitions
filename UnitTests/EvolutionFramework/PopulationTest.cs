@@ -11,17 +11,45 @@ namespace UnitTests
 {
     public abstract class PopulationTest
     {
-        protected void populationTest(IPopulation population, int food)
+        [TestMethod]
+        public void BasicTest()
         {
+            Random random = new Random(2014);
+            IPopulation population = createTestPopulation(random);
+            int food = reasonableFood();
             double startFitness = population.Fitness;
 
             population.Feed(food);
 
-            checkPopulation(population, food, startFitness);
+            AssertEx.IsGreaterThanOrEqualTo(population.Fitness, startFitness);
+            Assert.AreEqual(food, population.FoodConsumedInLifetime);
+
+            basicTest(population);
         }
 
-        protected void timedPopulationTest(IPopulation population, int food)
+        protected static void basicTest(IPopulation population)
         {
+            Assert.AreEqual(population.Fitness, population.Best.Fitness);
+
+            AssertEx.IsGreaterThanOrEqualTo(population.Generations, 1);
+            AssertEx.IsGreaterThanOrEqualTo(population.Mutations, 1);
+            AssertEx.IsGreaterThanOrEqualTo(population.Crossovers, 1);
+            AssertEx.IsGreaterThanOrEqualTo(population.FitnessEvaluations, 1);
+
+            foreach (IEvolvable evolvable in population.Individuals)
+                Assert.IsNotNull(evolvable);
+
+            foreach (var individual in population.Individuals)
+                if (individual is IPopulation)
+                    basicTest(individual as IPopulation);
+        }
+
+        [TestMethod]
+        public void TimingTest()
+        {
+            Random random = new Random(2014);
+            IPopulation population = createTestPopulation(random);
+            int food = reasonableFood() / 5;
             double startFitness = population.Fitness;
 
             population.Feed(food);
@@ -29,75 +57,34 @@ namespace UnitTests
             DateTime start = DateTime.Now;
             population.Feed(food);
             DateTime endFirstRun = DateTime.Now;
-            population.Feed(2 * food);
+            population.Feed(4 * food);
             DateTime endSecondRun = DateTime.Now;
 
-            checkPopulation(population, 4 * food, startFitness);
-
-            AssertEx.IsLessThanOrEqualTo((endFirstRun - start).TotalMilliseconds, 0.7 * (endSecondRun - endFirstRun).TotalMilliseconds);
-            AssertEx.IsGreaterThanOrEqualTo((endFirstRun - start).TotalMilliseconds, 0.3 * (endSecondRun - endFirstRun).TotalMilliseconds);
-        }
-
-        protected void evaluatedPopulationTest(IPopulation population, int food)
-        {
-            double startFitness = population.Fitness;
-
-            AssertEx.IsGreaterThanOrEqualTo(population.Fitness, -50);
-
-            population.Feed(food);
-
-            checkPopulation(population, food, startFitness);
-
-            AssertEx.IsGreaterThanOrEqualTo(population.Fitness, -5);
-        }
-
-        protected static void checkPopulation(IPopulation population, int food, double startFitness)
-        {
-            AssertEx.IsGreaterThanOrEqualTo(population.Fitness, startFitness);
-            Assert.AreEqual(food, population.FoodConsumedInLifetime);
-
-            checkPopulation(population);
-        }
-
-        protected static void checkPopulation(IPopulation population)
-        {
-            AssertEx.IsGreaterThanOrEqualTo(population.Generations, 1);
-
-            AssertEx.IsGreaterThanOrEqualTo(population.Mutations, 1);
-            AssertEx.IsGreaterThanOrEqualTo(population.Crossovers, 1);
-            AssertEx.IsGreaterThanOrEqualTo(population.FitnessEvaluations, 1);
-
-            Assert.AreEqual(population.Fitness, population.Best.Fitness);
-
-            foreach (IEvolvable evolvable in population.Individuals)
-                Assert.IsNotNull(evolvable);
-
-            foreach (var individual in population.Individuals)
-                if (individual is IPopulation)
-                    checkPopulation(individual as IPopulation);
-        }
-
-        [TestMethod]
-        public void BasicTest()
-        {
-            Random random = new Random(2014);
-            populationTest(createTestPopulation(random), reasonableFood());
-        }
-
-        [TestMethod]
-        public void TimingTest()
-        {
-            Random random = new Random(2014);
-            timedPopulationTest(createTestPopulation(random), reasonableFood() / 4);
+            // t(4x) <= t(x) * 4 + 50%
+            AssertEx.IsLessThanOrEqualTo((endSecondRun - endFirstRun).TotalMilliseconds, (endFirstRun - start).TotalMilliseconds * 4.0 * 1.5);
         }
 
         [TestMethod]
         public void FitnessProgressTest()
         {
             Random random = new Random(2014);
-            evaluatedPopulationTest(createTestPopulation(random), reasonableFood());
-        }
+            IPopulation population = createTestPopulation(random);
+            int food = reasonableFood() / 10;
+            double startFitness = population.Fitness;
 
+            AssertEx.IsGreaterThanOrEqualTo(population.Fitness, -50);
+
+            double fitness = population.Fitness;
+            for (int i = 0; i < 20; i++)
+            {
+                population.Feed(food);
+                AssertEx.IsGreaterThanOrEqualTo(population.Fitness, fitness);
+                fitness = population.Fitness;
+            }
+
+            AssertEx.IsGreaterThanOrEqualTo(population.Fitness, -5);
+        }
+       
         [TestMethod]
         public void OrderedIndividualsTest()
         {
@@ -106,12 +93,24 @@ namespace UnitTests
             
             population.Feed(reasonableFood());
 
+            orderedIndividualsTest(population);
+        }
+
+        protected static void orderedIndividualsTest(IPopulation population)
+        {
             IEvolvable latest = population.IndividualsSortedByFitness.First();
             foreach (IEvolvable next in population.IndividualsSortedByFitness)
             {
                 AssertEx.IsLessThanOrEqualTo(next.Fitness, latest.Fitness);
                 latest = next;
             }
+
+            foreach (IEvolvable evolvable in population.Individuals)
+                Assert.IsNotNull(evolvable);
+
+            foreach (var individual in population.Individuals)
+                if (individual is IPopulation)
+                    orderedIndividualsTest(individual as IPopulation);
         }
 
         [TestMethod]
@@ -119,10 +118,55 @@ namespace UnitTests
         {
             Random random = new Random(2014);
             IPopulation population = createTestPopulation(random);
-            populationTest(population, reasonableFood());
+            population.Feed(reasonableFood() / 5);
 
-            Assert.IsInstanceOfType(population.Best, typeof(TestEvolvable));
-            Assert.IsInstanceOfType(population.Worst, typeof(TestEvolvable));
+            typeOfIndividualsTest(population);
+        }
+
+        protected static void typeOfIndividualsTest(IPopulation population)
+        {
+            if (population.Best is IPopulation)
+            {
+                Assert.IsInstanceOfType(population.Best, typeof(EvolvablePopulation));
+                Assert.IsInstanceOfType(population.Worst, typeof(EvolvablePopulation));
+
+                typeOfIndividualsTest(population.Best as IPopulation);
+                typeOfIndividualsTest(population.Worst as IPopulation);
+            }
+            else
+            {
+                Assert.IsInstanceOfType(population.Best, typeof(TestEvolvable));
+                Assert.IsInstanceOfType(population.Worst, typeof(TestEvolvable));
+            }
+        }
+
+        [TestMethod]
+        public void NoClonesAroundTest()
+        {
+            Random random = new Random(2014);
+            IPopulation population = createTestPopulation(random);
+            int food = reasonableFood() / 10;
+
+            for (int g = 0; g < 10; g++)
+            {
+                population.Feed(food);
+                noClonesAroundTest(population);
+            }
+        }
+
+        protected void noClonesAroundTest(IPopulation population)
+        {
+            foreach (IEvolvable evolvable in population.Individuals)
+                Assert.IsNotNull(evolvable);
+
+            for (int i = 0; i < population.Individuals.Count - 1; i++)
+                for (int j = i + 1; j < population.Individuals.Count; j++)
+                    if (population.Individuals[i].Equals(population.Individuals[j]))
+                        throw new Exception("Clones!! " + i + " and " + j);
+
+            foreach (var individual in population.Individuals)
+                if (individual is IPopulation)
+                    noClonesAroundTest(individual as IPopulation);
         }
 
         protected abstract IPopulation createTestPopulation(Random random);

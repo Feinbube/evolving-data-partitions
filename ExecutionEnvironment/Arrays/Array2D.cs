@@ -12,13 +12,13 @@ namespace ExecutionEnvironment
 
         public Array2D(int sizeX, int sizeY) : this(sizeX, sizeY, 1) { }
 
-        public Array2D(int sizeX, int sizeY, int sizeZ) : base(sizeX, sizeY, sizeZ) { }
+        public Array2D(int sizeX, int sizeY, int sizeZ) : base(sizeX, sizeY, sizeZ) { this.W = sizeX; this.Width = sizeX; this.H = sizeY; this.Height = sizeY; }
 
-        public int W { get { return SizeX; } }
-        public int Width { get { return SizeX; } }
+        public readonly int W;
+        public readonly int Width;
 
-        public int H { get { return SizeY; } }
-        public int Height { get { return SizeY; } }
+        public readonly int H;
+        public readonly int Height;
 
         public T At(int x, int y) { return this[x, y]; }
 

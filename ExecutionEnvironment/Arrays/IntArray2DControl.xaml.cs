@@ -19,7 +19,7 @@ namespace ExecutionEnvironment
     /// <summary>
     /// Interaction logic for IntArray2DControl.xaml
     /// </summary>
-    public partial class IntArray2DControl : UserControl
+    public partial class IntArray2DControl : UserControl, IDisposable
     {
         Arr<int> array;
 
@@ -45,6 +45,16 @@ namespace ExecutionEnvironment
         public IntArray2DControl()
         {
             InitializeComponent();
+        }
+
+        public void Dispose()
+        {
+            foreach (var child in surface.Children)
+            {
+                (child as Rectangle).Fill = null;
+                (child as Rectangle).Stroke = null;
+            }
+            surface.Children.Clear();
         }
     }
 }

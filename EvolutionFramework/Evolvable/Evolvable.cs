@@ -10,17 +10,19 @@ namespace EvolutionFramework
     {
         protected IPopulation population { get; set; }
 
-        private double fitness = double.NaN;
+        private bool fitnessIsInValid = true;
+        private double fitness;
 
-        public double Fitness
+        public virtual double Fitness
         {
             get
             {
-                if (fitness.Equals(double.NaN))
+                if (fitnessIsInValid)
                 {
                     population.NoteFitnessEvaluations();
                     FitnessEvaluations++;
                     fitness = assessFitness();
+                    fitnessIsInValid = false;
                 }
                 return fitness;
             }
@@ -35,7 +37,7 @@ namespace EvolutionFramework
             this.population = population;
         }
 
-        protected void resetFitness() { fitness = double.NaN; }
+        protected void resetFitness() { fitnessIsInValid = true; }
 
         protected double mutate(Random random, double value, double min, double max, double scale)
         {

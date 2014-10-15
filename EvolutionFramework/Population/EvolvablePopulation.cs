@@ -14,6 +14,28 @@ namespace EvolutionFramework
         public long EvolveCrossovers { get; protected set; }
         public long EvolveFitnessEvaluations { get; protected set; }
 
+        public long FullPopulation
+        {
+            get
+            {
+                long result = 0;
+                foreach (var individual in individuals)
+                {
+                    object current = individual;
+                    while (current is IEvolver)
+                        current = (current as IEvolver).Evolvable;
+
+                    if (current is EvolvablePopulation) 
+                        result += (current as EvolvablePopulation).FullPopulation;
+                    else if (current is IPopulation) 
+                        result += (current as IPopulation).Individuals.Count;
+                    else 
+                        result += 1;
+                }
+                return result;
+            }
+        }
+
         public override List<IEvolvable> Individuals { get { return base.Individuals.Select(a => (a as IEvolver).Evolvable).ToList(); } }
         public override List<IEvolvable> IndividualsSortedByFitness { get { return base.IndividualsSortedByFitness.Select(a => (a as IEvolver).Evolvable).ToList(); } }
 

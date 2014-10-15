@@ -14,10 +14,9 @@ namespace EvolutionFramework
 
         public Evolver(IPopulation population, IEvolvable evolvable) : base(population) { Evolvable = evolvable; }
 
-        protected override double assessFitness()
-        {
-            return Evolvable.Fitness;
-        }
+        public override double Fitness { get { return Evolvable is IPopulation ? (Evolvable as IPopulation).Fitness : base.Fitness; } }
+
+        protected override double assessFitness() { return Evolvable.Fitness; }
 
         protected override void mutate()
         {

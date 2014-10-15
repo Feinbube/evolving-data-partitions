@@ -11,7 +11,8 @@ namespace EvolutionFramework
         List<ICreator> creators = null;
         int index = -1;
 
-        public RoundRobinCreator(List<ICreator> creators) { this.creators = creators; }
+        public RoundRobinCreator(List<ICreator> creators) {
+            this.creators = creators; }
 
         public IEvolvable Create()
         {

@@ -31,7 +31,10 @@ namespace EvolutionFramework
 
         public IEvolvable FindMate(IEvolvable evolvable)
         {
-            return IndividualsSortedByFitness.Take(10).MaxElement(a => evolvable.DifferenceTo(a));
+            //return IndividualsSortedByFitness.Take(10).MaxElement(a => evolvable.DifferenceTo(a));
+            //return IndividualsSortedByFitness.Take(3).MaxElement(a => evolvable.DifferenceTo(a));
+            return IndividualsSortedByFitness.First();
+            //return IndividualsSortedByFitness.MaxElement(a => evolvable.DifferenceTo(a));
         }
 
         protected override void feed(double resources)

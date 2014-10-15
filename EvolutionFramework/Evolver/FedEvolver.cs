@@ -14,10 +14,9 @@ namespace EvolutionFramework
 
         public FedEvolver(IndividualMutateAndCrossoverPopulation population, IEvolvable evolvable, Random random) : base(population, random) { this.Evolvable = evolvable; }
 
-        protected override double assessFitness()
-        {
-            return Evolvable.Fitness;
-        }
+        public override double Fitness { get { return Evolvable is IPopulation ? (Evolvable as IPopulation).Fitness : base.Fitness; } }
+
+        protected override double assessFitness() { return Evolvable.Fitness; }
 
         protected override void mutate()
         {
@@ -38,6 +37,10 @@ namespace EvolutionFramework
         {
             return new FedEvolver((population as IndividualMutateAndCrossoverPopulation), Evolvable.Clone(), random);
         }
+
+        public override long Mutations { get { return Evolvable is IPopulation ? (Evolvable as IPopulation).Mutations : base.Mutations; } }
+        public override long Crossovers { get { return Evolvable is IPopulation ? (Evolvable as IPopulation).Crossovers : base.Crossovers; } }
+        public override long FitnessEvaluations { get { return Evolvable is IPopulation ? (Evolvable as IPopulation).FitnessEvaluations : base.FitnessEvaluations; } }
 
         public override bool Equals(object obj)
         {

@@ -31,10 +31,16 @@ namespace UnitTests
         {
             Assert.AreEqual(population.Fitness, population.Best.Fitness);
 
+            AssertEx.IsGreaterThanOrEqualTo(population.Individuals.Count, 1);
+            AssertEx.IsGreaterThanOrEqualTo(population.FoodConsumedInLifetime, 1);
+            AssertEx.IsGreaterThanOrEqualTo(population.FitnessEvaluations, 1);
+
             AssertEx.IsGreaterThanOrEqualTo(population.Generations, 1);
             AssertEx.IsGreaterThanOrEqualTo(population.Mutations, 1);
-            AssertEx.IsGreaterThanOrEqualTo(population.Crossovers, 1);
-            AssertEx.IsGreaterThanOrEqualTo(population.FitnessEvaluations, 1);
+            // AssertEx.IsGreaterThanOrEqualTo(population.Crossovers, 1);
+
+            if(population is EvolvablePopulation)
+                AssertEx.IsGreaterThanOrEqualTo((population as EvolvablePopulation).FullPopulation, population.Individuals.Count);
 
             foreach (IEvolvable evolvable in population.Individuals)
                 Assert.IsNotNull(evolvable);
@@ -65,14 +71,12 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void FitnessProgressTest()
+        public void NoFitnessDegredationTest()
         {
             Random random = new Random(2014);
             IPopulation population = createTestPopulation(random);
             int food = reasonableFood() / 10;
             double startFitness = population.Fitness;
-
-            AssertEx.IsGreaterThanOrEqualTo(population.Fitness, -50);
 
             double fitness = population.Fitness;
             for (int i = 0; i < 20; i++)
@@ -81,6 +85,19 @@ namespace UnitTests
                 AssertEx.IsGreaterThanOrEqualTo(population.Fitness, fitness);
                 fitness = population.Fitness;
             }
+        }
+
+        [TestMethod]
+        public void ReasonableFitnessProgressionTest()
+        {
+            Random random = new Random(2014);
+            IPopulation population = createTestPopulation(random);
+            int food = reasonableFood();
+            double startFitness = population.Fitness;
+
+            AssertEx.IsGreaterThanOrEqualTo(population.Fitness, -50);
+
+            population.Feed(food);
 
             AssertEx.IsGreaterThanOrEqualTo(population.Fitness, -5);
         }

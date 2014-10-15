@@ -16,16 +16,16 @@ namespace UnitTests
         {
             return new SelectMutateCrossoverPopulation(null, random,
                 new RoundRobinCreator(new List<ICreator>() {
-                   new SelectMutateCrossoverPopulation(null, random, new SelectMutateCrossoverPopulationCreator(null, random, new TestCreator(random), 3, 3), 2),
-                   new SelectMutateCrossoverPopulation(null, random, new IndividualMutateAndCrossoverPopulationCreator(null, random, new TestCreator(random), 3), 2),
-                   new IndividualMutateAndCrossoverPopulationCreator(null, random, new SelectMutateCrossoverPopulationCreator(null, random, new TestCreator(random), 3, 3), 2),
-                   new IndividualMutateAndCrossoverPopulationCreator(null, random, new IndividualMutateAndCrossoverPopulationCreator(null, random, new TestCreator(random), 3), 2)
+                   new SelectMutateCrossoverPopulationCreator(null, random, new SelectMutateCrossoverPopulationCreator(null, random, new TestCreator(random), 2, 3), 2, 3),
+                   new SelectMutateCrossoverPopulationCreator(null, random, new IndividualMutateAndCrossoverPopulationCreator(null, random, new TestCreator(random), 2), 2, 3),
+                   new IndividualMutateAndCrossoverPopulationCreator(null, random, new SelectMutateCrossoverPopulationCreator(null, random, new TestCreator(random), 2, 3), 2),
+                   new IndividualMutateAndCrossoverPopulationCreator(null, random, new IndividualMutateAndCrossoverPopulationCreator(null, random, new TestCreator(random), 2), 2)
                 }), 4);
         }
 
         protected override int reasonableFood()
         {
-            return 2000;
+            return 13337;
         }
     }
 }

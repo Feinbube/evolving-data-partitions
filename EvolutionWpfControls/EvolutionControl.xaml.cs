@@ -1,6 +1,7 @@
 ﻿using EvolutionFramework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace EvolutionWpfControls
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class EvolutionControl : UserControl
+    public partial class EvolutionControl : UserControl, INotifyPropertyChanged
     {
         public Evolution Evolution { get { return (Evolution)this.DataContext; } set { this.DataContext = value; breedingPoolControl.BreedingPool = value; } }
 
@@ -32,5 +33,7 @@ namespace EvolutionWpfControls
         {
             Evolution.Pause = !Evolution.Pause;
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

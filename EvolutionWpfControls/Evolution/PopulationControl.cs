@@ -14,11 +14,11 @@ namespace EvolutionWpfControls
         public IPopulation population = null;
         public IPopulation Population { get { return population; } set { population = value; updateView(); } }
 
-        public override System.Collections.ObjectModel.ObservableCollection<IPresentable> Details
+        public override ObservableCollection<IPresentable> Details
         {
             get
             {
-                return Population == null ? null : new System.Collections.ObjectModel.ObservableCollection<IPresentable>()
+                return Population == null ? null : new ObservableCollection<IPresentable>()
                 {
                     StatsAsPresentable(), AsDetailPresentable("Best", Population.Best), AsDetailPresentable("Worst", Population.Worst)
                 };

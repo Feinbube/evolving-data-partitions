@@ -42,7 +42,7 @@
     <Compile Include="Evolvable\Evolvable.cs" />
     <Compile Include="Evolver\FedEvolver.cs" />
     <Compile Include="Evolver\Evolver.cs" />
-    <Compile Include="Evolver\IEvolver.cs" />
+    <Compile Include="Interfaces\IEvolver.cs" />
     <Compile Include="Interfaces\INotingEvolvable.cs" />
     <Compile Include="Interfaces\IPopulation.cs" />
     <Compile Include="Interfaces\IFeedable.cs" />

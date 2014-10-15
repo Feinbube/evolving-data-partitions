@@ -18,5 +18,7 @@ namespace EvolutionFramework
             index = (index + 1) % creators.Count;
             return creators[index].Create();
         }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }

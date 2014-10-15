@@ -23,7 +23,7 @@
                 <Label Content="{Binding Title}" FontSize="16" FontWeight="Bold"/>
                 <Label Content="{Binding SubTitle}" Margin="0,4,0,0" FontSize="12" />
             </StackPanel>
-            <ItemsControl ItemsSource="{Binding Details, Mode=OneTime}">
+            <ItemsControl ItemsSource="{Binding Details}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <StackPanel Orientation="Horizontal" VerticalAlignment="Top" />
@@ -31,12 +31,12 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <GroupBox Header="{Binding PresentableTitle, Mode=OneTime}" Content="{Binding PresentableControl, Mode=OneTime}" />
+                        <GroupBox Header="{Binding PresentableTitle}" Content="{Binding PresentableControl}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
             <GroupBox Header="{Binding ChildrenTitle}" Style="{StaticResource ShowChildrenStyle}">
-                <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding Children, Mode=OneTime}">
+                <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding Children}">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <WrapPanel />
@@ -44,7 +44,7 @@
                     </ListView.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <GroupBox Header="{Binding PresentableTitle, Mode=OneTime}" Content="{Binding PresentableControl, Mode=OneTime}" />
+                            <GroupBox Header="{Binding PresentableTitle}" Content="{Binding PresentableControl}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ListView>

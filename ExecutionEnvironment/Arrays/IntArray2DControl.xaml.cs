@@ -1,6 +1,7 @@
 ﻿using DrawingSupport;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace ExecutionEnvironment
     /// <summary>
     /// Interaction logic for IntArray2DControl.xaml
     /// </summary>
-    public partial class IntArray2DControl : UserControl, IDisposable
+    public partial class IntArray2DControl : UserControl, IDisposable, INotifyPropertyChanged
     {
         Arr<int> array;
 
@@ -56,5 +57,7 @@ namespace ExecutionEnvironment
             }
             surface.Children.Clear();
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

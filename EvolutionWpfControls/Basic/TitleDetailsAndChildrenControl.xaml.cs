@@ -20,7 +20,7 @@ namespace EvolutionWpfControls
     /// <summary>
     /// Interaction logic for TitleDetailsAndChildrenControl.xaml
     /// </summary>
-    public partial class TitleDetailsAndChildrenControl : UserControl, IDisposable
+    public partial class TitleDetailsAndChildrenControl : UserControl, IDisposable, INotifyPropertyChanged
     {
         public virtual string Title { get; set; }
         public virtual string SubTitle { get; set; }
@@ -53,5 +53,7 @@ namespace EvolutionWpfControls
             this.Children.Clear();
             this.Details.Clear();
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

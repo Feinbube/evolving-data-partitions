@@ -79,5 +79,7 @@ namespace EvolutionFramework
         {
             return "Fitness: " + Fitness + " Counts: F" + FitnessEvaluations + " M" + Mutations + " C" + Crossovers;
         }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }

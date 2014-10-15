@@ -16,5 +16,7 @@ namespace EvolutionFramework
         public IndividualMutateAndCrossoverPopulationCreator(IPopulation population, Random random, ICreator creator, int populationSize) { this.population = population;  this.random = random; this.creator = creator; this.populationSize = populationSize; }
 
         public IEvolvable Create() { return new IndividualMutateAndCrossoverPopulation(population, random, creator, populationSize) { }; }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }

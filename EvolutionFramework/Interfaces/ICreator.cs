@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace EvolutionFramework
 {
-    public interface ICreator
+    public interface ICreator : INotifyPropertyChanged
     {
         IEvolvable Create();
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace EvolutionWpfControls
     /// <summary>
     /// Interaction logic for NameValueGrid.xaml
     /// </summary>
-    public partial class NamedValueGrid : UserControl
+    public partial class NamedValueGrid : UserControl, IDisposable, INotifyPropertyChanged
     {
         public List<NamedValue> NamedValues { get; set; }
 
@@ -56,5 +57,12 @@ namespace EvolutionWpfControls
             foreach (var namedValue in namedValues)
                 Add(namedValue.Name, namedValue.Value);
         }
+
+        public void Dispose()
+        {
+            NamedValues.Clear();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

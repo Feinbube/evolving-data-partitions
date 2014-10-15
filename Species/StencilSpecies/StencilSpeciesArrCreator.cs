@@ -37,5 +37,7 @@ namespace DataFieldLayoutSimulation
         {
             return new StencilSpeciesArr(random, w, h, cellsPerProcessor);
         }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }

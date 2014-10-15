@@ -20,5 +20,7 @@ namespace UnitTests
         {
             return new TestEvolvable(random, 100);
         }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }

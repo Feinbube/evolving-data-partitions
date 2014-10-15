@@ -15,8 +15,9 @@ namespace EvolutionWpfControls
     public class EvolvablePopulationControl : PopulationControl
     {
         static SolidColorBrush blackBrush = (SolidColorBrush)new SolidColorBrush(Colors.Black).GetAsFrozen();
+        Grid historyGrid = new Grid();
 
-        public override System.Collections.ObjectModel.ObservableCollection<IPresentable> Details
+        public override ObservableCollection<IPresentable> Details
         {
             get
             {
@@ -32,7 +33,13 @@ namespace EvolutionWpfControls
 
         private UIElement fitnessControl()
         {
-            Grid historyGrid = new Grid();
+            foreach(var child in historyGrid.Children)
+            {
+                (child as Rectangle).Fill = null;
+                (child as Rectangle).Stroke = null;
+            }
+            historyGrid.Children.Clear();
+
             var history = (population as EvolvablePopulation).FitnessHistory;
             int count = Math.Min(history.Count, 100);
             history = history.Take(count).ToList();

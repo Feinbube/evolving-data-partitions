@@ -20,5 +20,7 @@ namespace EvolutionWpfControls
             this.PresentableTitle = title;
             this.PresentableControl = control;
         }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }

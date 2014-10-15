@@ -7,10 +7,14 @@
     <Grid>
         <TabControl>
             <TabItem Header="New">
-                <EvolutionWpfControls:AnyPopulationControl x:Name="evolutionControlNew" Margin="0,0,0,0"/>
+                <ScrollViewer>
+                    <EvolutionWpfControls:AnyPopulationControl x:Name="evolutionControlNew" Margin="0,0,0,0"/>
+                </ScrollViewer>
             </TabItem>
             <TabItem Header="Traditional">
-                <EvolutionWpfControls:EvolutionControl x:Name="evolutionControl" Margin="0,0,0,0"/>
+                <ScrollViewer>
+                    <EvolutionWpfControls:EvolutionControl x:Name="evolutionControl" Margin="0,0,0,0"/>
+                </ScrollViewer>
             </TabItem>
         </TabControl>
     </Grid>

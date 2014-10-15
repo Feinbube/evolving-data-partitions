@@ -274,5 +274,7 @@ namespace DataFieldLayoutSimulation
         {
             return Field.GetHashCode();
         }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }

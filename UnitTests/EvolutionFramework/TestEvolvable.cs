@@ -87,5 +87,7 @@ namespace UnitTests
             }
             return hashCodeCache;
         }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }

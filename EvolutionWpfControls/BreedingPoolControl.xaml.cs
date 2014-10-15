@@ -1,6 +1,7 @@
 ﻿using EvolutionFramework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace EvolutionWpfControls
     /// <summary>
     /// Interaction logic for BreedingPoolControl.xaml
     /// </summary>
-    public partial class BreedingPoolControl : UserControl
+    public partial class BreedingPoolControl : UserControl, INotifyPropertyChanged
     {
         public EvolvablePopulation Pool { get; set; }
 
@@ -90,5 +91,7 @@ namespace EvolutionWpfControls
         {
             return min == max ? 1.0 : Math.Abs((v - min) / (min - max));
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

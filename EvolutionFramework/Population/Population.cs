@@ -101,5 +101,7 @@ namespace EvolutionFramework
 
         public virtual void NoteFitnessEvaluations() { lock (fitnessEvaluationsLock) { FitnessEvaluations++; } }
 
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }

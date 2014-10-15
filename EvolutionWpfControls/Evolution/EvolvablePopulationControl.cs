@@ -35,8 +35,7 @@ namespace EvolutionWpfControls
         {
             foreach(var child in historyGrid.Children)
             {
-                (child as Rectangle).Fill = null;
-                (child as Rectangle).Stroke = null;
+                (child as Line).Stroke = null;
             }
             historyGrid.Children.Clear();
 

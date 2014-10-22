@@ -20,7 +20,7 @@ namespace UnitTests
                    new SelectMutateCrossoverPopulationCreator(null, random, new IndividualMutateAndCrossoverPopulationCreator(null, random, new TestCreator(random), 2), 2, 3),
                    new IndividualMutateAndCrossoverPopulationCreator(null, random, new SelectMutateCrossoverPopulationCreator(null, random, new TestCreator(random), 2, 3), 2),
                    new IndividualMutateAndCrossoverPopulationCreator(null, random, new IndividualMutateAndCrossoverPopulationCreator(null, random, new TestCreator(random), 2), 2)
-                }), 4);
+                }), 4) { EnoughFeedingsForBreeding = 20000 };
         }
 
         protected override int reasonableFood()

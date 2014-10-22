@@ -13,6 +13,7 @@ namespace EvolutionFramework
 
         double Fitness { get; }
 
+        IEvolvable BestOfAllTime { get; }
         IEvolvable Best { get; }
         IEvolvable Worst { get; }
 

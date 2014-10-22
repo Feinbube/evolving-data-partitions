@@ -81,5 +81,8 @@ namespace EvolutionFramework
         }
 
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+
+        public abstract bool IsValid { get; }
     }
 }

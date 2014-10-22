@@ -18,7 +18,7 @@ namespace EvolutionFramework
 
         public IndividualMutateAndCrossoverPopulation(IPopulation population, Random random, ICreator creator, List<IEvolvable> individuals) : base(population, random, creator, individuals) { this.MaxSize = individuals.Count; }
 
-        protected IndividualMutateAndCrossoverPopulation(IPopulation population, double maxSize, List<IEvolvable> newBorns, double foodForPopulation, Random random, ICreator creator, int evolvableMutations, int evolvableCrossovers, int evolvableFitnessEvaluations, List<double> fitnessHistory, List<IEvolvable> individuals, int populationSize, long generations, long mutations, long crossovers, long fitnessEvaluations, double foodConsumedInLifetime) : base(population, random, creator, evolvableMutations, evolvableCrossovers, evolvableFitnessEvaluations, fitnessHistory, individuals, populationSize, generations, mutations, crossovers, fitnessEvaluations, foodConsumedInLifetime) { construct(maxSize, newBorns, foodForPopulation); }
+        protected IndividualMutateAndCrossoverPopulation(IPopulation population, double maxSize, List<IEvolvable> newBorns, double foodForPopulation, Random random, ICreator creator, int evolvableMutations, int evolvableCrossovers, int evolvableFitnessEvaluations, List<double> fitnessHistory, List<IEvolvable> individuals, IEvolvable bestOfAllTime, int populationSize, long generations, long mutations, long crossovers, long fitnessEvaluations, double foodConsumedInLifetime) : base(population, random, creator, evolvableMutations, evolvableCrossovers, evolvableFitnessEvaluations, fitnessHistory, individuals, bestOfAllTime, populationSize, generations, mutations, crossovers, fitnessEvaluations, foodConsumedInLifetime) { construct(maxSize, newBorns, foodForPopulation); }
 
         protected IndividualMutateAndCrossoverPopulation(IndividualMutateAndCrossoverPopulation original) : base(original) { construct(original.MaxSize, original.newBorns, original.FoodForPopulation); }
 
@@ -119,6 +119,7 @@ namespace EvolutionFramework
                 0, 0, 0,
                 this.Fitness > mate.Fitness ? this.FitnessHistory.Select(a => a).ToList() : mate.FitnessHistory.Select(a => a).ToList(),
                 this.individuals.Union(mate.individuals).OrderByDescending(a => a.Fitness).Take((int)Evolution.RandomInterpolation(random, this.PopulationSize, mate.PopulationSize)).ToList(),
+                this.BestOfAllTime.Fitness > mate.BestOfAllTime.Fitness ? this.BestOfAllTime : mate.BestOfAllTime,
                 0, 0, Mutations + mate.Mutations, Crossovers + mate.Crossovers, FitnessEvaluations + mate.FitnessEvaluations, 0
                 );
         }

@@ -9,7 +9,7 @@ using ExecutionEnvironment;
 namespace UnitTests
 {
     [TestClass]
-    public class StencilSpeciesTest
+    public class StencilSpeciesTest : EvolvableTest
     {
         Random random = new Random(2014);
 
@@ -34,22 +34,6 @@ namespace UnitTests
         {
             for (int i = 0; i < 1000; i++)
                 create();
-        }
-
-        [TestMethod]
-        public void MutationTest()
-        {
-            Random random = new Random(2014);
-
-            for (int i = 0; i < 100; i++)
-            {
-                var specimen = create();
-                for (int i2 = 0; i2 < 100; i2++)
-                {
-                    specimen.Mutate();
-                    Assert.IsTrue(specimen.IsValid);
-                }
-            }
         }
 
         [TestMethod]
@@ -234,6 +218,11 @@ namespace UnitTests
                         if (pool.Individuals[i].Equals(pool.Individuals[j]))
                             throw new Exception("Clones!! " + i + " and " + j);
             }
+        }
+
+        protected override ICreator getCreator(Random random)
+        {
+            return new StencilSpeciesArrCreator(random, 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 });
         }
     }
 }

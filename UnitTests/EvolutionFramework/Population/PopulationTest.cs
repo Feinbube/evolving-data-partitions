@@ -37,7 +37,10 @@ namespace UnitTests
 
             AssertEx.IsGreaterThanOrEqualTo(population.Generations, 1);
             AssertEx.IsGreaterThanOrEqualTo(population.Mutations, 1);
-            // AssertEx.IsGreaterThanOrEqualTo(population.Crossovers, 1);
+            AssertEx.IsGreaterThanOrEqualTo(population.Crossovers, 1);
+
+            Assert.IsNotInstanceOfType(population.BestOfAllTime, typeof(IPopulation));
+            Assert.IsNotInstanceOfType(population.BestOfAllTime, typeof(IEvolver));
 
             if(population is EvolvablePopulation)
                 AssertEx.IsGreaterThanOrEqualTo((population as EvolvablePopulation).FullPopulation, population.Individuals.Count);
@@ -184,6 +187,24 @@ namespace UnitTests
             foreach (var individual in population.Individuals)
                 if (individual is IPopulation)
                     noClonesAroundTest(individual as IPopulation);
+        }
+
+        [TestMethod]
+        public void CloneTest()
+        {
+            Random random = new Random(2014);
+            IPopulation population = createTestPopulation(random);
+            if(population is EvolvablePopulation)
+            {
+                population.Feed(reasonableFood());
+
+                EvolvablePopulation original =  (EvolvablePopulation)population;
+                EvolvablePopulation clone = (EvolvablePopulation)original.Clone();
+
+                Assert.AreEqual(original.EvolveMutations, clone.EvolveMutations );
+                Assert.AreEqual(original.EvolveCrossovers, clone.EvolveCrossovers);
+                Assert.AreEqual(original.EvolveFitnessEvaluations, clone.EvolveFitnessEvaluations);
+            }
         }
 
         protected abstract IPopulation createTestPopulation(Random random);

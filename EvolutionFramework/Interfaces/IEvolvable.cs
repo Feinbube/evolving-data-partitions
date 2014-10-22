@@ -18,5 +18,7 @@ namespace EvolutionFramework
         IEvolvable Clone();
 
         double DifferenceTo(IEvolvable other);
+
+        bool IsValid { get; }
     }
 }

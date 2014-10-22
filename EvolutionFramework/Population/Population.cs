@@ -29,25 +29,29 @@ namespace EvolutionFramework
         public long Crossovers { get; protected set; }
         public long FitnessEvaluations { get; protected set; }
 
+        public virtual IEvolvable BestOfAllTime { get; protected set; }
+
         protected IEvolvable bestCache = null;
-        public virtual IEvolvable Best { get { if (bestCache == null) bestCache = individuals.MaxElement(a => a.Fitness); return bestCache; } }
+        public virtual IEvolvable Best { get { if (bestCache == null) { bestCache = individuals.MaxElement(a => a.Fitness); if (BestOfAllTime == null || BestOfAllTime.Fitness < bestCache.Fitness) BestOfAllTime = bestCache.Clone(); } return bestCache; } }
 
         protected IEvolvable worstCache = null;
         public virtual IEvolvable Worst { get { if (worstCache == null) worstCache = individuals.MinElement(a => a.Fitness); return worstCache; } }
 
-        public Population(ICreator creator, Random random, int populationSize) { construct(creator, random, null, populationSize, 0, 0, 0, 0); }
+        public Population(ICreator creator, Random random, int populationSize) { construct(creator, random, null, null,  populationSize, 0, 0, 0, 0); }
 
-        public Population(ICreator creator, Random random, List<IEvolvable> individuals) { construct(creator, random, individuals, individuals.Count, 0, 0, 0, 0); }
+        public Population(ICreator creator, Random random, List<IEvolvable> individuals) { construct(creator, random, individuals, null, individuals.Count, 0, 0, 0, 0); }
 
-        protected Population(ICreator creator, Random random, List<IEvolvable> individuals, int populationSize, long generations, long mutations, long crossovers, long fitnessEvaluations, double foodConsumedInLifetime) : base(foodConsumedInLifetime) { construct(creator, random, individuals, populationSize, generations, mutations, crossovers, fitnessEvaluations); }
+        protected Population(ICreator creator, Random random, List<IEvolvable> individuals, IEvolvable bestOfAllTime, int populationSize, long generations, long mutations, long crossovers, long fitnessEvaluations, double foodConsumedInLifetime) : base(foodConsumedInLifetime) { construct(creator, random, individuals, bestOfAllTime, populationSize, generations, mutations, crossovers, fitnessEvaluations); }
 
-        protected Population(Population original) : base(original) { construct(original.Creator, original.random, original.individuals, original.PopulationSize, original.Generations, original.Mutations, original.Crossovers, original.FitnessEvaluations); }
+        protected Population(Population original) : base(original) { construct(original.Creator, original.random, original.individuals, original.BestOfAllTime, original.PopulationSize, original.Generations, original.Mutations, original.Crossovers, original.FitnessEvaluations); }
 
-        private void construct(ICreator creator, Random random, List<IEvolvable> individuals, int populationSize, long generations, long mutations, long crossovers, long fitnessEvaluations)
+        private void construct(ICreator creator, Random random, List<IEvolvable> individuals, IEvolvable bestOfAllTime, int populationSize, long generations, long mutations, long crossovers, long fitnessEvaluations)
         {
             this.Creator = creator;
             this.random = random;
             this.Generations = generations;
+
+            this.BestOfAllTime = bestOfAllTime;
 
             this.Mutations = mutations;
             this.Crossovers = crossovers;

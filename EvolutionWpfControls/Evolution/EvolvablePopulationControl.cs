@@ -46,9 +46,13 @@ namespace EvolutionWpfControls
         protected override List<NamedValue> Stats()
         {
             List<NamedValue> result = base.Stats();
-            result.Add(new NamedValue("/", (Population as EvolvablePopulation).EvolveMutations));
-            result.Add(new NamedValue("/", (Population as EvolvablePopulation).EvolveCrossovers));
-            result.Add(new NamedValue("/", (Population as EvolvablePopulation).EvolveFitnessEvaluations));
+            result[2] = new NamedValue("PopulationSize", Population.Individuals.Count + " / " + (Population as EvolvablePopulation).FullPopulation);
+            result[3] = new NamedValue("Muations", Population.Mutations + " / " + (Population as EvolvablePopulation).EvolveMutations);
+            result[4] = new NamedValue("Crossovers", Population.Crossovers + " / " + (Population as EvolvablePopulation).EvolveCrossovers);
+            result[5] = new NamedValue("FitnessEvaluations", Population.FitnessEvaluations + " / " + (Population as EvolvablePopulation).EvolveFitnessEvaluations);
+            //result.Add(new NamedValue("/", (Population as EvolvablePopulation).EvolveMutations));
+            //result.Add(new NamedValue("/", (Population as EvolvablePopulation).EvolveCrossovers));
+            //result.Add(new NamedValue("/", (Population as EvolvablePopulation).EvolveFitnessEvaluations));
             return result;
         }
     }

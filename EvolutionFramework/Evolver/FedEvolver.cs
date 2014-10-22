@@ -51,5 +51,10 @@ namespace EvolutionFramework
         {
             return Evolvable.GetHashCode();
         }
+
+        public override bool IsValid
+        {
+            get { return Evolvable.IsValid; }
+        }
     }
 }

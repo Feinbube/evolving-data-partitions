@@ -51,16 +51,18 @@
   </Choose>
   <ItemGroup>
     <Compile Include="EnvironmentTest.cs" />
-    <Compile Include="EvolutionFramework\EvolutionTest.cs" />
-    <Compile Include="EvolutionFramework\HierarchicalPopulationTest.cs" />
-    <Compile Include="EvolutionFramework\SelectMutateCrossoverPopulationTest.cs" />
-    <Compile Include="EvolutionFramework\IndividualMutateAndCrossoverPopulationTest.cs" />
-    <Compile Include="EvolutionFramework\PopulationTest.cs" />
+    <Compile Include="EvolutionFramework\Evolvable\EvolvableTest.cs" />
+    <Compile Include="EvolutionFramework\Evolvable\TestEvolvableTest.cs" />
+    <Compile Include="EvolutionFramework\Population\EvolutionTest.cs" />
+    <Compile Include="EvolutionFramework\Population\HierarchicalPopulationTest.cs" />
+    <Compile Include="EvolutionFramework\Population\SelectMutateCrossoverPopulationTest.cs" />
+    <Compile Include="EvolutionFramework\Population\IndividualMutateAndCrossoverPopulationTest.cs" />
+    <Compile Include="EvolutionFramework\Population\PopulationTest.cs" />
     <Compile Include="EvolutionFramework\TestEvolvable.cs" />
     <Compile Include="EvolutionFramework\TestCreator.cs" />
     <Compile Include="MutatorTest.cs" />
     <Compile Include="AlgorithmTest.cs" />
-    <Compile Include="StencilSpeciesTest.cs" />
+    <Compile Include="EvolutionFramework\Evolvable\StencilSpeciesTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

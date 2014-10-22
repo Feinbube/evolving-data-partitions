@@ -89,5 +89,11 @@ namespace UnitTests
         }
 
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+
+        public bool IsValid
+        {
+            get { return true; }
+        }
     }
 }

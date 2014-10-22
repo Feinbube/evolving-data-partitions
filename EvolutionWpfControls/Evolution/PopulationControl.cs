@@ -20,7 +20,7 @@ namespace EvolutionWpfControls
             {
                 return Population == null ? null : new ObservableCollection<IPresentable>()
                 {
-                    StatsAsPresentable(), AsDetailPresentable("Best", Population.Best), AsDetailPresentable("Worst", Population.Worst)
+                    StatsAsPresentable(), AsDetailPresentable("Best", Population.Best), AsDetailPresentable("Worst", Population.Worst), AsDetailPresentable("Best Ever", Population.BestOfAllTime)
                 };
             }
             set { base.Details = value; }

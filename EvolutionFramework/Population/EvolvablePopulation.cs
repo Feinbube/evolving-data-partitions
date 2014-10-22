@@ -25,11 +25,11 @@ namespace EvolutionFramework
                     while (current is IEvolver)
                         current = (current as IEvolver).Evolvable;
 
-                    if (current is EvolvablePopulation) 
+                    if (current is EvolvablePopulation)
                         result += (current as EvolvablePopulation).FullPopulation;
-                    else if (current is IPopulation) 
+                    else if (current is IPopulation)
                         result += (current as IPopulation).Individuals.Count;
-                    else 
+                    else
                         result += 1;
                 }
                 return result;
@@ -53,6 +53,37 @@ namespace EvolutionFramework
             }
         }
 
+        public override IEvolvable BestOfAllTime
+        {
+            get
+            {
+                var result = base.BestOfAllTime;
+                bool ready = true;
+
+                if (result == null) return null;
+
+                do
+                {
+                    ready = true;
+
+                    if (result is IEvolver)
+                    {
+                        result = (result as IEvolver).Evolvable;
+                        ready = false;
+                    }
+
+                    if (result is IPopulation)
+                    {
+                        result = (result as IPopulation).BestOfAllTime;
+                        ready = false;
+                    }
+                }
+                while (!ready);
+
+                return result;
+            }
+        }
+
         public IEvolvable BestEvolver { get { return base.Best; } }
 
         public override IEvolvable Worst { get { return (base.Worst as IEvolver).Evolvable; } }
@@ -66,9 +97,9 @@ namespace EvolutionFramework
 
         public EvolvablePopulation(IPopulation population, Random random, ICreator creator, List<IEvolvable> individuals) : base(creator, random, individuals) { construct(population, 0, 0, 0, null); }
 
-        protected EvolvablePopulation(IPopulation parentPopulation, Random random, ICreator creator, int evolveMutations, int evolveCrossovers, int evolveFitnessEvaluations, List<double> fitnessHistory, List<IEvolvable> individuals, int populationSize, long generations, long mutations, long crossovers, long fitnessEvaluations, double foodConsumedInLifetime) : base(creator, random, individuals, populationSize, generations, mutations, crossovers, fitnessEvaluations, foodConsumedInLifetime) { construct(parentPopulation, evolveMutations, evolveCrossovers, evolveFitnessEvaluations, fitnessHistory); }
+        protected EvolvablePopulation(IPopulation parentPopulation, Random random, ICreator creator, int evolveMutations, int evolveCrossovers, int evolveFitnessEvaluations, List<double> fitnessHistory, List<IEvolvable> individuals, IEvolvable bestOfAllTime, int populationSize, long generations, long mutations, long crossovers, long fitnessEvaluations, double foodConsumedInLifetime) : base(creator, random, individuals, bestOfAllTime, populationSize, generations, mutations, crossovers, fitnessEvaluations, foodConsumedInLifetime) { construct(parentPopulation, evolveMutations, evolveCrossovers, evolveFitnessEvaluations, fitnessHistory); }
 
-        public EvolvablePopulation(EvolvablePopulation original) : base(original) { construct(original.ParentPopulation, original.Mutations, original.Crossovers, original.FitnessEvaluations, original.fitnessHistory); }
+        public EvolvablePopulation(EvolvablePopulation original) : base(original) { construct(original.ParentPopulation, original.EvolveMutations, original.EvolveCrossovers, original.EvolveFitnessEvaluations, original.fitnessHistory); }
 
         void construct(IPopulation parentPopulation, long evolveMutations, long evolveCrossovers, long evolveFitnessEvaluations, List<double> fitnessHistory)
         {
@@ -148,5 +179,11 @@ namespace EvolutionFramework
         public override void NoteCrossovers() { base.NoteCrossovers(); if (ParentPopulation != null) ParentPopulation.NoteCrossovers(); }
 
         public override void NoteFitnessEvaluations() { base.NoteFitnessEvaluations(); if (ParentPopulation != null) ParentPopulation.NoteFitnessEvaluations(); }
+
+
+        public bool IsValid
+        {
+            get { return true; }
+        }
     }
 }

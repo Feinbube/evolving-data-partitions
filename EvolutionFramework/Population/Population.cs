@@ -105,6 +105,12 @@ namespace EvolutionFramework
 
         public virtual void NoteFitnessEvaluations() { lock (fitnessEvaluationsLock) { FitnessEvaluations++; } }
 
+        public virtual void Feed(TimeSpan runtime)
+        {
+            DateTime start = DateTime.Now;
+            while (DateTime.Now - start < runtime)
+                this.Feed(1);
+        }
 
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }

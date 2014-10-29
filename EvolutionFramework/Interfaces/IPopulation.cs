@@ -27,5 +27,7 @@ namespace EvolutionFramework
         void NoteMutation();
         void NoteCrossovers();
         void NoteFitnessEvaluations();
+
+        void Feed(TimeSpan runtime);
     }
 }

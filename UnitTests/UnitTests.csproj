@@ -53,6 +53,7 @@
     <Compile Include="EnvironmentTest.cs" />
     <Compile Include="EvolutionFramework\Evolvable\EvolvableTest.cs" />
     <Compile Include="EvolutionFramework\Evolvable\TestEvolvableTest.cs" />
+    <Compile Include="EvolutionFramework\Population\PopulationCrossingTest.cs" />
     <Compile Include="EvolutionFramework\Population\EvolutionTest.cs" />
     <Compile Include="EvolutionFramework\Population\HierarchicalPopulationTest.cs" />
     <Compile Include="EvolutionFramework\Population\SelectMutateCrossoverPopulationTest.cs" />

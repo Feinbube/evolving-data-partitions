@@ -60,7 +60,7 @@ namespace EvolutionFramework
         {
             foreach (IEvolvable child in newBorns)
             {
-                while(contains(individuals, child))  // individuals.Contains(child))
+                while (contains(individuals, child))  // individuals.Contains(child))
                     child.Mutate();
                 individuals.Add(child);
             }
@@ -84,7 +84,7 @@ namespace EvolutionFramework
                 if (list[i].Equals(value))
                     return true;
             return false;
-        }        
+        }
 
         public void AddChild(IEvolvable child)
         {
@@ -110,20 +110,24 @@ namespace EvolutionFramework
 
         protected override IEvolvable crossover(IEvolvable other)
         {
-            IndividualMutateAndCrossoverPopulation mate = (IndividualMutateAndCrossoverPopulation)other;
-            return new IndividualMutateAndCrossoverPopulation(
-                this.ParentPopulation,
-                Evolution.RandomInterpolation(random, this.MaxSize, mate.MaxSize),
-                new List<IEvolvable>(),
-                (int)Evolution.RandomInterpolation(random, this.FoodForPopulation, mate.FoodForPopulation),
-                random,
-                random.NextDouble() < 0.5 ? this.Creator : mate.Creator,
-                0, 0, 0,
-                this.Fitness > mate.Fitness ? this.FitnessHistory.Select(a => a).ToList() : mate.FitnessHistory.Select(a => a).ToList(),
-                this.individuals.Union(mate.individuals).OrderByDescending(a => a.Fitness).Take((int)Evolution.RandomInterpolation(random, this.PopulationSize, mate.PopulationSize)).ToList(),
-                this.BestOfAllTime.Fitness > mate.BestOfAllTime.Fitness ? this.BestOfAllTime : mate.BestOfAllTime,
-                0, 0, Mutations + mate.Mutations, Crossovers + mate.Crossovers, FitnessEvaluations + mate.FitnessEvaluations, 0
-                );
+            if (other is IndividualMutateAndCrossoverPopulation)
+            {
+                IndividualMutateAndCrossoverPopulation mate = (IndividualMutateAndCrossoverPopulation)other;
+                return new IndividualMutateAndCrossoverPopulation(
+                    this.ParentPopulation,
+                    Evolution.RandomInterpolation(random, this.MaxSize, mate.MaxSize),
+                    new List<IEvolvable>(),
+                    (int)Evolution.RandomInterpolation(random, this.FoodForPopulation, mate.FoodForPopulation),
+                    random,
+                    random.NextDouble() < 0.5 ? this.Creator : mate.Creator,
+                    0, 0, 0,
+                    this.Fitness > mate.Fitness ? this.FitnessHistory.Select(a => a).ToList() : mate.FitnessHistory.Select(a => a).ToList(),
+                    this.individuals.Union(mate.individuals).OrderByDescending(a => a.Fitness).Take((int)Evolution.RandomInterpolation(random, this.PopulationSize, mate.PopulationSize)).ToList(),
+                    this.BestOfAllTime.Fitness > mate.BestOfAllTime.Fitness ? this.BestOfAllTime : mate.BestOfAllTime,
+                    0, 0, Mutations + mate.Mutations, Crossovers + mate.Crossovers, FitnessEvaluations + mate.FitnessEvaluations, 0
+                    );
+            }
+            else return base.crossover(other);
         }
 
         public override IEvolvable Clone()

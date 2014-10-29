@@ -51,25 +51,29 @@ namespace EvolutionFramework
 
         protected override IEvolvable crossover(IEvolvable other)
         {
-            SelectMutateCrossoverPopulation mate = (SelectMutateCrossoverPopulation)other;
-            return new SelectMutateCrossoverPopulation(
-                    this.ParentPopulation,
-                    Evolution.RandomInterpolation(random, this.MutationRate, mate.MutationRate),
-                    Evolution.RandomInterpolation(random, this.EliteClonePercentage, mate.EliteClonePercentage),
-                    Evolution.RandomInterpolation(random, this.SelectedPercentage, mate.SelectedPercentage),
-                    Evolution.RandomInterpolation(random, this.NewPopulationSize, mate.NewPopulationSize),
-                    0,
-                    (int)Evolution.RandomInterpolation(random, this.Resources, mate.Resources),
-                    (int)Evolution.RandomInterpolation(random, this.Feedings, mate.Feedings),
-                    Evolution.RandomInterpolation(random, this.EnoughFeedingsForBreeding, mate.EnoughFeedingsForBreeding),
-                    random,
-                    random.NextDouble() < 0.5 ? this.Creator : mate.Creator,
-                    0, 0, 0,
-                    this.Fitness > mate.Fitness ? this.FitnessHistory.Select(a => a).ToList() : mate.FitnessHistory.Select(a => a).ToList(),
-                    this.individuals.Union(mate.individuals).OrderByDescending(a => a.Fitness).Take((int)Evolution.RandomInterpolation(random, this.PopulationSize, mate.PopulationSize)).ToList(),
-                    this.BestOfAllTime.Fitness > mate.BestOfAllTime.Fitness ? this.BestOfAllTime : mate.BestOfAllTime,
-                    0, 0, Mutations + mate.Mutations, Crossovers + mate.Crossovers, FitnessEvaluations + mate.FitnessEvaluations, 0
-                );
+            if (other is SelectMutateCrossoverPopulation)
+            {
+                SelectMutateCrossoverPopulation mate = (SelectMutateCrossoverPopulation)other;
+                return new SelectMutateCrossoverPopulation(
+                        this.ParentPopulation,
+                        Evolution.RandomInterpolation(random, this.MutationRate, mate.MutationRate),
+                        Evolution.RandomInterpolation(random, this.EliteClonePercentage, mate.EliteClonePercentage),
+                        Evolution.RandomInterpolation(random, this.SelectedPercentage, mate.SelectedPercentage),
+                        Evolution.RandomInterpolation(random, this.NewPopulationSize, mate.NewPopulationSize),
+                        0,
+                        (int)Evolution.RandomInterpolation(random, this.Resources, mate.Resources),
+                        (int)Evolution.RandomInterpolation(random, this.Feedings, mate.Feedings),
+                        Evolution.RandomInterpolation(random, this.EnoughFeedingsForBreeding, mate.EnoughFeedingsForBreeding),
+                        random,
+                        random.NextDouble() < 0.5 ? this.Creator : mate.Creator,
+                        0, 0, 0,
+                        this.Fitness > mate.Fitness ? this.FitnessHistory.Select(a => a).ToList() : mate.FitnessHistory.Select(a => a).ToList(),
+                        this.individuals.Union(mate.individuals).OrderByDescending(a => a.Fitness).Take((int)Evolution.RandomInterpolation(random, this.PopulationSize, mate.PopulationSize)).ToList(),
+                        this.BestOfAllTime.Fitness > mate.BestOfAllTime.Fitness ? this.BestOfAllTime : mate.BestOfAllTime,
+                        0, 0, Mutations + mate.Mutations, Crossovers + mate.Crossovers, FitnessEvaluations + mate.FitnessEvaluations, 0
+                    );
+            }
+            else return base.crossover(other);
         }
 
         protected override void feed(double resources)

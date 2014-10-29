@@ -158,7 +158,14 @@ namespace EvolutionFramework
 
         protected abstract void mutate();
 
-        protected abstract IEvolvable crossover(IEvolvable other);
+        protected virtual IEvolvable crossover(IEvolvable other)
+        {
+            EvolvablePopulation mate = (EvolvablePopulation) other;
+            EvolvablePopulation child = (EvolvablePopulation) (this.Fitness > mate.Fitness ? this.Clone() : other.Clone());
+            foreach (IEvolvable individual in mate.individuals)
+                child.individuals.Add(individual.Clone());
+            return child;
+        }
 
         public abstract IEvolvable Clone();
 

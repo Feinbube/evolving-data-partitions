@@ -12,7 +12,7 @@ namespace UnitTests
     public abstract class PopulationTest
     {
         [TestMethod]
-        public void BasicTest()
+        public virtual void BasicTest()
         {
             Random random = new Random(2014);
             IPopulation population = createTestPopulation(random);
@@ -27,7 +27,7 @@ namespace UnitTests
             basicTest(population);
         }
 
-        protected static void basicTest(IPopulation population)
+        protected virtual void basicTest(IPopulation population)
         {
             Assert.AreEqual(population.Fitness, population.Best.Fitness);
 
@@ -118,7 +118,7 @@ namespace UnitTests
 
         protected static void orderedIndividualsTest(IPopulation population)
         {
-            IEvolvable latest = population.IndividualsSortedByFitness.First();
+            IEvolvable latest = population.Best;
             foreach (IEvolvable next in population.IndividualsSortedByFitness)
             {
                 AssertEx.IsLessThanOrEqualTo(next.Fitness, latest.Fitness);

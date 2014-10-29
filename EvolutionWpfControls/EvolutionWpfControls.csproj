@@ -52,6 +52,7 @@
       <DependentUpon>NamedValueGrid.xaml</DependentUpon>
     </Compile>
     <Compile Include="Evolution\AnyPopulationControl.cs" />
+    <Compile Include="Evolution\EvolutionControl.cs" />
     <Compile Include="Evolution\EvolvablePopulationControl.cs" />
     <Compile Include="Evolution\PopulationControl.cs" />
     <Compile Include="Basic\IPresentable.cs" />
@@ -65,21 +66,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="BreedingPoolControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="EvolutionControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Compile Include="BreedingPoolControl.xaml.cs">
-      <DependentUpon>BreedingPoolControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="EvolutionControl.xaml.cs">
-      <DependentUpon>EvolutionControl.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Page Include="Basic\TitleDetailsAndChildrenControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -32,6 +32,7 @@ namespace EvolutionFramework
 
             if (FoodForMutation >= FoodNeededForMutation)
             {
+                (population as IndividualMutateAndCrossoverPopulation).AddChild(this.clone());
                 Mutate();
                 FoodForMutation -= FoodNeededForMutation;
 
@@ -41,7 +42,9 @@ namespace EvolutionFramework
 
             if (FoodForReproduction >= FoodNeededForReproduction)
             {
-                (population as IndividualMutateAndCrossoverPopulation).Reproduce(this);
+                IEvolvable mate = (population as IndividualMutateAndCrossoverPopulation).FindMate(this);
+                IEvolvable child = this.Crossover(mate);
+                (population as IndividualMutateAndCrossoverPopulation).AddChild(child);
                 FoodForReproduction -= FoodNeededForReproduction;
             }
         }

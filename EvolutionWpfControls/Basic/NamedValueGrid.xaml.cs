@@ -29,7 +29,7 @@ namespace EvolutionWpfControls
 
         public NamedValueGrid()
         {
-            Rows = 3;
+            Rows = 5;
             NamedValues = new List<NamedValue>();
 
             InitializeComponent();

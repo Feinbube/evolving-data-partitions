@@ -31,9 +31,13 @@ namespace EvolutionFramework
 
         public IEvolvable FindMate(IEvolvable evolvable)
         {
-            //return IndividualsSortedByFitness.Take(10).MaxElement(a => evolvable.DifferenceTo(a));
+            // return IndividualsSortedByFitness.Take(10).MaxElement(a => evolvable.DifferenceTo(a));
+
+            // sort by difference and then take the best out of the top 10! :D
+            return Individuals.OrderByDescending(a => evolvable.DifferenceTo(a)).Take(10).OrderByDescending(a => a.Fitness).First();
+
             //return IndividualsSortedByFitness.Take(3).MaxElement(a => evolvable.DifferenceTo(a));
-            return IndividualsSortedByFitness.First();
+            //return Best;
             //return IndividualsSortedByFitness.MaxElement(a => evolvable.DifferenceTo(a));
         }
 
@@ -80,12 +84,10 @@ namespace EvolutionFramework
                 if (list[i].Equals(value))
                     return true;
             return false;
-        }
+        }        
 
-        public void Reproduce(IEvolvable evolvable)
+        public void AddChild(IEvolvable child)
         {
-            IEvolvable mate = FindMate(evolvable);
-            IEvolvable child = evolvable.Crossover(mate);
             newBorns.Add(child);
         }
 

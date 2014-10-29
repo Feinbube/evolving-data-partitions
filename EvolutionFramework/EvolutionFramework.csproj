@@ -47,11 +47,11 @@
     <Compile Include="Interfaces\IPopulation.cs" />
     <Compile Include="Interfaces\IFeedable.cs" />
     <Compile Include="Population\EvolvablePopulation.cs" />
-    <Compile Include="Population\RoundRobinCreator.cs" />
+    <Compile Include="Creator\RoundRobinCreator.cs" />
     <Compile Include="Population\SelectMutateCrossoverPopulation.cs" />
-    <Compile Include="Population\IndividualMutateAndCrossoverPopulationCreator.cs" />
-    <Compile Include="Population\SelectMutateCrossoverPopulationCreator.cs" />
-    <Compile Include="Evolution.cs" />
+    <Compile Include="Creator\IndividualMutateAndCrossoverPopulationCreator.cs" />
+    <Compile Include="Creator\SelectMutateCrossoverPopulationCreator.cs" />
+    <Compile Include="Population\Evolution.cs" />
     <Compile Include="Evolvable\FedEvolvable.cs" />
     <Compile Include="Evolvable\Feedable.cs" />
     <Compile Include="Interfaces\ICreator.cs" />

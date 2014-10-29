@@ -40,7 +40,7 @@ namespace DataFieldLayoutSimulation
 
         void work()
         {
-            ICreator creator = new StencilSpeciesArrCreator(random, 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 });
+            ICreator creator = new StencilSpeciesArrCreator(random, 20, 20, new double[] { 0.25, 0.25, 0.25, 0.25 });
             evolution = new Evolution(random, creator, 7, 64) { };
             //evolution = new Evolution(new StencilSpeciesCreator(new Random(), 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 }), 5, 100) { };
             //evolution = new Evolution(new StencilSpeciesCreator(new Random(), 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 }), 7, 25) { };

@@ -15,9 +15,6 @@ namespace EvolutionWpfControls
 {
     public class EvolvablePopulationControl : PopulationControl
     {
-        static SolidColorBrush blackBrush = (SolidColorBrush)new SolidColorBrush(Colors.Black).GetAsFrozen();
-        Grid historyGrid = new Grid();
-
         public override ObservableCollection<IPresentable> Details
         {
             get

@@ -22,5 +22,7 @@ namespace UnitTests
         {
             return 30000;
         }
+
+        public override void TypeOfChildrenTest() { }
     }
 }

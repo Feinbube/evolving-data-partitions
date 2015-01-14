@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Species
 {
-    public class GhostCellSwapMutator : BorderSwapMutator
+    public class Round
     {
-        public GhostCellSwapMutator() { IncludeFieldBorders = false; }
+        public List<ArrayInfo> ArrayInfos = new List<ArrayInfo>();
     }
 }

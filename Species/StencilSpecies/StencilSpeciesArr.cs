@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace DataFieldLayoutSimulation
+namespace Species
 {
     public class StencilSpeciesArr : IEvolvable, IPresentable
     {
@@ -31,11 +31,11 @@ namespace DataFieldLayoutSimulation
         // new JumpToSameColorX2Mutator(), new JumpToSameColorMutator(), new BorderMoveMutator(), new BorderSwapMutator(), new CellSwapMutator(), new ClusterSwapMutator(), new DiagonalNeighborSwapMutator(), new GhostCellMoveMutator(), new GhostCellSwapMutator(), new NeighborSwapMutator(), new RowAndColumnSwapMutator(), new RowSwapMutator() };
 
         public StencilSpeciesArr(Random random, int w, int h, int[] cellsPerProcessor, Mutator[] mutators)
-            : this(random, initializeField(random, cellsPerProcessor, w, h), cellsPerProcessor, mutators) {}
+            : this(random, initializeField(random, cellsPerProcessor, w, h), cellsPerProcessor, mutators) { }
 
         private static Arr<int> initializeField(Random random, int[] cellsPerProcessor, int w, int h)
         {
-            Arr<int> result = new Arr<int>(w,h);
+            Arr<int> result = new Arr<int>(w, h);
             int fieldIndex = 0;
             for (int i = 0; i < cellsPerProcessor.Length; i++)
                 for (int i2 = 0; i2 < cellsPerProcessor[i]; i2++)
@@ -55,7 +55,7 @@ namespace DataFieldLayoutSimulation
 
         public double Fitness
         {
-            get { return -Overhead(false); }
+            get { return -Overhead(Field); }
         }
 
         public int Overhead(bool considerDistribution)
@@ -66,24 +66,54 @@ namespace DataFieldLayoutSimulation
             for (int y = 0; y < Field.H; y++)
                 for (int x = 0; x < Field.W; x++)
                 {
-                    cellsToCopy[Field[pos]] += UniqueNeighborCount(Field, x, y);
+                    cellsToCopy[Field[pos]] += UniqueNeighborCount(Field, x, y, pos);
                     pos++;
                 }
             return considerDistribution ? cellsToCopy.Sum() + 2 * cellsPerProcessor.Length * cellsToCopy.Max() : cellsToCopy.Sum();
         }
 
-        public static int UniqueNeighborCount(Arr<int> field, int x, int y)
+        public int OverheadSerial(Arr<int> field)
+        {
+            int[] cellsToCopy = new int[cellsPerProcessor.Length];
+
+            int pos = 0;
+            for (int y = 0; y < field.H; y++)
+                for (int x = 0; x < field.W; x++)
+                {
+                    cellsToCopy[field[pos]] += UniqueNeighborCount(field, x, y, pos);
+                    pos++;
+                }
+            return cellsToCopy.Sum();
+        }
+
+        private int uniqueNeighborCount(Arr<int> field, int y)
+        {
+            int result = 0;
+            int pos = y * field.H;
+            for (int x = 0; x < field.W; x++)
+            {
+                result += UniqueNeighborCount(field, x, y, pos);
+                pos++;
+            }
+            return result;
+        }
+
+        public int Overhead(Arr<int> field)
+        {
+            return ParallelEnumerable.Range(0, field.H).Select(y => uniqueNeighborCount(field, y)).Sum();
+        }
+
+        public static int UniqueNeighborCount(Arr<int> field, int x, int y, int pos)
         {
             int result = 0;
             int w = field.W;
             int h = field.H;
 
-            int pos = x + y * w;
             int c = field[pos];
 
             int n1 = x - 1 < 0 ? c : field[pos - 1];
-            int n2 = y - 1 < 0 ? c : field[pos - w];
             int n3 = x + 1 >= w ? c : field[pos + 1];
+            int n2 = y - 1 < 0 ? c : field[pos - w];
             int n4 = y + 1 >= h ? c : field[pos + w];
 
             if (n1 != c)
@@ -276,5 +306,108 @@ namespace DataFieldLayoutSimulation
         }
 
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+        public bool NextStep()
+        {
+            Arr<int> field = Field.Clone();
+            int overhead = Overhead(Field);
+
+            // remove invalid cells (cells with only neighbors of same color)
+            Arr<int> f = field.Clone();
+            int validCount = 0;
+            for (int y = 0; y < f.H; y++)
+                for (int x = 0; x < f.W; x++)
+                    if (field.NeighborsWithValueHV(field[x, y], x, y, 1, true) == 4) f[x, y] = -1;
+                    else validCount++;
+
+            while (validCount > 0)
+            {
+                // choose start pos and color
+                int startPos = f.ValidPosition(random.Next(0, validCount), -1);
+                f[startPos] = -1;
+                validCount--;
+                int color = field[startPos];
+
+                // remove all cells that have no neighbor with matching color and cells with same color
+                Arr<int> f2 = f.Clone();
+                int validCount2 = validCount;
+                for (int y = 0; y < f.H; y++)
+                    for (int x = 0; x < f.W; x++)
+                        if (f[x, y] != -1 && (f[x, y] == color || f.NeighborsWithValueHV(color, x, y, 1, false) == 0))
+                        {
+                            f2[x, y] = -1;
+                            validCount2--;
+                        }
+
+                while (validCount2 > 0)
+                {
+                    // select target at random
+                    int targetPos = f2.ValidPosition(random.Next(0, validCount2), -1);
+                    f2[targetPos] = -1;
+                    validCount2--;
+
+                    // swap
+                    field.Swap(startPos, targetPos);
+
+                    if (Overhead(field) < overhead)
+                    {
+                        this.Field = field;
+                        return true;
+                    }
+                    else
+                        field.Swap(startPos, targetPos);
+                }
+            }
+
+            if (!this.IsValid)
+                throw new Exception("INVALID");
+
+            return false;
+        }
+
+        public bool NextStepX()
+        {
+            Arr<int> field = Field.Clone();
+            int overhead = Overhead(Field);
+
+            Arr<int> f = field.Clone();
+            int validCount = field.Length;
+
+            while (validCount > 0)
+            {
+                // choose start pos and color
+                int startPos = f.ValidPosition(random.Next(0, validCount), -1);
+                f[startPos] = -1;
+                validCount--;
+                int color = field[startPos];
+
+                Arr<int> f2 = f.Clone();
+                int validCount2 = validCount;
+
+                while (validCount2 > 0)
+                {
+                    // select target at random
+                    int targetPos = f2.ValidPosition(random.Next(0, validCount2), -1);
+                    f2[targetPos] = -1;
+                    validCount2--;
+
+                    // swap
+                    field.Swap(startPos, targetPos);
+
+                    if (Overhead(field) < overhead)
+                    {
+                        this.Field = field;
+                        return true;
+                    }
+                    else
+                        field.Swap(startPos, targetPos);
+                }
+            }
+
+            if (!this.IsValid)
+                throw new Exception("INVALID");
+
+            return false;
+        }
     }
 }

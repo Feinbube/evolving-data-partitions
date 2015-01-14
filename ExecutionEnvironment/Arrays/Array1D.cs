@@ -65,6 +65,16 @@ namespace ExecutionEnvironment
             return result;
         }
 
+        public double Differences(Array<byte> other)
+        {
+            int result = 0;
+            for (int pos = 0; pos < Size; pos++)
+                if (!this[pos].Equals(other[pos]))
+                    result++;
+
+            return result;
+        }
+
         public IEnumerable<T> Take(int count) { lock (memory) { return memory.Take(count); } }
 
         public T Max { get { lock (memory) { return memory.Max(); } } }

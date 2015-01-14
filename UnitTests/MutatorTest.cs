@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DataFieldLayoutSimulation;
+using Species;
 using EvolutionFramework;
 using UnitTestHelpers;
 using ExecutionEnvironment;

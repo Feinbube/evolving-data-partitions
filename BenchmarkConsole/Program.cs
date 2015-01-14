@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EvolutionFramework;
 using BenchmarkFramework;
-using DataFieldLayoutSimulation;
+using Species;
 
 namespace BenchmarkConsole
 {

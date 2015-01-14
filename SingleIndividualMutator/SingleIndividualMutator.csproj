@@ -4,17 +4,18 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E5599F42-B83B-45B3-A7A2-93F0E148C46A}</ProjectGuid>
-    <OutputType>library</OutputType>
+    <ProjectGuid>{0A61C8B1-FCB0-4C6A-88C5-5044B6998D9C}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Species</RootNamespace>
-    <AssemblyName>Species</AssemblyName>
+    <RootNamespace>SingleIndividualMutator</RootNamespace>
+    <AssemblyName>SingleIndividualMutator</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,6 +25,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -47,30 +49,22 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccessPatternSpecies\AccessPatternSpecies.cs" />
-    <Compile Include="AccessPatternSpecies\Algorithm.cs" />
-    <Compile Include="AccessPatternSpecies\Algorithms\Stencil.cs" />
-    <Compile Include="AccessPatternSpecies\RunResult\IAlgorithm.cs" />
-    <Compile Include="AccessPatternSpecies\RunResult\ArrayInfo.cs" />
-    <Compile Include="AccessPatternSpecies\RunResult\Round.cs" />
-    <Compile Include="AccessPatternSpecies\RunResult\RunResult.cs" />
-    <Compile Include="AccessPatternSpecies\RunResult\RunResultStatistic.cs" />
-    <Compile Include="Mutators\JumpToSameColorX2Mutator.cs" />
-    <Compile Include="StencilSpecies\StencilSpeciesArr.cs" />
-    <Compile Include="Mutators\BorderMoveMutator.cs" />
-    <Compile Include="Mutators\JumpToSameColorMutator.cs" />
-    <Compile Include="Mutators\BorderSwapMutator.cs" />
-    <Compile Include="Mutators\CellSwapMutator.cs" />
-    <Compile Include="Mutators\ClusterSwapMutator.cs" />
-    <Compile Include="Mutators\ColumnSwapMutator.cs" />
-    <Compile Include="Mutators\DiagonalNeighborSwapMutator.cs" />
-    <Compile Include="Mutators\GhostCellMoveMutator.cs" />
-    <Compile Include="Mutators\GhostCellSwapMutator.cs" />
-    <Compile Include="Mutators\Mutator.cs" />
-    <Compile Include="Mutators\NeighborSwapMutator.cs" />
-    <Compile Include="Mutators\RowAndColumnMutator.cs" />
-    <Compile Include="Mutators\RowSwapMutator.cs" />
-    <Compile Include="StencilSpecies\StencilSpeciesArrCreator.cs" />
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -97,10 +91,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DrawingSupport\DrawingSupport.csproj">
-      <Project>{43df5d95-55eb-44d3-b6fc-8606c5ee4516}</Project>
-      <Name>DrawingSupport</Name>
-    </ProjectReference>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\EvolutionFramework\EvolutionFramework.csproj">
       <Project>{18b32da1-2366-465b-b6c3-f3d6a517c639}</Project>
       <Name>EvolutionFramework</Name>
@@ -109,9 +102,9 @@
       <Project>{544e91bf-d642-4e30-ac42-e3f481cf8947}</Project>
       <Name>EvolutionWpfControls</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ExecutionEnvironment\ExecutionEnvironment.csproj">
-      <Project>{711d1f27-c2cb-49f0-ba5a-f5ee8074802d}</Project>
-      <Name>ExecutionEnvironment</Name>
+    <ProjectReference Include="..\Species\Species.csproj">
+      <Project>{e5599f42-b83b-45b3-a7a2-93f0e148c46a}</Project>
+      <Name>Species</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

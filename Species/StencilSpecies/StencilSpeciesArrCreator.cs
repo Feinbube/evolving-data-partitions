@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataFieldLayoutSimulation
+namespace Species
 {
     public class StencilSpeciesArrCreator : ICreator
     {

@@ -22,7 +22,7 @@ namespace ExecutionEnvironment
 
         public T At(int x, int y) { return this[x, y]; }
 
-        public T At(int x, int y, T borderValue) { return OutOfBounds(x, y) ? borderValue : At(x, y); }
+        public T AtX(int x, int y, T borderValue) { return OutOfBounds(x, y) ? borderValue : At(x, y); }
 
         public bool OutOfBounds(int x, int y) { return x < 0 || x > this.W - 1 || y < 0 || y > this.H - 1; }
 
@@ -88,7 +88,7 @@ namespace ExecutionEnvironment
             for (int xDiff = -1; xDiff <= 1; xDiff++)
                 for (int yDiff = -1; yDiff <= 1; yDiff++)
                 {
-                    T v = At(x + xDiff, y + yDiff, freeValue);
+                    T v = AtX(x + xDiff, y + yDiff, freeValue);
                     if (!v.Equals(freeValue) && !v.Equals(value))
                         directions++;
                 }
@@ -100,7 +100,7 @@ namespace ExecutionEnvironment
             for (int xDiff = -1; xDiff <= 1; xDiff++)
                 for (int yDiff = -1; yDiff <= 1; yDiff++)
                 {
-                    T v = At(x + xDiff, y + yDiff, freeValue);
+                    T v = AtX(x + xDiff, y + yDiff, freeValue);
                     if (!v.Equals(freeValue) && !v.Equals(value))
                     {
                         directions--;

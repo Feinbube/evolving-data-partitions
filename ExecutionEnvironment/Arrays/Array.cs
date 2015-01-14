@@ -9,6 +9,8 @@ namespace ExecutionEnvironment
 {
     public class Array<T> 
     {
+        public bool Unsafe;
+
         protected T[] memory;
         protected bool[] written;
 
@@ -26,6 +28,8 @@ namespace ExecutionEnvironment
 
         public Array(int sizeX, int sizeY, int sizeZ)
         {
+            Unsafe = true;
+
             this.SizeX = sizeX;
             this.SizeY = sizeY;
             this.SizeZ = sizeZ;
@@ -44,6 +48,9 @@ namespace ExecutionEnvironment
 
         public virtual T Read(int threadId, int pos1D)
         {
+            if (Unsafe)
+                return read(threadId, pos1D);
+
             lock (memory)
             {
                 checkRead(threadId, pos1D);
@@ -72,6 +79,12 @@ namespace ExecutionEnvironment
 
         public virtual void Write(int threadId, int pos1D, T value)
         {
+            if (Unsafe)
+            {
+                write(threadId, pos1D, value);
+                return;
+            }
+
             lock (memory)
             {
                 checkPos(threadId, pos1D);

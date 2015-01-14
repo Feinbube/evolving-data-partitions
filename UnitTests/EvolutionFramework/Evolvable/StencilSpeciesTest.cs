@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DataFieldLayoutSimulation;
+using Species;
 using EvolutionFramework;
 using UnitTestHelpers;
 using ExecutionEnvironment;
@@ -198,8 +198,8 @@ namespace UnitTests
         [TestMethod]
         public void UniqueNeighborCountTest()
         {
-            Assert.AreEqual(0, StencilSpeciesArr.UniqueNeighborCount(new Arr<int>(new int[] { 1, 2, 1, 2, 2, 2, 1, 2, 1 },3, 3), 1, 1));
-            Assert.AreEqual(1, StencilSpeciesArr.UniqueNeighborCount(new Arr<int>(new int[] { 1, 2, 1, 2, 1, 2, 1, 2, 1 }, 3, 3), 1, 1));
+            Assert.AreEqual(0, StencilSpeciesArr.UniqueNeighborCount(new Arr<int>(new int[] { 1, 2, 1, 2, 2, 2, 1, 2, 1 }, 3, 3), 1, 1, 4));
+            Assert.AreEqual(1, StencilSpeciesArr.UniqueNeighborCount(new Arr<int>(new int[] { 1, 2, 1, 2, 1, 2, 1, 2, 1 }, 3, 3), 1, 1, 4));
         }
 
         [TestMethod]

@@ -1,6 +1,4 @@
-﻿using DrawingSupport;
-using EvolutionFramework;
-using Species;
+﻿using Species;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,22 +16,24 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 
-namespace DataFieldLayoutSimulation
+namespace SingleIndividualMutator
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        Random random = new Random();
         bool running = true;
 
-        Evolution evolution;
-        Evolution evolutionForView;
+        public StencilSpeciesArr Individual { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
+
+            Individual = (StencilSpeciesArr)new StencilSpeciesArrCreator(new Random(), 100, 100, new double[] { 0.25, 0.25, 0.25, 0.25 }).Create();
+            //Individual = (StencilSpeciesArr)new StencilSpeciesArrCreator(new Random(), 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 }).Create();
+            this.Content = Individual.PresentableControl;
 
             new Thread(new ThreadStart(work)).Start();
             DispatcherTimer timer = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 3000), DispatcherPriority.Background, updateView, Dispatcher.CurrentDispatcher);
@@ -41,28 +41,25 @@ namespace DataFieldLayoutSimulation
 
         void work()
         {
-            ICreator creator = new StencilSpeciesArrCreator(random, 100, 100, new double[] { 0.25, 0.25, 0.25, 0.25 });
-            evolution = new Evolution(random, creator, 1, 20) { };
-            //evolution = new Evolution(new StencilSpeciesCreator(new Random(), 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 }), 5, 100) { };
-            //evolution = new Evolution(new StencilSpeciesCreator(new Random(), 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 }), 7, 25) { };
-            //evolution = new Evolution(new TestSpeciesCreator(), 7, 25) { };
+            while (running && Individual.NextStep()) ;
+            while (running && Individual.NextStepX()) ;
 
-            evolutionForView = (Evolution)evolution.Clone();
-
-            while (running)
+            if (running)
             {
-                evolution.Feed(10000);
-                evolutionForView = (Evolution)evolution.Clone();
-                //Thread.Sleep(1000);
+                running = false;
+
+                while (true)
+                    if (Individual.NextStepX())
+                        throw new Exception("WTF");
             }
         }
 
         void updateView(object sender, EventArgs e)
         {
-            //this.evolutionControl.Evolution = null;
-            //this.evolutionControl.Evolution = evolutionForView;
+            this.Content = null;
+            this.Content = Individual.PresentableControl;
 
-            this.evolutionControlNew.Population = evolutionForView;
+            this.Title = "Running: " + running;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

@@ -18,7 +18,7 @@ namespace ExecutionEnvironment
 
         public Arr(T[] values, int w, int h) : this(w, h) { this.Write(values); }
 
-        public Arr<T> Clone()
+        public virtual Arr<T> Clone()
         {
             Arr<T> clone = new Arr<T>(this.SizeX, this.SizeY, this.SizeZ);
             clone.memory = (T[])this.memory.Clone();

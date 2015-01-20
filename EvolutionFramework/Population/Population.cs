@@ -112,6 +112,15 @@ namespace EvolutionFramework
                 this.Feed(1);
         }
 
+        public void Leap()
+        {
+            foreach (var individual in individuals)
+                individual.Leap();
+
+            BestOfAllTime = null;
+            invalidateCaches();
+        }
+
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }

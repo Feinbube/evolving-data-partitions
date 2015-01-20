@@ -23,6 +23,11 @@ namespace EvolutionFramework
             Evolvable.Mutate();
         }
 
+        protected override void leap()
+        {
+            Evolvable.Leap();
+        }
+
         protected override IEvolvable crossover(IEvolvable mate)
         {
             return new Evolver(population, mate is Evolver ? Evolvable.Crossover((mate as Evolver).Evolvable) : Evolvable.Crossover(mate));

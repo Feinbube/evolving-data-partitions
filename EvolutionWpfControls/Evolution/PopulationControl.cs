@@ -43,6 +43,9 @@ namespace EvolutionWpfControls
 
         protected override void updateView()
         {
+            if (population == null)
+                return;
+
             this.Title = population.GetType().Name;
             this.SubTitle = "";
             this.ChildrenTitle = "Population";

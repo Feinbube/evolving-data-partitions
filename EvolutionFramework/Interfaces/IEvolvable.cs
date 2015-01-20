@@ -12,6 +12,8 @@ namespace EvolutionFramework
         double Fitness { get; }
 
         void Mutate();
+
+        void Leap();
         
         IEvolvable Crossover(IEvolvable other);
 

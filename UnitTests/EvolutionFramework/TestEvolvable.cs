@@ -95,5 +95,11 @@ namespace UnitTests
         {
             get { return true; }
         }
+
+
+        public void Leap()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

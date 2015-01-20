@@ -13,9 +13,11 @@ namespace Species
 {
     public class StencilSpeciesArr : IEvolvable, IPresentable
     {
+        public bool Optimization = false;
+
         Random random;
-        Arr<int> Field;
-        int[] cellsPerProcessor;
+        public Arr<int> Field;
+        public int[] cellsPerProcessor;
 
         public Mutator[] Mutators;
 
@@ -26,7 +28,7 @@ namespace Species
             : this(other.random, field, other.cellsPerProcessor, other.Mutators) { }
 
         public StencilSpeciesArr(Random random, int w, int h, int[] cellsPerProcessor)
-            : this(random, w, h, cellsPerProcessor, new Mutator[] { new JumpToSameColorX2Mutator() }) { }
+            : this(random, w, h, cellsPerProcessor, new Mutator[] { new CellSwapMutator()/*new JumpToSameColorX2Mutator()*/ }) { }
 
         // new JumpToSameColorX2Mutator(), new JumpToSameColorMutator(), new BorderMoveMutator(), new BorderSwapMutator(), new CellSwapMutator(), new ClusterSwapMutator(), new DiagonalNeighborSwapMutator(), new GhostCellMoveMutator(), new GhostCellSwapMutator(), new NeighborSwapMutator(), new RowAndColumnSwapMutator(), new RowSwapMutator() };
 
@@ -51,6 +53,15 @@ namespace Species
             this.cellsPerProcessor = (int[])cellsPerProcessor.Clone();
             this.Field = field.Clone();
             this.Mutators = (Mutator[])mutators.Clone();
+        }
+
+        public void Optimize(int times)
+        {
+            if (!Optimization)
+                return;
+
+            for (int i = 0; i < times; i++)
+                NextStep(true);
         }
 
         public double Fitness
@@ -89,7 +100,7 @@ namespace Species
         private int uniqueNeighborCount(Arr<int> field, int y)
         {
             int result = 0;
-            int pos = y * field.H;
+            int pos = y * field.W;
             for (int x = 0; x < field.W; x++)
             {
                 result += UniqueNeighborCount(field, x, y, pos);
@@ -149,7 +160,7 @@ namespace Species
             int mutations = 1; // random.Next(1, 7);
             Mutators[choice].Mutate(random, this.Field, mutations);
 
-            // ROTATE STUFF!!
+            this.Optimize(1);
         }
 
         public IEvolvable Crossover(IEvolvable other)
@@ -161,25 +172,30 @@ namespace Species
                 result.Mutate();
                 return result;
             }
-
-            int[] cPerProcessor = (int[])cellsPerProcessor.Clone();
-            int freeCells = this.Field.Length;
-
-            // initialize field with -1 or cells that are equal in both mates
-            Arr<int> field = new Arr<int>(this.Field.SizeX, this.Field.SizeY);
-            freeCells -= fillWithEqualGenesOrMinusOne(field, this.Field, mate.Field, cPerProcessor);
-
-            while (freeCells > 0)
+            else
             {
-                int position = field.FreePosition(random.Next(0, freeCells), -1);
-                int processor = suitableValue(random, freeCells, this.Field, mate.Field, position, cPerProcessor);
 
-                field[position] = processor;
-                cPerProcessor[processor]--;
-                freeCells--;
+                int[] cPerProcessor = (int[])cellsPerProcessor.Clone();
+                int freeCells = this.Field.Length;
+
+                // initialize field with -1 or cells that are equal in both mates
+                Arr<int> field = new Arr<int>(this.Field.SizeX, this.Field.SizeY);
+                freeCells -= fillWithEqualGenesOrMinusOne(field, this.Field, mate.Field, cPerProcessor);
+
+                while (freeCells > 0)
+                {
+                    int position = field.FreePosition(random.Next(0, freeCells), -1);
+                    int processor = suitableValue(random, freeCells, this.Field, mate.Field, position, cPerProcessor);
+
+                    field[position] = processor;
+                    cPerProcessor[processor]--;
+                    freeCells--;
+                }
+
+                StencilSpeciesArr result = new StencilSpeciesArr(this, field);
+                result.Optimize(3);
+                return result;
             }
-
-            return new StencilSpeciesArr(this, field);
         }
 
         public static int fillWithEqualGenesOrMinusOne(Arr<int> field, Arr<int> parent1, Arr<int> parent2, int[] cellsPerProcessor)
@@ -307,7 +323,7 @@ namespace Species
 
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
 
-        public bool NextStep()
+        public bool NextStep(bool progress)
         {
             Arr<int> field = Field.Clone();
             int overhead = Overhead(Field);
@@ -349,7 +365,7 @@ namespace Species
                     // swap
                     field.Swap(startPos, targetPos);
 
-                    if (Overhead(field) < overhead)
+                    if ((progress && Overhead(field) < overhead) || (!progress && Overhead(field) <= overhead))
                     {
                         this.Field = field;
                         return true;
@@ -365,7 +381,7 @@ namespace Species
             return false;
         }
 
-        public bool NextStepX()
+        public bool NextStepX(bool progress)
         {
             Arr<int> field = Field.Clone();
             int overhead = Overhead(Field);
@@ -394,7 +410,7 @@ namespace Species
                     // swap
                     field.Swap(startPos, targetPos);
 
-                    if (Overhead(field) < overhead)
+                    if ((progress && Overhead(field) < overhead) || (!progress && Overhead(field) <= overhead))
                     {
                         this.Field = field;
                         return true;
@@ -408,6 +424,26 @@ namespace Species
                 throw new Exception("INVALID");
 
             return false;
+        }
+
+        public void Leap()
+        {
+            Arr<int> largerArray = new Arr<int>(Field.W * 2, Field.H * 2);
+
+            for (int y = 0; y < Field.H; y++)
+                for (int x = 0; x < Field.W; x++)
+                {
+                    int value = Field[x, y];
+                    largerArray[x * 2, y * 2] = value;
+                    largerArray[x * 2 + 1, y * 2] = value;
+                    largerArray[x * 2, y * 2 + 1] = value;
+                    largerArray[x * 2 + 1, y * 2 + 1] = value;
+                }
+
+            for (int i = 0; i < cellsPerProcessor.Length; i++)
+                cellsPerProcessor[i] *= 4;
+
+            Field = largerArray;
         }
     }
 }

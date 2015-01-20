@@ -5,8 +5,11 @@
         xmlns:EvolutionWpfControls="clr-namespace:EvolutionWpfControls;assembly=EvolutionWpfControls" x:Class="DataFieldLayoutSimulation.MainWindow"
         Title="Data Access Layout Simulator" Width="1280" Height="768" Closing="Window_Closing">
     <Grid>
+        <StackPanel>
+        <Button Content="Evolutionary Leap" Click="Button_Click"/>
         <ScrollViewer>
             <EvolutionWpfControls:EvolutionControl x:Name="evolutionControlNew" Margin="0,0,0,0"/>
         </ScrollViewer>
+        </StackPanel>
     </Grid>
 </Window>

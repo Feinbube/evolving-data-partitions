@@ -70,6 +70,7 @@
     <Compile Include="Mutators\NeighborSwapMutator.cs" />
     <Compile Include="Mutators\RowAndColumnMutator.cs" />
     <Compile Include="Mutators\RowSwapMutator.cs" />
+    <Compile Include="StencilSpecies\StencilSpeciesArrAlternative.cs" />
     <Compile Include="StencilSpecies\StencilSpeciesArrCreator.cs" />
   </ItemGroup>
   <ItemGroup>

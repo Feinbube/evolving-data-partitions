@@ -25,8 +25,8 @@ namespace DataFieldLayoutSimulation
     /// </summary>
     public partial class MainWindow : Window
     {
-        Random random = new Random();
         bool running = true;
+        bool leapNow = false;
 
         Evolution evolution;
         Evolution evolutionForView;
@@ -41,19 +41,23 @@ namespace DataFieldLayoutSimulation
 
         void work()
         {
-            ICreator creator = new StencilSpeciesArrCreator(random, 100, 100, new double[] { 0.25, 0.25, 0.25, 0.25 });
-            evolution = new Evolution(random, creator, 1, 20) { };
-            //evolution = new Evolution(new StencilSpeciesCreator(new Random(), 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 }), 5, 100) { };
-            //evolution = new Evolution(new StencilSpeciesCreator(new Random(), 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 }), 7, 25) { };
-            //evolution = new Evolution(new TestSpeciesCreator(), 7, 25) { };
+            //evolution = new Evolution(new Random(), new StencilSpeciesArrCreator(new Random(), 10, 10, new double[] { 0.25, 0.25, 0.25, 0.25 }), 7, 25) { };
+            //evolution = new Evolution(new Random(), new StencilSpeciesArrCreator(new Random(), 50, 50, new double[] { 0.25, 0.25, 0.25, 0.25 }), 1, 5) { };
+            evolution = new Evolution(new Random(), new StencilSpeciesArrCreator(new Random(), 10, 10, 4), 7, 25) { };
 
             evolutionForView = (Evolution)evolution.Clone();
 
             while (running)
             {
-                evolution.Feed(10000);
+                evolution.Feed(42);
                 evolutionForView = (Evolution)evolution.Clone();
                 //Thread.Sleep(1000);
+
+                if(leapNow)
+                {
+                    evolution.Leap();
+                    leapNow = false;
+                }
             }
         }
 
@@ -68,6 +72,11 @@ namespace DataFieldLayoutSimulation
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             running = false;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            leapNow = true;
         }
     }
 }

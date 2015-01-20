@@ -29,5 +29,7 @@ namespace EvolutionFramework
         void NoteFitnessEvaluations();
 
         void Feed(TimeSpan runtime);
+
+        void Leap();
     }
 }

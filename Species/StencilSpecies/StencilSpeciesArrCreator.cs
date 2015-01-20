@@ -13,17 +13,27 @@ namespace Species
 
         int w = 0;
         int h = 0;
-        
+
         int[] cellsPerProcessor = null;
+
+        public StencilSpeciesArrCreator(Random random, int fieldW, int fieldH, int sameProcessors) : this(random, fieldW, fieldH, sameRatios(sameProcessors)) { }
+
+        private static double[] sameRatios(int count)
+        {
+            double[] result = new double[count];
+            for (int i = 0; i < count; i++)
+                result[i] = 1.0 / count;
+            return result;
+        }
 
         public StencilSpeciesArrCreator(Random random, int fieldW, int fieldH, double[] processorRatios)
         {
             this.random = random;
-            
+
             this.w = fieldW;
             this.h = fieldH;
 
-            if (processorRatios.Sum() != 1.0)
+            if (processorRatios.Sum() < 0.999 || processorRatios.Sum() > 1.001)
                 throw new Exception("Processor ratios have to sum up to 1.0!");
 
             int cells = fieldW * fieldH;

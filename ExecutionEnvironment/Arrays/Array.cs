@@ -83,7 +83,7 @@ namespace ExecutionEnvironment
             {
                 write(threadId, pos1D, value);
                 return;
-            }
+            } 
 
             lock (memory)
             {

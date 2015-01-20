@@ -52,6 +52,12 @@ namespace EvolutionFramework
             resetFitness();
         }
 
+        public void Leap()
+        {
+            leap();
+            resetFitness();
+        }
+
         public IEvolvable Crossover(IEvolvable mate)
         {
             population.NoteCrossovers();
@@ -71,6 +77,7 @@ namespace EvolutionFramework
 
         protected abstract double assessFitness();
         protected abstract void mutate();
+        protected abstract void leap();
         protected abstract IEvolvable crossover(IEvolvable mate);
         protected abstract double differenceTo(IEvolvable other);
         protected abstract IEvolvable clone();

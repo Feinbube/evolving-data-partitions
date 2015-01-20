@@ -61,6 +61,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IterativeSingleIndividualMutator.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -101,6 +102,10 @@
     <ProjectReference Include="..\EvolutionWpfControls\EvolutionWpfControls.csproj">
       <Project>{544e91bf-d642-4e30-ac42-e3f481cf8947}</Project>
       <Name>EvolutionWpfControls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ExecutionEnvironment\ExecutionEnvironment.csproj">
+      <Project>{711d1f27-c2cb-49f0-ba5a-f5ee8074802d}</Project>
+      <Name>ExecutionEnvironment</Name>
     </ProjectReference>
     <ProjectReference Include="..\Species\Species.csproj">
       <Project>{e5599f42-b83b-45b3-a7a2-93f0e148c46a}</Project>
